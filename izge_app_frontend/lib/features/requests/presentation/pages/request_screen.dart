@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/request_detail_screen.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
 
@@ -10,9 +11,13 @@ class RequestsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            );
+          }
         ),
         title: Row(
           children: [
@@ -42,7 +47,9 @@ class RequestsScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
+            },
             icon: Icon(Icons.notifications_none, color: AppColors.textPrimary),
           ),
         ],

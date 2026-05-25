@@ -100,13 +100,12 @@ class _NewsScreenState extends State<NewsScreen> {
         leading: Builder(
           builder: (context) {
             return IconButton(
-              icon: Icon(Icons.menu, color: AppColors.accent),
+              icon: const Icon(Icons.menu),
               onPressed: () => Scaffold.of(context).openDrawer(),
             );
           }
         ),
         title: Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               width: 32,
@@ -132,7 +131,6 @@ class _NewsScreenState extends State<NewsScreen> {
             ),
           ],
         ),
-        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
