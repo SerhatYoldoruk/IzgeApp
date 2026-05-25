@@ -15,6 +15,14 @@ class SurveysScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            );
+          }
+        ),
         title: Row(
           children: [
             Container(
@@ -32,7 +40,7 @@ class SurveysScreen extends StatelessWidget {
             ),
             SizedBox(width: 12),
             Text(
-              'İzge App - Anketler',
+              'İzge App',
               style: TextStyle(
                 color: AppColors.accent,
                 fontWeight: FontWeight.bold,

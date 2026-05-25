@@ -195,7 +195,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                               builder: (context, val, child) {
                                 return Transform.scale(
                                   scale: 0.6 + (val * 0.4),
-                                  child: Opacity(opacity: val.clamp(0.0, 1.0), child: child),
+                                  child: Opacity(opacity: (val.toDouble()).clamp(0.0, 1.0), child: child),
                                 );
                               },
                               child: Container(
