@@ -31,7 +31,7 @@ class EmailVerifiedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              const Text(
+               Text(
                 'E-postanız Doğrulandı! 🎉',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -41,7 +41,7 @@ class EmailVerifiedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
+               Text(
                 'Hesabınız başarıyla onaylandı. Artık tüm özelliklere erişmek için giriş yapabilirsiniz.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
