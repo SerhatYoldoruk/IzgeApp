@@ -1,0 +1,418 @@
+﻿import 'package:flutter/material.dart';
+import 'package:izge_app_frontend/core/constants/app_colors.dart';
+
+class SurveyDetailScreen extends StatefulWidget {
+  const SurveyDetailScreen({super.key});
+
+  @override
+  State<SurveyDetailScreen> createState() => _SurveyDetailScreenState();
+}
+
+class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
+  String? _selectedOption;
+  bool _isSubmitting = false;
+  bool _isSuccess = false;
+
+  void _submit() async {
+    if (_selectedOption == null || _isSubmitting || _isSuccess) return;
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    // Simulate network delay
+    await Future.delayed(const Duration(milliseconds: 1500));
+
+    if (mounted) {
+      setState(() {
+        _isSubmitting = false;
+        _isSuccess = true;
+      });
+
+      // Optionally navigate back after success
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        if (mounted) {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Yanıtınız başarıyla kaydedildi.'),
+              backgroundColor: AppColors.accent,
+            ),
+          );
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'İzge App',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppColors.accent,
+            letterSpacing: -0.5,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications, color: AppColors.textSecondary),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          // Ambient Glow (Decorative)
+          Positioned(
+            top: 40,
+            left: MediaQuery.of(context).size.width * 0.1,
+            right: MediaQuery.of(context).size.width * 0.1,
+            child: Container(
+              height: 300,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.accent.withValues(alpha: 0.08),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.7],
+                ),
+              ),
+            ),
+          ),
+          
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 120),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Poll Header
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceElevated, // surface-container-high
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.2),
+                          blurRadius: 16,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: AppColors.accent.withValues(alpha: 0.2),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.poll, color: AppColors.accent, size: 20),
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              'TOPLULUK GELİŞİMİ',
+                              style: TextStyle(
+                                color: AppColors.accent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Yeni Dönem Eğitim Atölyesi Tercihleri',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                            height: 1.2,
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        Text(
+                          'Değerli üyemiz, önümüzdeki çeyrekte açılacak olan ücretsiz eğitim atölyelerimizin odak noktasını belirlemek için görüşünüze ihtiyacımız var. Lütfen size en faydalı olacak alanı seçiniz.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
+                        ),
+                        SizedBox(height: 24),
+                        Divider(color: AppColors.border),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Icon(Icons.group, color: AppColors.textSecondary, size: 18),
+                            SizedBox(width: 8),
+                            Text('1,248 Katılım', style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                            SizedBox(width: 24),
+                            Icon(Icons.schedule, color: AppColors.textSecondary, size: 18),
+                            SizedBox(width: 8),
+                            Text('Son 2 Gün', style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  SizedBox(height: 32),
+                  
+                  // Question
+                  Text(
+                    'Hangi alanda atölye açılmasını istersiniz?',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Yalnızca bir seçenek işaretleyebilirsiniz.',
+                    style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                  ),
+                  SizedBox(height: 16),
+                  
+                  // Options
+                  _buildOption(
+                    value: 'tech',
+                    title: 'Yazılım & Teknoloji',
+                    subtitle: 'Kodlama, Veri Analizi, Yapay Zeka',
+                    icon: Icons.code,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildOption(
+                    value: 'sustainability',
+                    title: 'Sürdürülebilirlik & Çevre',
+                    subtitle: 'İklim Krizi, İleri Dönüşüm, Ekoloji',
+                    icon: Icons.eco,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildOption(
+                    value: 'arts',
+                    title: 'Sanat & Tasarım',
+                    subtitle: 'Grafik Tasarım, Seramik, Fotoğrafçılık',
+                    icon: Icons.palette,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildOption(
+                    value: 'entrepreneurship',
+                    title: 'Girişimcilik & Liderlik',
+                    subtitle: 'Proje Yönetimi, İletişim Becerileri',
+                    icon: Icons.lightbulb_outline,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          
+          // Sticky Bottom Action Area
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 32),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    AppColors.background,
+                    AppColors.background.withValues(alpha: 0.95),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+              child: ElevatedButton(
+                onPressed: _selectedOption == null ? null : _submit,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _isSuccess 
+                      ? AppColors.surfaceElevated // surface-bright
+                      : const Color(0xFF1A8025), // primary-container
+                  disabledBackgroundColor: const Color(0xFF1A8025).withValues(alpha: 0.5),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  elevation: _selectedOption == null ? 0 : 8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (_isSubmitting) ...[
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Color(0xFFD3FFC8),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      const Text(
+                        'Kaydediliyor...',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFD3FFC8),
+                        ),
+                      ),
+                    ] else if (_isSuccess) ...[
+                      Icon(Icons.check_circle, color: AppColors.accent),
+                      SizedBox(width: 12),
+                      Text(
+                        'Yanıtınız Alındı',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.accent,
+                        ),
+                      ),
+                    ] else ...[
+                      Text(
+                        'Yanıtı Gönder',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: _selectedOption == null 
+                              ? const Color(0xFFD3FFC8).withValues(alpha: 0.5) 
+                              : const Color(0xFFD3FFC8),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Icon(
+                        Icons.send,
+                        color: _selectedOption == null 
+                              ? const Color(0xFFD3FFC8).withValues(alpha: 0.5) 
+                              : const Color(0xFFD3FFC8),
+                        size: 20,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOption({
+    required String value,
+    required String title,
+    required String subtitle,
+    required IconData icon,
+  }) {
+    final bool isSelected = _selectedOption == value;
+    
+    return GestureDetector(
+      onTap: () {
+        if (!_isSubmitting && !_isSuccess) {
+          setState(() {
+            _selectedOption = value;
+          });
+        }
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF1A8025).withValues(alpha: 0.1) : AppColors.surfaceElevated,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected ? AppColors.accent : AppColors.border.withValues(alpha: 0.3),
+            width: 2,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.15),
+                    blurRadius: 20,
+                    offset: const Offset(0, 4),
+                  )
+                ]
+              : [],
+        ),
+        child: Row(
+          children: [
+            // Custom Radio Button
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? AppColors.accent : Color(0xFF899484), // outline
+                  width: 2,
+                ),
+              ),
+              child: Center(
+                child: AnimatedOpacity(
+                  opacity: isSelected ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 200),
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: AppColors.accent,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? AppColors.accent : AppColors.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              icon,
+              size: 32,
+              color: isSelected ? AppColors.accent : Color(0xFF899484).withValues(alpha: 0.5),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
