@@ -26,7 +26,6 @@ workflows:
           mkdir -p Payload
           cp -r build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload/
           zip -r izge_app.ipa Payload
-          
-          curl https://bashupload.com/izge_app.ipa --data-binary @izge_app.ipa
     artifacts:
-      - "*.ipa"
+      - "**/*.ipa"
+      - build/ios/ipa/*.ipa
