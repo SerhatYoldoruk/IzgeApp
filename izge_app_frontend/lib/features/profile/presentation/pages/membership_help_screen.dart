@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/membership_cancellation_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/dues_operations_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/update_info_help_screen.dart';
@@ -21,8 +22,8 @@ class MembershipHelpScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Üyelik İşlemleri',
+        title: Text(
+          'Üyelik İşlemleri'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w800,
@@ -52,7 +53,7 @@ class MembershipHelpScreen extends StatelessWidget {
               child: TextField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Nasıl yardımcı olabiliriz?',
+                  hintText: 'Nasıl yardımcı olabiliriz?'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   filled: true,
@@ -80,8 +81,8 @@ class MembershipHelpScreen extends StatelessWidget {
                           Expanded(
                             child: _buildHelpCard(
                               Icons.person_add, 
-                              'Nasıl Üye Olunur?', 
-                              'Adım adım üyelik başvuru süreci, gerekli belgeler ve onay aşamaları hakkında detaylı bilgi edinin.',
+                              'Nasıl Üye Olunur?'.tr(), 
+                              'Adım adım üyelik başvuru süreci, gerekli belgeler ve onay aşamaları hakkında detaylı bilgi edinin.'.tr(),
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -94,8 +95,8 @@ class MembershipHelpScreen extends StatelessWidget {
                           Expanded(
                             child: _buildHelpCard(
                               Icons.manage_accounts, 
-                              'Bilgilerimi Güncelleme', 
-                              'İletişim bilgilerinizi, adresinizi veya mesleki detaylarınızı profiliniz üzerinden nasıl güncelleyeceğinizi öğrenin.',
+                              'Bilgilerimi Güncelleme'.tr(), 
+                              'İletişim bilgilerinizi, adresinizi veya mesleki detaylarınızı profiliniz üzerinden nasıl güncelleyeceğinizi öğrenin.'.tr(),
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -109,8 +110,8 @@ class MembershipHelpScreen extends StatelessWidget {
                     else ...[
                       _buildHelpCard(
                         Icons.person_add, 
-                        'Nasıl Üye Olunur?', 
-                        'Adım adım üyelik başvuru süreci, gerekli belgeler ve onay aşamaları hakkında detaylı bilgi edinin.',
+                        'Nasıl Üye Olunur?'.tr(), 
+                        'Adım adım üyelik başvuru süreci, gerekli belgeler ve onay aşamaları hakkında detaylı bilgi edinin.'.tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -121,8 +122,8 @@ class MembershipHelpScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       _buildHelpCard(
                         Icons.manage_accounts, 
-                        'Bilgilerimi Güncelleme', 
-                        'İletişim bilgilerinizi, adresinizi veya mesleki detaylarınızı profiliniz üzerinden nasıl güncelleyeceğinizi öğrenin.',
+                        'Bilgilerimi Güncelleme'.tr(), 
+                        'İletişim bilgilerinizi, adresinizi veya mesleki detaylarınızı profiliniz üzerinden nasıl güncelleyeceğinizi öğrenin.'.tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -140,8 +141,8 @@ class MembershipHelpScreen extends StatelessWidget {
                           Expanded(
                             child: _buildHelpCard(
                               Icons.balance, 
-                              'Haklar ve Yükümlülükler', 
-                              'Dernek üyelerinin genel kuruldaki hakları, tüzük gereği uyması gereken kurallar ve sorumlulukları.',
+                              'Haklar ve Yükümlülükler'.tr(), 
+                              'Dernek üyelerinin genel kuruldaki hakları, tüzük gereği uyması gereken kurallar ve sorumlulukları.'.tr(),
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -154,8 +155,8 @@ class MembershipHelpScreen extends StatelessWidget {
                           Expanded(
                             child: _buildHelpCard(
                               Icons.credit_card, 
-                              'Aidat İşlemleri', 
-                              'Yıllık üyelik aidat ödemeleri, makbuz talepleri ve geçmiş ödeme geçmişi sorgulama adımları.',
+                              'Aidat İşlemleri'.tr(), 
+                              'Yıllık üyelik aidat ödemeleri, makbuz talepleri ve geçmiş ödeme geçmişi sorgulama adımları.'.tr(),
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -169,8 +170,8 @@ class MembershipHelpScreen extends StatelessWidget {
                     else ...[
                       _buildHelpCard(
                         Icons.balance, 
-                        'Haklar ve Yükümlülükler', 
-                        'Dernek üyelerinin genel kuruldaki hakları, tüzük gereği uyması gereken kurallar ve sorumlulukları.',
+                        'Haklar ve Yükümlülükler'.tr(), 
+                        'Dernek üyelerinin genel kuruldaki hakları, tüzük gereği uyması gereken kurallar ve sorumlulukları.'.tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -181,8 +182,8 @@ class MembershipHelpScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       _buildHelpCard(
                         Icons.credit_card, 
-                        'Aidat İşlemleri', 
-                        'Yıllık üyelik aidat ödemeleri, makbuz talepleri ve geçmiş ödeme geçmişi sorgulama adımları.',
+                        'Aidat İşlemleri'.tr(), 
+                        'Yıllık üyelik aidat ödemeleri, makbuz talepleri ve geçmiş ödeme geçmişi sorgulama adımları.'.tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -197,8 +198,8 @@ class MembershipHelpScreen extends StatelessWidget {
                     // Cancel Membership Card (Full Width or span 2)
                     _buildHelpCard(
                       Icons.no_accounts,
-                      'Üyelik İptali',
-                      'Üyeliğinizi dondurma veya tamamen iptal etme prosedürleri, yasal süreçler ve dikkat edilmesi gereken hususlar hakkında kapsamlı rehber.',
+                      'Üyelik İptali'.tr(),
+                      'Üyeliğinizi dondurma veya tamamen iptal etme prosedürleri, yasal süreçler ve dikkat edilmesi gereken hususlar hakkında kapsamlı rehber.'.tr(),
                       isError: true,
                       onTap: () {
                         Navigator.push(
@@ -221,7 +222,6 @@ class MembershipHelpScreen extends StatelessWidget {
     final bgColor = AppColors.surface; // surface-container
     final iconBgColor = isError ? const Color(0xFF93000A) : const Color(0xFF1A8025); // error-container vs primary-container
     final iconColor = isError ? const Color(0xFFFFDAD6) : const Color(0xFFD3FFC8); // on-error-container vs on-primary-container
-    final hoverTitleColor = isError ? const Color(0xFFFFB4AB) : const Color(0xFF7ADC75); // error vs primary
     
     return Material(
       color: Colors.transparent,

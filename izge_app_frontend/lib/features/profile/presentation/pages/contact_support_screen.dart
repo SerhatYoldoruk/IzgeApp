@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/support_success_screen.dart';
 
 class ContactSupportScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Teknik Destek',
+          'Teknik Destek'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -46,7 +47,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
           children: [
             // Page Title & Intro
             Text(
-              'Destek Ekibine Ulaşın',
+              'Destek Ekibine Ulaşın'.tr(),
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -56,7 +57,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
             ),
             SizedBox(height: 8),
             Text(
-              'Sorununuzu daha hızlı çözebilmemiz için lütfen aşağıdaki detayları doldurun.',
+              'Sorununuzu daha hızlı çözebilmemiz için lütfen aşağıdaki detayları doldurun.'.tr(),
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -71,7 +72,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
               children: [
                 // Support Topic Dropdown
                 Text(
-                  'Destek Konusu',
+                  'Destek Konusu'.tr(),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
                 SizedBox(height: 8),
@@ -85,16 +86,16 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       value: _selectedTopic,
-                      hint: Text('Bir konu seçin', style: TextStyle(color: AppColors.textSecondary)),
+                      hint: Text('Bir konu seçin'.tr(), style: TextStyle(color: AppColors.textSecondary)),
                       isExpanded: true,
                       dropdownColor: AppColors.border,
                       icon: Icon(Icons.expand_more, color: AppColors.textSecondary),
                       style: TextStyle(color: AppColors.textPrimary, fontSize: 16),
-                      items: const [
-                        DropdownMenuItem(value: 'teknik', child: Text('Teknik Sorun')),
-                        DropdownMenuItem(value: 'bagis', child: Text('Bağış İşlemleri')),
-                        DropdownMenuItem(value: 'uyelik', child: Text('Üyelik')),
-                        DropdownMenuItem(value: 'diger', child: Text('Diğer')),
+                       items: [
+                        DropdownMenuItem(value: 'teknik', child: Text('Teknik Sorun'.tr())),
+                        DropdownMenuItem(value: 'bagis', child: Text('Bağış İşlemleri'.tr())),
+                        DropdownMenuItem(value: 'uyelik', child: Text('Üyelik'.tr())),
+                        DropdownMenuItem(value: 'diger', child: Text('Diğer'.tr())),
                       ],
                       onChanged: (value) {
                         setState(() {
@@ -108,7 +109,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
 
                 // Message Textarea
                 Text(
-                  'Mesajınız',
+                  'Mesajınız'.tr(),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
                 SizedBox(height: 8),
@@ -122,7 +123,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                     maxLines: 6,
                     style: TextStyle(color: AppColors.textPrimary),
                     decoration: InputDecoration(
-                      hintText: 'Sorununuzu buraya detaylıca yazabilirsiniz...',
+                      hintText: 'Sorununuzu buraya detaylıca yazabilirsiniz...'.tr(),
                       hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.7)),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.all(16),
@@ -133,7 +134,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
 
                 // Attachment Field
                 Text(
-                  'Ek (İsteğe Bağlı)',
+                  'Ek (İsteğe Bağlı)'.tr(),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
                 SizedBox(height: 8),
@@ -142,31 +143,20 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
                     height: 56, // input-height
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: AppColors.border, // surface-container-highest
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border, style: BorderStyle.none),
+                      border: Border.all(color: AppColors.border),
                     ),
-                    child: Stack(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Dashed border effect using a custom painter or just simple styling
-                        // For simplicity, using simple border
-                        Container(
-                           decoration: BoxDecoration(
-                             borderRadius: BorderRadius.circular(12),
-                             border: Border.all(color: AppColors.border), // should be dashed
-                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.attach_file, color: AppColors.textSecondary),
-                            SizedBox(width: 8),
-                            Text(
-                              'Ekran görüntüsü yükle',
-                              style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
-                            ),
-                          ],
+                        Icon(Icons.attach_file, color: AppColors.textSecondary),
+                        SizedBox(width: 8),
+                        Text(
+                          'Ekran görüntüsü yükle'.tr(),
+                          style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -186,8 +176,8 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                       );
                     },
                     icon: const Icon(Icons.send, color: Colors.white, size: 18),
-                    label: const Text(
-                      'Mesajı Gönder',
+                    label: Text(
+                      'Mesajı Gönder'.tr(),
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

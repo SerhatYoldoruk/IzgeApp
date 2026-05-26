@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class EmailVerificationFailedScreen extends StatelessWidget {
   const EmailVerificationFailedScreen({super.key});
@@ -17,7 +18,7 @@ class EmailVerificationFailedScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Teknik Destek',
+          'Teknik Destek'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -94,7 +95,7 @@ class EmailVerificationFailedScreen extends StatelessWidget {
                     
                     // Typography Stack
                     Text(
-                      'Doğrulama Başarısız',
+                      'Doğrulama Başarısız'.tr(),
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w800,
@@ -105,7 +106,7 @@ class EmailVerificationFailedScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Doğrulama kodu geçersiz veya süresi dolmuş olabilir. Lütfen kodunuzu kontrol edin veya yeni bir kod talep edin.',
+                      'Doğrulama kodu geçersiz veya süresi dolmuş olabilir. Lütfen kodunuzu kontrol edin veya yeni bir kod talep edin.'.tr(),
                       style: TextStyle(
                         fontSize: 16,
                         color: AppColors.textSecondary,
@@ -139,12 +140,12 @@ class EmailVerificationFailedScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Kodun Süresi Doldu',
+                                  'Kodun Süresi Doldu'.tr(),
                                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFFFFB4AB)), // error
                                 ),
                                 SizedBox(height: 2),
                                 Text(
-                                  'Güvenliğiniz için kodlar 5 dakika geçerlidir.',
+                                  'Güvenliğiniz için kodlar 5 dakika geçerlidir.'.tr(),
                                   style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
                                 ),
                               ],
@@ -167,7 +168,7 @@ class EmailVerificationFailedScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           elevation: 4,
                         ),
-                        child: const Text('Yeni Kod Gönder', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                        child: Text('Yeni Kod Gönder'.tr(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                       ),
                     ),
                     SizedBox(height: 16),
@@ -181,7 +182,7 @@ class EmailVerificationFailedScreen extends StatelessWidget {
                           side: BorderSide(color: const Color(0xFF899484).withOpacity(0.3)), // outline/30
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
-                        child: const Text('Geri Dön', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                        child: Text('Geri Dön'.tr(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],

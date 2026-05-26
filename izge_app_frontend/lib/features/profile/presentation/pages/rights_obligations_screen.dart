@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class RightsObligationsScreen extends StatelessWidget {
   const RightsObligationsScreen({super.key});
@@ -16,9 +17,9 @@ class RightsObligationsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF96F98E)), // primary-fixed
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Haklar ve Yükümlülükler',
-          style: TextStyle(
+        title: Text(
+          'Haklar ve Yükümlülükler'.tr(),
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,
             color: Color(0xFF96F98E), // primary-fixed
@@ -36,7 +37,7 @@ class RightsObligationsScreen extends StatelessWidget {
           children: [
             // Intro
             Text(
-              'Üye Hakları ve Sorumlulukları',
+              'Üye Hakları ve Sorumlulukları'.tr(),
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
@@ -46,7 +47,7 @@ class RightsObligationsScreen extends StatelessWidget {
             ),
             SizedBox(height: 12),
             Text(
-              'Dernek tüzüğüne göre, yönetim kurulu ve normal üyelerin temel hak ve yükümlülükleri aşağıda özetlenmiştir.',
+              'Dernek tüzüğüne göre, yönetim kurulu ve normal üyelerin temel hak ve yükümlülükleri aşağıda özetlenmiştir.'.tr(),
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -58,19 +59,19 @@ class RightsObligationsScreen extends StatelessWidget {
             SizedBox(height: 32),
             
             // Section 1: Haklar
-            _buildSectionHeader(Icons.gavel, 'Temel Haklar', const Color(0xFF7ADC75)),
+            _buildSectionHeader(Icons.gavel, 'Temel Haklar'.tr(), const Color(0xFF7ADC75)),
             const SizedBox(height: 16),
             _buildInfoCard(
-              title: 'Genel Kurul ve Oy Hakkı',
-              description: 'Tüm asil üyeler genel kurula katılma, söz alma ve dernek organları için oy kullanma hakkına sahiptir.',
+              title: 'Genel Kurul ve Oy Hakkı'.tr(),
+              description: 'Tüm asil üyeler genel kurula katılma, söz alma ve dernek organları için oy kullanma hakkına sahiptir.'.tr(),
               icon: Icons.how_to_vote,
               colorScheme: const Color(0xFF1A8025), // primary-container
               iconColor: const Color(0xFF96F98E), // primary-fixed
             ),
             const SizedBox(height: 12),
             _buildInfoCard(
-              title: 'Bilgi Edinme',
-              description: 'Üyeler, derneğin faaliyetleri, mali durumu ve alınan kararlar hakkında düzenli olarak bilgilendirilme hakkına sahiptir.',
+              title: 'Bilgi Edinme'.tr(),
+              description: 'Üyeler, derneğin faaliyetleri, mali durumu ve alınan kararlar hakkında düzenli olarak bilgilendirilme hakkına sahiptir.'.tr(),
               icon: Icons.info,
               colorScheme: AppColors.border, // surface-variant
               iconColor: const Color(0xFF7ADC75), // primary
@@ -79,27 +80,27 @@ class RightsObligationsScreen extends StatelessWidget {
             SizedBox(height: 32),
             
             // Section 2: Yükümlülükler
-            _buildSectionHeader(Icons.assignment_ind, 'Yükümlülükler', AppColors.textSecondary),
+            _buildSectionHeader(Icons.assignment_ind, 'Yükümlülükler'.tr(), AppColors.textSecondary),
             SizedBox(height: 16),
             _buildInfoCard(
-              title: 'Tüzüğe Uygunluk',
-              description: 'Her üye dernek tüzüğüne, genel kurul ve yönetim kurulu kararlarına uymakla yükümlüdür.',
+              title: 'Tüzüğe Uygunluk'.tr(),
+              description: 'Her üye dernek tüzüğüne, genel kurul ve yönetim kurulu kararlarına uymakla yükümlüdür.'.tr(),
               icon: Icons.menu_book,
               colorScheme: AppColors.surfaceElevated, // secondary-container
               iconColor: AppColors.textSecondary, // secondary-fixed-dim
             ),
             SizedBox(height: 12),
             _buildInfoCard(
-              title: 'Aidat Sorumluluğu',
-              description: 'Üyeler, genel kurul tarafından belirlenen yıllık üyelik aidatlarını zamanında ödemekle yükümlüdür. Aksi halde üyelik askıya alınabilir.',
+              title: 'Aidat Sorumluluğu'.tr(),
+              description: 'Üyeler, genel kurul tarafından belirlenen yıllık üyelik aidatlarını zamanında ödemekle yükümlüdür. Aksi halde üyelik askıya alınabilir.'.tr(),
               icon: Icons.payments,
               colorScheme: AppColors.surfaceElevated, // secondary-container
               iconColor: AppColors.textSecondary, // secondary-fixed-dim
             ),
             SizedBox(height: 12),
             _buildInfoCard(
-              title: 'Dernek İtibarını Koruma',
-              description: 'Üyeler, derneğin vizyon ve misyonuna aykırı davranışlardan kaçınmalı ve derneğin itibarını zedeleyici faaliyetlerde bulunmamalıdır.',
+              title: 'Dernek İtibarını Koruma'.tr(),
+              description: 'Üyeler, derneğin vizyon ve misyonuna aykırı davranışlardan kaçınmalı ve derneğin itibarını zedeleyici faaliyetlerde bulunmamalıdır.'.tr(),
               icon: Icons.verified_user,
               colorScheme: AppColors.surfaceElevated, // secondary-container
               iconColor: AppColors.textSecondary, // secondary-fixed-dim
@@ -123,7 +124,7 @@ class RightsObligationsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Detaylı Bilgi',
+                    'Detaylı Bilgi'.tr(),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -132,7 +133,7 @@ class RightsObligationsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Dernek tüzüğünün tamamına ve tüm hukuki detaylara mevzuat sayfasından ulaşabilirsiniz.',
+                    'Dernek tüzüğünün tamamına ve tüm hukuki detaylara mevzuat sayfasından ulaşabilirsiniz.'.tr(),
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.textSecondary,
@@ -147,7 +148,7 @@ class RightsObligationsScreen extends StatelessWidget {
                       onPressed: () {},
                       icon: Icon(Icons.picture_as_pdf, color: AppColors.textPrimary, size: 20),
                       label: Text(
-                        'Tüzüğü İndir',
+                        'Tüzüğü İndir'.tr(),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

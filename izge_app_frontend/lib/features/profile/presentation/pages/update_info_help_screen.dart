@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/personal_info_screen.dart'; // Target for "Profilime Git"
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/personal_info_screen.dart';
 
 class UpdateInfoHelpScreen extends StatelessWidget {
   const UpdateInfoHelpScreen({super.key});
@@ -38,7 +39,7 @@ class UpdateInfoHelpScreen extends StatelessWidget {
               children: [
                 // Page Context Title
                 Text(
-                  'Bilgilerimi Güncelleme',
+                  'Bilgilerimi Güncelleme'.tr(),
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
@@ -48,7 +49,7 @@ class UpdateInfoHelpScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Hesap bilgilerinizi güncel tutmak, kurum içi iletişim ve operasyonların sağlıklı yürümesi için önemlidir.',
+                  'Hesap bilgilerinizi güncel tutmak, kurum içi iletişim ve operasyonların sağlıklı yürümesi için önemlidir.'.tr(),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -72,8 +73,8 @@ class UpdateInfoHelpScreen extends StatelessWidget {
                               Expanded(
                                 child: _buildInstructionCard(
                                   Icons.person,
-                                  'Kişisel Profil',
-                                  'Ad, soyad, telefon ve e-posta bilgilerinizi profil ayarları bölümünden dilediğiniz zaman değiştirebilirsiniz. Değişiklikler anında sisteme yansır.',
+                                  'Kişisel Profil'.tr(),
+                                  'Ad, soyad, telefon ve e-posta bilgilerinizi profil ayarları bölümünden dilediğiniz zaman değiştirebilirsiniz. Değişiklikler anında sisteme yansır.'.tr(),
                                   const Color(0xFF1A8025), // primary-container
                                   const Color(0xFF96F98E), // primary-fixed
                                 ),
@@ -82,8 +83,8 @@ class UpdateInfoHelpScreen extends StatelessWidget {
                               Expanded(
                                 child: _buildInstructionCard(
                                   Icons.location_on,
-                                  'Adres Bilgileri',
-                                  'Gönüllülük faaliyetleri ve olası kargo gönderimleri için ikametgah adresinizin doğruluğu elzemdir. Birden fazla adres ekleyebilir, varsayılanı seçebilirsiniz.',
+                                  'Adres Bilgileri'.tr(),
+                                  'Gönüllülük faaliyetleri ve olası kargo gönderimleri için ikametgah adresinizin doğruluğu elzemdir. Birden fazla adres ekleyebilir, varsayılanı seçebilirsiniz.'.tr(),
                                   AppColors.surfaceElevated, // secondary-container
                                   AppColors.textSecondary, // secondary
                                 ),
@@ -93,8 +94,8 @@ class UpdateInfoHelpScreen extends StatelessWidget {
                           SizedBox(height: 16),
                           _buildInstructionCard(
                             Icons.description,
-                            'Evrak ve Belgeler',
-                            'Bağış makbuzları, KVKK onay formları veya kurum kimlik belgelerinizi dijital formatta yükleyerek arşivleyebilirsiniz.',
+                            'Evrak ve Belgeler'.tr(),
+                            'Bağış makbuzları, KVKK onay formları veya kurum kimlik belgelerinizi dijital formatta yükleyerek arşivleyebilirsiniz.'.tr(),
                             AppColors.textSecondary, // tertiary-container
                             AppColors.textSecondary, // tertiary
                           ),
@@ -105,24 +106,24 @@ class UpdateInfoHelpScreen extends StatelessWidget {
                         children: [
                           _buildInstructionCard(
                             Icons.person,
-                            'Kişisel Profil',
-                            'Ad, soyad, telefon ve e-posta bilgilerinizi profil ayarları bölümünden dilediğiniz zaman değiştirebilirsiniz. Değişiklikler anında sisteme yansır.',
+                            'Kişisel Profil'.tr(),
+                            'Ad, soyad, telefon ve e-posta bilgilerinizi profil ayarları bölümünden dilediğiniz zaman değiştirebilirsiniz. Değişiklikler anında sisteme yansır.'.tr(),
                             const Color(0xFF1A8025), // primary-container
                             const Color(0xFF96F98E), // primary-fixed
                           ),
                           SizedBox(height: 16),
                           _buildInstructionCard(
                             Icons.location_on,
-                            'Adres Bilgileri',
-                            'Gönüllülük faaliyetleri ve olası kargo gönderimleri için ikametgah adresinizin doğruluğu elzemdir. Birden fazla adres ekleyebilir, varsayılanı seçebilirsiniz.',
+                            'Adres Bilgileri'.tr(),
+                            'Gönüllülük faaliyetleri ve olası kargo gönderimleri için ikametgah adresinizin doğruluğu elzemdir. Birden fazla adres ekleyebilir, varsayılanı seçebilirsiniz.'.tr(),
                             AppColors.surfaceElevated, // secondary-container
                             AppColors.textSecondary, // secondary
                           ),
                           SizedBox(height: 16),
                           _buildInstructionCard(
                             Icons.description,
-                            'Evrak ve Belgeler',
-                            'Bağış makbuzları, KVKK onay formları veya kurum kimlik belgelerinizi dijital formatta yükleyerek arşivleyebilirsiniz.',
+                            'Evrak ve Belgeler'.tr(),
+                            'Bağış makbuzları, KVKK onay formları veya kurum kimlik belgelerinizi dijital formatta yükleyerek arşivleyebilirsiniz.'.tr(),
                             AppColors.textSecondary, // tertiary-container
                             AppColors.textSecondary, // tertiary
                           ),
@@ -159,7 +160,7 @@ class UpdateInfoHelpScreen extends StatelessWidget {
                           Icon(Icons.warning, color: Color(0xFF96F98E), size: 24), // primary-fixed
                           SizedBox(width: 12),
                           Text(
-                            'Dikkat Edilmesi Gerekenler',
+                            'Dikkat Edilmesi Gerekenler'.tr(),
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -169,11 +170,11 @@ class UpdateInfoHelpScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 12),
-                      _buildWarningListItem('Bilgilerinizi güncellerken resmi kimliğinizdeki formatı kullanmaya özen gösterin.'),
+                      _buildWarningListItem('Bilgilerinizi güncellerken resmi kimliğinizdeki formatı kullanmaya özen gösterin.'.tr()),
                       const SizedBox(height: 8),
-                      _buildWarningListItem('E-posta ve telefon numarası değişikliklerinde doğrulama kodu gönderilecektir.'),
+                      _buildWarningListItem('E-posta ve telefon numarası değişikliklerinde doğrulama kodu gönderilecektir.'.tr()),
                       const SizedBox(height: 8),
-                      _buildWarningListItem('Hatalı girilen IBAN veya adres bilgileri, süreçlerde gecikmelere yol açabilir.'),
+                      _buildWarningListItem('Hatalı girilen IBAN veya adres bilgileri, süreçlerde gecikmelere yol açabilir.'.tr()),
                     ],
                   ),
                 ),
@@ -206,8 +207,8 @@ class UpdateInfoHelpScreen extends StatelessWidget {
                 ),
                 foregroundColor: AppColors.textPrimary, // text-inverse-surface equivalent
               ),
-              child: const Text(
-                'Profilime Git',
+              child: Text(
+                'Profilime Git'.tr(),
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

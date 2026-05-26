@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/support_success_screen.dart';
 
 class BugReportSupportScreen extends StatelessWidget {
@@ -17,9 +18,9 @@ class BugReportSupportScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Destek Merkezi',
-          style: TextStyle(
+        title: Text(
+          'Destek Merkezi'.tr(),
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75),
@@ -32,12 +33,12 @@ class BugReportSupportScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hata Bildirimi',
+              'Hata Bildirimi'.tr(),
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
             ),
             SizedBox(height: 8),
             Text(
-              'Karşılaştığınız sorunu çözebilmemiz için lütfen detayları bizimle paylaşın.',
+              'Karşılaştığınız sorunu çözebilmemiz için lütfen detayları bizimle paylaşın.'.tr(),
               style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
             ),
             SizedBox(height: 32),
@@ -56,7 +57,7 @@ class BugReportSupportScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Error Type Dropdown
-                  Text('Hata Türü', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  Text('Hata Türü'.tr(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                   SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -67,15 +68,15 @@ class BugReportSupportScreen extends StatelessWidget {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         isExpanded: true,
-                        hint: Text('Lütfen bir hata türü seçin', style: TextStyle(color: AppColors.textSecondary)),
+                        hint: Text('Lütfen bir hata türü seçin'.tr(), style: TextStyle(color: AppColors.textSecondary)),
                         dropdownColor: AppColors.surfaceElevated,
                         style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w500),
                         icon: Icon(Icons.expand_more, color: AppColors.textSecondary),
-                        items: const [
-                          DropdownMenuItem(value: 'crash', child: Text('Uygulama Çökmesi')),
-                          DropdownMenuItem(value: 'freeze', child: Text('Donma / Takılma')),
-                          DropdownMenuItem(value: 'data', child: Text('Yanlış Veri Gösterimi')),
-                          DropdownMenuItem(value: 'other', child: Text('Diğer')),
+                        items: [
+                          DropdownMenuItem(value: 'crash', child: Text('Uygulama Çökmesi'.tr())),
+                          DropdownMenuItem(value: 'freeze', child: Text('Donma / Takılma'.tr())),
+                          DropdownMenuItem(value: 'data', child: Text('Yanlış Veri Gösterimi'.tr())),
+                          DropdownMenuItem(value: 'other', child: Text('Diğer'.tr())),
                         ],
                         onChanged: (value) {},
                       ),
@@ -84,7 +85,7 @@ class BugReportSupportScreen extends StatelessWidget {
                   SizedBox(height: 16),
 
                   // Description Textarea
-                  Text('Hata Açıklaması', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  Text('Hata Açıklaması'.tr(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                   SizedBox(height: 8),
                   Container(
                     decoration: BoxDecoration(
@@ -95,7 +96,7 @@ class BugReportSupportScreen extends StatelessWidget {
                       maxLines: 5,
                       style: TextStyle(color: AppColors.textPrimary),
                       decoration: InputDecoration(
-                        hintText: 'Hatayı nasıl ve nerede aldığınızı detaylıca açıklayın...',
+                        hintText: 'Hatayı nasıl ve nerede aldığınızı detaylıca açıklayın...'.tr(),
                         hintStyle: TextStyle(color: AppColors.textSecondary),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.all(16),
@@ -105,7 +106,7 @@ class BugReportSupportScreen extends StatelessWidget {
                   SizedBox(height: 16),
 
                   // File Upload (Optional)
-                  Text('Ekran Görüntüsü (Opsiyonel)', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                  Text('Ekran Görüntüsü (Opsiyonel)'.tr(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                   SizedBox(height: 8),
                   Container(
                     width: double.infinity,
@@ -116,11 +117,11 @@ class BugReportSupportScreen extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        Icon(Icons.cloud_upload, color: Color(0xFF7ADC75), size: 40),
-                        SizedBox(height: 8),
-                        Text('Görsel yüklemek için tıklayın veya sürükleyin', style: TextStyle(fontSize: 16, color: AppColors.textSecondary), textAlign: TextAlign.center),
-                        SizedBox(height: 4),
-                        Text('PNG, JPG (Maks. 5MB)', style: TextStyle(fontSize: 14, color: AppColors.textSecondary)), // secondary-fixed-dim
+                        const Icon(Icons.cloud_upload, color: Color(0xFF7ADC75), size: 40),
+                        const SizedBox(height: 8),
+                        Text('Görsel yüklemek için tıklayın veya sürükleyin'.tr(), style: TextStyle(fontSize: 16, color: AppColors.textSecondary), textAlign: TextAlign.center),
+                        const SizedBox(height: 4),
+                        Text('PNG, JPG (Maks. 5MB)'.tr(), style: TextStyle(fontSize: 14, color: AppColors.textSecondary)), // secondary-fixed-dim
                       ],
                     ),
                   ),
@@ -138,7 +139,7 @@ class BugReportSupportScreen extends StatelessWidget {
                         );
                       },
                       icon: const Icon(Icons.send, color: Color(0xFF003908)), // on-primary
-                      label: const Text('Hata Bildir', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF003908))),
+                      label: Text('Hata Bildir'.tr(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF003908))),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF7ADC75), // primary
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),

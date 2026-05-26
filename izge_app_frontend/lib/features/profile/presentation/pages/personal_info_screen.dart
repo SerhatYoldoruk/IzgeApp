@@ -1,7 +1,8 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/change_photo_screen.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({super.key});
@@ -40,12 +41,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           .eq('id', user.id)
           .single();
 
-      if (response != null) {
-        _nameController.text = response['full_name'] ?? response['name'] ?? '';
-        _phoneController.text = response['phone'] ?? '';
-        _addressController.text = response['address'] ?? '';
-        _avatarUrl = response['avatar_url'] ?? '';
-      }
+      _nameController.text = response['full_name'] ?? response['name'] ?? '';
+      _phoneController.text = response['phone'] ?? '';
+      _addressController.text = response['address'] ?? '';
+      _avatarUrl = response['avatar_url'] ?? '';
     } catch (e) {
       _nameController.text = user.userMetadata?['name'] ?? '';
       _avatarUrl = user.userMetadata?['avatar_url'] ?? '';
@@ -83,11 +82,11 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(
+          content: Row(
             children: [
-              Icon(Icons.check_circle, color: Colors.white),
-              SizedBox(width: 12),
-              Text('Bilgileriniz başarıyla kaydedildi!', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Icon(Icons.check_circle, color: Colors.white),
+              const SizedBox(width: 12),
+              Text('Bilgileriniz başarıyla kaydedildi!'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
           backgroundColor: const Color(0xFF1A8025),
@@ -120,7 +119,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Hata oluştu: ${e.toString()}'),
+          content: Text('${LanguageController.instance.isTurkish ? 'Hata oluştu' : 'Error occurred'}: ${e.toString()}'),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
         ),
@@ -151,7 +150,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Kişisel Bilgiler',
+          'Kişisel Bilgiler'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -237,7 +236,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Fotoğrafı Değiştir',
+                            'Fotoğrafı Değiştir'.tr(),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -250,34 +249,34 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   ),
                   const SizedBox(height: 32),
                   _buildInputField(
-                    label: 'Ad Soyad',
+                    label: 'Ad Soyad'.tr(),
                     icon: Icons.person,
                     controller: _nameController,
-                    hintText: 'Adınız Soyadınız',
+                    hintText: 'Adınız Soyadınız'.tr(),
                   ),
                   const SizedBox(height: 16),
                   _buildInputField(
-                    label: 'E-posta',
+                    label: 'E-posta'.tr(),
                     icon: Icons.mail,
                     controller: _emailController,
-                    hintText: 'E-posta adresiniz',
+                    hintText: 'E-posta adresiniz'.tr(),
                     keyboardType: TextInputType.emailAddress,
                     readOnly: true,
                   ),
                   const SizedBox(height: 16),
                   _buildInputField(
-                    label: 'Telefon',
+                    label: 'Telefon'.tr(),
                     icon: Icons.call,
                     controller: _phoneController,
-                    hintText: 'Telefon numaranız',
+                    hintText: 'Telefon numaranız'.tr(),
                     keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: 16),
                   _buildInputField(
-                    label: 'Adres',
+                    label: 'Adres'.tr(),
                     icon: Icons.home,
                     controller: _addressController,
-                    hintText: 'Açık adresiniz...',
+                    hintText: 'Açık adresiniz...'.tr(),
                     maxLines: 3,
                   ),
                   const SizedBox(height: 32),
@@ -297,7 +296,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                             )
                           : const Icon(Icons.save, color: Color(0xFF003908)),
                       label: Text(
-                        _isLoading ? 'Kaydediliyor...' : 'Kaydet',
+                        _isLoading ? 'Kaydediliyor...'.tr() : 'Kaydet'.tr(),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,

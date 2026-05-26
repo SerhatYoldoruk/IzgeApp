@@ -1,9 +1,31 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/my_events_screen.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
-class EventSuccessScreen extends StatelessWidget {
+class EventSuccessScreen extends StatefulWidget {
   const EventSuccessScreen({super.key});
+
+  @override
+  State<EventSuccessScreen> createState() => _EventSuccessScreenState();
+}
+
+class _EventSuccessScreenState extends State<EventSuccessScreen> {
+  @override
+  void initState() {
+    super.initState();
+    LanguageController.instance.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    LanguageController.instance.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +101,7 @@ class EventSuccessScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 24),
                   Text(
-                    'Katılım Onayı',
+                    'Katılım Onayı'.tr(),
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -89,7 +111,7 @@ class EventSuccessScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Kaydınız başarıyla oluşturulmuştur. Etkinlik detayları ve güncellemeler için takipte kalın.',
+                    'Kaydınız başarıyla oluşturulmuştur. Etkinlik detayları ve güncellemeler için takipte kalın.'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.textSecondary,
@@ -117,20 +139,20 @@ class EventSuccessScreen extends StatelessWidget {
                       children: [
                         _buildSummaryRow(
                           icon: Icons.event,
-                          label: 'Etkinlik',
-                          value: 'Engelsiz Yaşam Buluşması',
+                          label: 'Etkinlik'.tr(),
+                          value: 'Engelsiz Yaşam Buluşması'.tr(),
                         ),
                         Divider(color: AppColors.border, height: 32),
                         _buildSummaryRow(
                           icon: Icons.calendar_today,
-                          label: 'Tarih',
-                          value: '12 Haziran 2024',
+                          label: 'Tarih'.tr(),
+                          value: '12 Haziran 2024'.tr(),
                         ),
                         Divider(color: AppColors.border, height: 32),
                         _buildSummaryRow(
                           icon: Icons.location_on,
-                          label: 'Konum',
-                          value: 'Kültür Merkezi',
+                          label: 'Konum'.tr(),
+                          value: 'Kültür Merkezi'.tr(),
                         ),
                       ],
                     ),
@@ -151,9 +173,9 @@ class EventSuccessScreen extends StatelessWidget {
                       elevation: 4,
                       shadowColor: AppColors.accent.withOpacity(0.3),
                     ),
-                    child: const Text(
-                      'Etkinliklerime Git',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    child: Text(
+                      'Etkinliklerime Git'.tr(),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -166,9 +188,9 @@ class EventSuccessScreen extends StatelessWidget {
                       minimumSize: const Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
-                    child: const Text(
-                      'Anasayfaya Dön',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    child: Text(
+                      'Anasayfaya Dön'.tr(),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],

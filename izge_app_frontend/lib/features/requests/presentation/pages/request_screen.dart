@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/request_detail_screen.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
+import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
 
 class RequestsScreen extends StatelessWidget {
   const RequestsScreen({super.key});
@@ -10,6 +12,7 @@ class RequestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const CustomDrawer(),
       appBar: AppBar(
         leading: Builder(
           builder: (context) {
@@ -71,7 +74,7 @@ class RequestsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Talepler',
+                  'Talepler'.tr(),
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
@@ -92,7 +95,7 @@ class RequestsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   ),
                   icon: const Icon(Icons.add, size: 18),
-                  label: const Text('Yeni Talep', style: TextStyle(fontWeight: FontWeight.bold)),
+                  label: Text('Yeni Talep'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -124,9 +127,9 @@ class RequestsScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Text(
-                    'Henüz Bir Talep Oluşturmadınız',
-                    style: TextStyle(
+                  Text(
+                    'Henüz Bir Talep Oluşturmadınız'.tr(),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -135,7 +138,7 @@ class RequestsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'İhtiyaç duyduğunuz konularda talep oluşturarak\nbizden destek alabilirsiniz.',
+                    'İhtiyaç duyduğunuz konularda talep oluşturarak\nbizden destek alabilirsiniz.'.tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -153,6 +156,7 @@ class RequestsScreen extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _RequestCard extends StatelessWidget {
   final String title;
   final String statusText;

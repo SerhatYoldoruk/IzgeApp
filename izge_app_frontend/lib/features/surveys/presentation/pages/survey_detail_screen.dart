@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class SurveyDetailScreen extends StatefulWidget {
   const SurveyDetailScreen({super.key});
@@ -35,7 +36,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Yanıtınız başarıyla kaydedildi.'),
+              content: Text('Yanıtınız başarıyla kaydedildi.'.tr()),
               backgroundColor: AppColors.accent,
             ),
           );
@@ -132,7 +133,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                             ),
                             SizedBox(width: 12),
                             Text(
-                              'TOPLULUK GELİŞİMİ',
+                              'TOPLULUK GELİŞİMİ'.tr(),
                               style: TextStyle(
                                 color: AppColors.accent,
                                 fontWeight: FontWeight.bold,
@@ -144,7 +145,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          'Yeni Dönem Eğitim Atölyesi Tercihleri',
+                          'Yeni Dönem Eğitim Atölyesi Tercihleri'.tr(),
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -154,7 +155,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                         ),
                         SizedBox(height: 12),
                         Text(
-                          'Değerli üyemiz, önümüzdeki çeyrekte açılacak olan ücretsiz eğitim atölyelerimizin odak noktasını belirlemek için görüşünüze ihtiyacımız var. Lütfen size en faydalı olacak alanı seçiniz.',
+                          'Değerli üyemiz, önümüzdeki çeyrekte açılacak olan ücretsiz eğitim atölyelerimizin odak noktasını belirlemek için görüşünüze ihtiyacımız var. Lütfen size en faydalı olacak alanı seçiniz.'.tr(),
                           style: TextStyle(
                             fontSize: 16,
                             color: AppColors.textSecondary,
@@ -168,11 +169,11 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                           children: [
                             Icon(Icons.group, color: AppColors.textSecondary, size: 18),
                             SizedBox(width: 8),
-                            Text('1,248 Katılım', style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text('1,248 Katılım'.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
                             SizedBox(width: 24),
                             Icon(Icons.schedule, color: AppColors.textSecondary, size: 18),
                             SizedBox(width: 8),
-                            Text('Son 2 Gün', style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text('Son 2 Gün'.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ],
@@ -183,12 +184,12 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                   
                   // Question
                   Text(
-                    'Hangi alanda atölye açılmasını istersiniz?',
+                    'Hangi alanda atölye açılmasını istersiniz?'.tr(),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'Yalnızca bir seçenek işaretleyebilirsiniz.',
+                    'Yalnızca bir seçenek işaretleyebilirsiniz.'.tr(),
                     style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
                   ),
                   SizedBox(height: 16),
@@ -196,29 +197,29 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                   // Options
                   _buildOption(
                     value: 'tech',
-                    title: 'Yazılım & Teknoloji',
-                    subtitle: 'Kodlama, Veri Analizi, Yapay Zeka',
+                    title: 'Yazılım & Teknoloji'.tr(),
+                    subtitle: 'Kodlama, Veri Analizi, Yapay Zeka'.tr(),
                     icon: Icons.code,
                   ),
                   const SizedBox(height: 16),
                   _buildOption(
                     value: 'sustainability',
-                    title: 'Sürdürülebilirlik & Çevre',
-                    subtitle: 'İklim Krizi, İleri Dönüşüm, Ekoloji',
+                    title: 'Sürdürülebilirlik & Çevre'.tr(),
+                    subtitle: 'İklim Krizi, İleri Dönüşüm, Ekoloji'.tr(),
                     icon: Icons.eco,
                   ),
                   const SizedBox(height: 16),
                   _buildOption(
                     value: 'arts',
-                    title: 'Sanat & Tasarım',
-                    subtitle: 'Grafik Tasarım, Seramik, Fotoğrafçılık',
+                    title: 'Sanat & Tasarım'.tr(),
+                    subtitle: 'Grafik Tasarım, Seramik, Fotoğrafçılık'.tr(),
                     icon: Icons.palette,
                   ),
                   const SizedBox(height: 16),
                   _buildOption(
                     value: 'entrepreneurship',
-                    title: 'Girişimcilik & Liderlik',
-                    subtitle: 'Proje Yönetimi, İletişim Becerileri',
+                    title: 'Girişimcilik & Liderlik'.tr(),
+                    subtitle: 'Proje Yönetimi, İletişim Becerileri'.tr(),
                     icon: Icons.lightbulb_outline,
                   ),
                 ],
@@ -268,8 +269,8 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Text(
-                        'Kaydediliyor...',
+                      Text(
+                        'Kaydediliyor...'.tr(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -280,7 +281,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                       Icon(Icons.check_circle, color: AppColors.accent),
                       SizedBox(width: 12),
                       Text(
-                        'Yanıtınız Alındı',
+                        'Yanıtınız Alındı'.tr(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -289,7 +290,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                       ),
                     ] else ...[
                       Text(
-                        'Yanıtı Gönder',
+                        'Yanıtı Gönder'.tr(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

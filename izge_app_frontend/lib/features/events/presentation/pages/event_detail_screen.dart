@@ -1,7 +1,8 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/event_success_screen.dart';
 import 'package:izge_app_frontend/core/state/activity_state.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class EventDetailScreen extends StatefulWidget {
   const EventDetailScreen({super.key});
@@ -13,6 +14,24 @@ class EventDetailScreen extends StatefulWidget {
 class _EventDetailScreenState extends State<EventDetailScreen> {
   bool isLiked = false;
   bool isSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    LanguageController.instance.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    LanguageController.instance.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   void _toggleLike() {
     setState(() {
@@ -38,7 +57,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Etkinlik Detayı',
+          'Etkinlik Detayı'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -125,7 +144,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                             Icon(Icons.local_activity, color: AppColors.accent, size: 16),
                             SizedBox(width: 8),
                             Text(
-                              'Seminer',
+                              'Seminer'.tr(),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -139,7 +158,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       
                       // Title
                       Text(
-                        'Engelsiz Yaşam Buluşması',
+                        'Engelsiz Yaşam Buluşması'.tr(),
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.w800,
@@ -173,11 +192,11 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '12 Haziran 2024',
+                                    '12 Haziran 2024'.tr(),
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
                                   ),
                                   Text(
-                                    'Çarşamba',
+                                    'Çarşamba'.tr(),
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textSecondary),
                                   ),
                                 ],
@@ -191,7 +210,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
                                 ),
                                 Text(
-                                  'Başlangıç',
+                                  'Başlangıç'.tr(),
                                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textSecondary),
                                 ),
                               ],
@@ -223,11 +242,11 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Kültür Merkezi',
+                                    'Kültür Merkezi'.tr(),
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
                                   ),
                                   Text(
-                                    'Ankara',
+                                    'Ankara'.tr(),
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textSecondary),
                                   ),
                                 ],
@@ -272,11 +291,11 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'ORGANİZATÖR',
+                                  'ORGANİZATÖR'.tr(),
                                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textSecondary),
                                 ),
                                 Text(
-                                  'İzge Derneği',
+                                  'İzge Derneği'.tr(),
                                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                                 ),
                               ],
@@ -288,7 +307,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       SizedBox(height: 32),
                       // Description
                       Text(
-                        'Etkinlik Hakkında',
+                        'Etkinlik Hakkında'.tr(),
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -297,7 +316,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Engelli bireylerin sosyal hayata katılımını desteklemek ve farkındalık yaratmak amacıyla düzenlediğimiz "Engelsiz Yaşam Buluşması"nda sizleri de aramızda görmekten mutluluk duyarız.',
+                        'Engelli bireylerin sosyal hayata katılımını desteklemek ve farkındalık yaratmak amacıyla düzenlediğimiz "Engelsiz Yaşam Buluşması"nda sizleri de aramızda görmekten mutluluk duyarız.'.tr(),
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.textSecondary,
@@ -306,7 +325,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Bu özel etkinlikte, alanında uzman konuşmacılarımızın sunumları, atölye çalışmaları ve interaktif paneller yer alacaktır. Birlikte daha güçlü, erişilebilir ve kapsayıcı bir toplum inşa etmek için fikir alışverişinde bulunacağız.',
+                        'Bu özel etkinlikte, alanında uzman konuşmacılarımızın sunumları, atölye çalışmaları ve interaktif paneller yer alacaktır. Birlikte daha güçlü, erişilebilir ve kapsayıcı bir toplum inşa etmek için fikir alışverişinde bulunacağız.'.tr(),
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.textSecondary,
@@ -345,9 +364,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   shadowColor: AppColors.accent.withOpacity(0.5),
                 ),
                 icon: const Icon(Icons.person_add),
-                label: const Text(
-                  'Etkinliğe Katıl',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                label: Text(
+                  'Etkinliğe Katıl'.tr(),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -398,7 +417,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   
                   // Title
                   Text(
-                    'Etkinlik Kaydı',
+                    'Etkinlik Kaydı'.tr(),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -407,7 +426,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Lütfen varsa özel gereksinimlerinizi belirtin. Bu bilgiler, etkinliği sizin için daha erişilebilir hale getirmemize yardımcı olacaktır.',
+                    'Lütfen varsa özel gereksinimlerinizi belirtin. Bu bilgiler, etkinliği sizin için daha erişilebilir hale getirmemize yardımcı olacaktır.'.tr(),
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.textSecondary,
@@ -418,10 +437,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   
                   // Options
                   SwitchListTile(
-                    title: Text('Tekerlekli Sandalye Erişimi', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
-                    subtitle: Text('Rampa veya asansör ihtiyacım var', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+                    title: Text('Tekerlekli Sandalye Erişimi'.tr(), style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+                    subtitle: Text('Rampa veya asansör ihtiyacım var'.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
                     value: needsWheelchair,
-                    activeColor: AppColors.accent,
+                    activeThumbColor: AppColors.accent,
                     onChanged: (bool value) {
                       setState(() {
                         needsWheelchair = value;
@@ -430,9 +449,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     contentPadding: EdgeInsets.zero,
                   ),
                   SwitchListTile(
-                    title: Text('İşaret Dili Çevirmeni', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+                    title: Text('İşaret Dili Çevirmeni'.tr(), style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
                     value: needsSignLanguage,
-                    activeColor: AppColors.accent,
+                    activeThumbColor: AppColors.accent,
                     onChanged: (bool value) {
                       setState(() {
                         needsSignLanguage = value;
@@ -441,9 +460,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                     contentPadding: EdgeInsets.zero,
                   ),
                   SwitchListTile(
-                    title: Text('Refakatçi İle Katılacağım', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+                    title: Text('Refakatçi İle Katılacağım'.tr(), style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
                     value: hasCompanion,
-                    activeColor: AppColors.accent,
+                    activeThumbColor: AppColors.accent,
                     onChanged: (bool value) {
                       setState(() {
                         hasCompanion = value;
@@ -472,9 +491,9 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         elevation: 4,
                       ),
-                      child: const Text(
-                        'Kaydı Tamamla',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      child: Text(
+                        'Kaydı Tamamla'.tr(),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),

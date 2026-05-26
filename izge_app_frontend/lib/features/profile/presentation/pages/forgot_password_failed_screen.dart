@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class ForgotPasswordFailedScreen extends StatefulWidget {
   const ForgotPasswordFailedScreen({super.key});
@@ -39,7 +40,7 @@ class _ForgotPasswordFailedScreenState extends State<ForgotPasswordFailedScreen>
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Teknik Destek',
+          'Teknik Destek'.tr(),
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -154,7 +155,7 @@ class _ForgotPasswordFailedScreenState extends State<ForgotPasswordFailedScreen>
                     
                     // Content Group
                     Text(
-                      'Bağlantı Gönderilemedi',
+                      'Bağlantı Gönderilemedi'.tr(),
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w800,
@@ -167,7 +168,7 @@ class _ForgotPasswordFailedScreenState extends State<ForgotPasswordFailedScreen>
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        'Bir hata oluştuğu için şifre sıfırlama bağlantısı e-posta adresinize gönderilemedi. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.',
+                        'Bir hata oluştuğu için şifre sıfırlama bağlantısı e-posta adresinize gönderilemedi. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.'.tr(),
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.textSecondary,
@@ -204,7 +205,7 @@ class _ForgotPasswordFailedScreenState extends State<ForgotPasswordFailedScreen>
                               Icon(Icons.refresh, size: 24),
                             SizedBox(width: 8),
                             Text(
-                              _isLoading ? 'Deneniyor...' : 'Tekrar Dene',
+                              _isLoading ? 'Deneniyor...'.tr() : 'Tekrar Dene'.tr(),
                               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -222,7 +223,7 @@ class _ForgotPasswordFailedScreenState extends State<ForgotPasswordFailedScreen>
                           side: BorderSide(color: AppColors.border), // outline-variant
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
-                        child: const Text('Giriş Ekranına Dön', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                        child: Text('Giriş Ekranına Dön'.tr(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],

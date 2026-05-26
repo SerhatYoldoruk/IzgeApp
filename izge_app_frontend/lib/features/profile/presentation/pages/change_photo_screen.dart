@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -32,7 +32,7 @@ class _ChangePhotoScreenState extends State<ChangePhotoScreen> {
           .select('avatar_url') // KESİN ÇÖZÜM: 'avatar_url' olarak güncellendi
           .eq('id', user.id)
           .single();
-      if (response != null && response['avatar_url'] != null) {
+      if (response['avatar_url'] != null) {
         setState(() {
           _currentAvatarUrl = response['avatar_url'];
         });
@@ -91,7 +91,7 @@ class _ChangePhotoScreenState extends State<ChangePhotoScreen> {
 
     try {
       final fileName = '${user.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final path = '$fileName';
+      final path = fileName;
 
       // 1. Supabase Storage'a resmi senin paneline göre 'avatar' bucket'ına yüklüyoruz
       await Supabase.instance.client.storage

@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/forgot_password_support_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/email_verification_support_screen.dart';
@@ -20,8 +21,8 @@ class LoginIssuesScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Giriş Problemleri',
+        title: Text(
+          'Giriş Problemleri'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -35,7 +36,7 @@ class LoginIssuesScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hesabınıza erişimde yaşadığınız sorunları hızlıca çözmek için aşağıdaki adımları takip edebilirsiniz.',
+              'Hesabınıza erişimde yaşadığınız sorunları hızlıca çözmek için aşağıdaki adımları takip edebilirsiniz.'.tr(),
               style: TextStyle(
                 fontSize: 18,
                 color: AppColors.textSecondary,
@@ -49,8 +50,8 @@ class LoginIssuesScreen extends StatelessWidget {
               icon: Icons.password,
               iconColor: const Color(0xFFD3FFC8), // on-primary-container
               iconBgColor: const Color(0xFF1A8025), // primary-container
-              title: 'Şifremi Unuttum',
-              description: 'Mevcut şifrenizi hatırlamıyorsanız, sisteme kayıtlı e-posta adresinizi kullanarak yeni bir şifre oluşturabilirsiniz.',
+              title: 'Şifremi Unuttum'.tr(),
+              description: 'Mevcut şifrenizi hatırlamıyorsanız, sisteme kayıtlı e-posta adresinizi kullanarak yeni bir şifre oluşturabilirsiniz.'.tr(),
               actionButton: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -65,7 +66,7 @@ class LoginIssuesScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   elevation: 2,
                 ),
-                child: const Text('Şifre Sıfırlama Bağlantısı Gönder', style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('Şifre Sıfırlama Bağlantısı Gönder'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ),
             
@@ -76,8 +77,8 @@ class LoginIssuesScreen extends StatelessWidget {
               icon: Icons.mail,
               iconColor: const Color(0xFF7ADC75), // primary
               iconBgColor: AppColors.surfaceElevated, // surface-container-high
-              title: 'E-posta Doğrulama Kodu Gelmiyor',
-              description: 'Eğer doğrulama kodu gelen kutunuza düşmediyse, lütfen \'Gereksiz/Spam\' klasörünü kontrol edin. Kodun süresi dolmuş olabilir.',
+              title: 'E-posta Doğrulama Kodu Gelmiyor'.tr(),
+              description: "Eğer doğrulama kodu gelen kutunuza düşmediyse, lütfen 'Gereksiz/Spam' klasörünü kontrol edin. Kodun süresi dolmuş olabilir.".tr(),
               actionButton: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -92,7 +93,7 @@ class LoginIssuesScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   elevation: 0,
                 ),
-                child: const Text('Kodu Tekrar Gönder', style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('Kodu Tekrar Gönder'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ),
             
@@ -103,8 +104,8 @@ class LoginIssuesScreen extends StatelessWidget {
               icon: Icons.lock,
               iconColor: const Color(0xFFFFDAD6), // on-error-container
               iconBgColor: const Color(0xFF93000A), // error-container
-              title: 'Hesabım Kilitlendi',
-              description: 'Çok sayıda hatalı giriş denemesi nedeniyle hesabınız güvenlik amacıyla geçici olarak kilitlenmiştir. Güvenlik doğrulamasını geçerek hesabınızı açabilirsiniz.',
+              title: 'Hesabım Kilitlendi'.tr(),
+              description: 'Çok sayıda hatalı giriş denemesi nedeniyle hesabınız güvenlik amacıyla geçici olarak kilitlenmiştir. Güvenlik doğrulamasını geçerek hesabınızı açabilirsiniz.'.tr(),
               actionButton: OutlinedButton(
                 onPressed: () {
                   Navigator.push(
@@ -119,7 +120,7 @@ class LoginIssuesScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
-                child: const Text('Kimlik Doğrulama Adımına Git', style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('Kimlik Doğrulama Adımına Git'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ),
             
@@ -139,12 +140,12 @@ class LoginIssuesScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Hâlâ sorun mu yaşıyorsunuz?',
+                          'Hâlâ sorun mu yaşıyorsunuz?'.tr(),
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Destek ekibimiz size yardımcı olmaktan memnuniyet duyar.',
+                          'Destek ekibimiz size yardımcı olmaktan memnuniyet duyar.'.tr(),
                           style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                         ),
                       ],
@@ -161,10 +162,10 @@ class LoginIssuesScreen extends StatelessWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: const Color(0xFF7ADC75), // primary
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Destek Talebi Oluştur', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Destek Talebi Oluştur'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
                         SizedBox(width: 4),
                         Icon(Icons.chevron_right, size: 20),
                       ],

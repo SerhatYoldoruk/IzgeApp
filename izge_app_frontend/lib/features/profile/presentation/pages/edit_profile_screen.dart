@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
@@ -39,12 +39,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           .eq('id', user.id)
           .single();
 
-      if (response != null) {
-        // KESİN ÇÖZÜM: Veritabanından gelen full_name alanını kontrol ediyoruz
-        _nameController.text = response['full_name'] ?? response['name'] ?? '';
-        _phoneController.text = response['phone'] ?? '';
-        _avatarUrl = response['avatar_url'] ?? '';
-      }
+      // KESİN ÇÖZÜM: Veritabanından gelen full_name alanını kontrol ediyoruz
+      _nameController.text = response['full_name'] ?? response['name'] ?? '';
+      _phoneController.text = response['phone'] ?? '';
+      _avatarUrl = response['avatar_url'] ?? '';
     } catch (e) {
       _nameController.text = user.userMetadata?['name'] ?? '';
       _avatarUrl = user.userMetadata?['avatar_url'] ?? '';

@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
 
 class AccountRecoveryScreen extends StatefulWidget {
@@ -49,14 +50,14 @@ class _AccountRecoveryScreenState extends State<AccountRecoveryScreen> {
                 ),
                 SizedBox(height: 24),
                 Text(
-                  'Hesap Kurtarma',
+                  'Hesap Kurtarma'.tr(),
                   style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800, color: AppColors.textPrimary),
                 ),
                 SizedBox(height: 8),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    'Güvenliğiniz için kimliğinizi doğrulamamız gerekiyor. Lütfen aşağıdaki yöntemlerden birini seçin.',
+                    'Güvenliğiniz için kimliğinizi doğrulamamız gerekiyor. Lütfen aşağıdaki yöntemlerden birini seçin.'.tr(),
                     style: TextStyle(fontSize: 16, color: AppColors.textSecondary, height: 1.5),
                     textAlign: TextAlign.center,
                   ),
@@ -66,15 +67,15 @@ class _AccountRecoveryScreenState extends State<AccountRecoveryScreen> {
                 // Verification Options
                 _buildRadioOption(
                   value: 'email',
-                  title: 'E-posta ile Doğrulama',
-                  subtitle: 'Sistemde kayıtlı e-posta adresinizle',
+                  title: 'E-posta ile Doğrulama'.tr(),
+                  subtitle: 'Sistemde kayıtlı e-posta adresinizle'.tr(),
                   icon: Icons.mail,
                 ),
                 const SizedBox(height: 16),
                 _buildRadioOption(
                   value: 'sms',
-                  title: 'Kayıtlı Telefon Numarası ile SMS',
-                  subtitle: 'Kayıtlı numaranıza kod gönderilir',
+                  title: 'Kayıtlı Telefon Numarası ile SMS'.tr(),
+                  subtitle: 'Kayıtlı numaranıza kod gönderilir'.tr(),
                   icon: Icons.sms,
                 ),
                 const SizedBox(height: 32),
@@ -95,7 +96,7 @@ class _AccountRecoveryScreenState extends State<AccountRecoveryScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Devam Et', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text('Devam Et'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         SizedBox(width: 8),
                         Icon(Icons.arrow_forward, size: 20),
                       ],
@@ -113,7 +114,7 @@ class _AccountRecoveryScreenState extends State<AccountRecoveryScreen> {
                       side: BorderSide(color: AppColors.border), // outline-variant
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),
                     ),
-                    child: const Text('İptal Et', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    child: Text('İptal Et'.tr(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -127,8 +128,8 @@ class _AccountRecoveryScreenState extends State<AccountRecoveryScreen> {
                     );
                   },
                   icon: const Icon(Icons.support_agent, color: Color(0xFF7ADC75), size: 16),
-                  label: const Text(
-                    'Destek Merkezi ile İletişime Geç',
+                  label: Text(
+                    'Destek Merkezi ile İletişime Geç'.tr(),
                     style: TextStyle(color: Color(0xFF7ADC75), fontSize: 14), // primary
                   ),
                   style: TextButton.styleFrom(

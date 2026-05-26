@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class DonationHistoryScreen extends StatelessWidget {
   const DonationHistoryScreen({super.key});
@@ -17,7 +18,7 @@ class DonationHistoryScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Bağış Geçmişi',
+          'Bağış Geçmişi'.tr(),
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -57,7 +58,7 @@ class DonationHistoryScreen extends StatelessWidget {
               ),
               SizedBox(height: 48),
               Text(
-                'Henüz Bağış Yapmadınız',
+                'Henüz Bağış Yapmadınız'.tr(),
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -66,7 +67,7 @@ class DonationHistoryScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                'Derneğimize yapacağınız bağışlar burada listelenecektir. Destek olmak için bağış sayfasını ziyaret edebilirsiniz.',
+                'Derneğimize yapacağınız bağışlar burada listelenecektir. Destek olmak için bağış sayfasını ziyaret edebilirsiniz.'.tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -82,9 +83,9 @@ class DonationHistoryScreen extends StatelessWidget {
                     Navigator.pop(context); // Go back
                   },
                   icon: const Icon(Icons.favorite, color: Color(0xFFD3FFC8)),
-                  label: const Text(
-                    'Şimdi Bağış Yap',
-                    style: TextStyle(
+                  label: Text(
+                    'Şimdi Bağış Yap'.tr(),
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFFD3FFC8),

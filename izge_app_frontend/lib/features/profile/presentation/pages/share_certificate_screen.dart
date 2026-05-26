@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class ShareCertificateScreen extends StatefulWidget {
   const ShareCertificateScreen({super.key});
@@ -50,9 +51,9 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
           icon: const Icon(Icons.arrow_back, color: Color(0xFF7ADC75)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Sertifikayı Paylaş',
-          style: TextStyle(
+        title: Text(
+          'Sertifikayı Paylaş'.tr(),
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75),
@@ -158,9 +159,9 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
                               ),
                               SizedBox(height: 24),
                               
-                              const Text(
-                                'Bağış Sertifikası',
-                                style: TextStyle(
+                              Text(
+                                'Bağış Sertifikası'.tr(),
+                                style: const TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.w800,
                                   color: Color(0xFF7ADC75), // primary
@@ -188,9 +189,9 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
                                           color: AppColors.textSecondary, // on-surface-variant
                                         ),
                                         children: [
-                                          TextSpan(text: 'Sayın '),
+                                          TextSpan(text: 'Sayın '.tr()),
                                           TextSpan(text: 'Ahmet Yılmaz', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
-                                          TextSpan(text: ',\nİzge Derneği\'ne yapmış olduğunuz değerli bağışlarınızla engelleri birlikte aşıyoruz. Desteğiniz için teşekkür ederiz.'),
+                                          TextSpan(text: ',\nİzge Derneği\'ne yapmış olduğunuz değerli bağışlarınızla engelleri birlikte aşıyoruz. Desteğiniz için teşekkür ederiz.'.tr()),
                                         ],
                                       ),
                                     ),
@@ -226,7 +227,7 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
                                       margin: const EdgeInsets.only(bottom: 4),
                                     ),
                                     Text(
-                                      'Dernek Başkanı',
+                                      'Dernek Başkanı'.tr(),
                                       style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
@@ -256,7 +257,7 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
                       onPressed: () {},
                       icon: Icon(Icons.download, color: AppColors.textPrimary),
                       label: Text(
-                        'Sertifikayı İndir',
+                        'Sertifikayı İndir'.tr(),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -271,7 +272,7 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Hemen Paylaş',
+                    'Hemen Paylaş'.tr(),
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -287,7 +288,7 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
                       children: [
                         _buildShareOption(
                           icon: Icons.camera_alt,
-                          label: 'Hikaye',
+                          label: 'Hikaye'.tr(),
                           gradient: const LinearGradient(colors: [Color(0xFFf09433), Color(0xFFe6683c), Color(0xFFbc1888)]),
                         ),
                         const SizedBox(width: 16),
@@ -306,7 +307,7 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
                         SizedBox(width: 16),
                         _buildShareOption(
                           icon: Icons.link,
-                          label: 'Kopyala',
+                          label: 'Kopyala'.tr(),
                           color: AppColors.surfaceElevated, // surface-container-high
                         ),
                       ],
@@ -323,9 +324,9 @@ class _ShareCertificateScreenState extends State<ShareCertificateScreen> with Si
                         backgroundColor: const Color(0xFF1A8025), // primary-container
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
                       ),
-                      child: const Text(
-                        'Tamam',
-                        style: TextStyle(
+                      child: Text(
+                        'Tamam'.tr(),
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFFD3FFC8), // on-primary-container
