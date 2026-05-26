@@ -13,7 +13,6 @@ workflows:
     scripts:
       - name: Build iOS IPA
         script: |
-          cd IzgeApp/izge_app_frontend
           flutter build ipa --release --no-codesign
     artifacts:
       - build/ios/ipa/*.ipa
