@@ -13,7 +13,19 @@ workflows:
     scripts:
       - name: Build iOS IPA
         script: |
-          cd IzgeApp/izge_app_frontend
+          if [ -d "izge_app_frontend" ]; then
+            cd izge_app_frontend
+          elif [ -d "IzgeApp/izge_app_frontend" ]; then
+            cd IzgeApp/izge_app_frontend
+          elif [ -d "IzgeApp" ]; then
+            cd IzgeApp
+          fi
+          
           flutter build ipa --release --no-codesign
+          
+          mkdir -p Payload
+          cp -r build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload/
+          zip -r izge_app.ipa Payload
     artifacts:
+      - "**/*.ipa"
       - build/ios/ipa/*.ipa
