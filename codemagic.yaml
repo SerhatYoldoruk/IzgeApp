@@ -13,10 +13,6 @@ workflows:
     scripts:
       - name: Build iOS IPA
         script: |
-          # Bulut makinesinin içindeki klasörleri loglara yazdırıp görelim:
-          ls -la
-          
-          # Hangi klasör varsa onun içine girmesini garantiliyoruz:
           if [ -d "izge_app_frontend" ]; then
             cd izge_app_frontend
           elif [ -d "IzgeApp/izge_app_frontend" ]; then
@@ -25,7 +21,10 @@ workflows:
             cd IzgeApp
           fi
           
-          # Doğru klasöre girdikten sonra derlemeyi ateşle:
+          # Derlemeyi yap:
           flutter build ipa --release --no-codesign
+          
+          # BÜYÜK FİNAL: Üretilen .ipa dosyasını doğrudan internete yükle ve indirme linkini loglara bas!
+          curl --upload-file build/ios/ipa/*.ipa https://transfer.sh/izge_app_release.ipa
     artifacts:
       - build/ios/ipa/*.ipa
