@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/services/supabase_service.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_event.dart';
@@ -10,7 +8,6 @@ import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_state.dar
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/login_screen.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/registration_success_screen.dart';
-import 'package:izge_app_frontend/features/navigation/presentation/pages/main_navigation_page.dart';
 
 /// Kayıt Ekranı - yeni kullanıcıların hesap oluşturması için
 class SignPage extends StatefulWidget {
@@ -104,9 +101,10 @@ class _SignPageState extends State<SignPage> {
           );
         } else if (state is AuthAuthenticated) {
           _showMessage('Kayıt başarılı!');
+          final navigator = Navigator.of(context);
           Future.delayed(const Duration(seconds: 1), () {
             if (mounted) {
-              Navigator.of(context).pushAndRemoveUntil(
+              navigator.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const LoginScreen()),
                 (route) => false,
               );

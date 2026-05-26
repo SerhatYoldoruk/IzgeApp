@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/tax_receipts_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/monthly_donations_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donation_transparency_screen.dart';
@@ -21,7 +22,7 @@ class DonationsHelpScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Bağışlar',
+          'Bağışlar'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -40,7 +41,7 @@ class DonationsHelpScreen extends StatelessWidget {
           children: [
             // Contextual Intro
             Text(
-              'Bağış işlemleriniz, vergi süreçleri ve fonların kullanımı hakkında detaylı bilgilere buradan ulaşabilirsiniz.',
+              'Bağış işlemleriniz, vergi süreçleri ve fonların kullanımı hakkında detaylı bilgilere buradan ulaşabilirsiniz.'.tr(),
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary, // on-surface-variant
@@ -53,8 +54,8 @@ class DonationsHelpScreen extends StatelessWidget {
             _buildTopicCard(
               context: context,
               icon: Icons.receipt_long,
-              title: 'Vergi Makbuzları',
-              subtitle: 'Makbuz talepleri ve vergi indirim süreçleri',
+              title: 'Vergi Makbuzları'.tr(),
+              subtitle: 'Makbuz talepleri ve vergi indirim süreçleri'.tr(),
               onTap: () {
                 Navigator.push(
                   context,
@@ -66,8 +67,8 @@ class DonationsHelpScreen extends StatelessWidget {
             _buildTopicCard(
               context: context,
               icon: Icons.autorenew,
-              title: 'Aylık Bağışlar',
-              subtitle: 'Düzenli bağış başlatma, düzenleme ve iptali',
+              title: 'Aylık Bağışlar'.tr(),
+              subtitle: 'Düzenli bağış başlatma, düzenleme ve iptali'.tr(),
               onTap: () {
                 Navigator.push(
                   context,
@@ -79,8 +80,8 @@ class DonationsHelpScreen extends StatelessWidget {
             _buildTopicCard(
               context: context,
               icon: Icons.explore,
-              title: 'Bağışlar Nereye Gidiyor?',
-              subtitle: 'Şeffaflık raporları ve güncel projelerimiz',
+              title: 'Bağışlar Nereye Gidiyor?'.tr(),
+              subtitle: 'Şeffaflık raporları ve güncel projelerimiz'.tr(),
               onTap: () {
                 Navigator.push(
                   context,
@@ -117,7 +118,7 @@ class DonationsHelpScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Başka bir sorunuz mu var?',
+                    'Başka bir sorunuz mu var?'.tr(),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -127,7 +128,7 @@ class DonationsHelpScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Destek ekibimiz tüm soru ve sorunlarınız için size yardımcı olmaya hazır.',
+                    'Destek ekibimiz tüm soru ve sorunlarınız için size yardımcı olmaya hazır.'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.textSecondary,
@@ -153,8 +154,8 @@ class DonationsHelpScreen extends StatelessWidget {
                         ),
                         elevation: 4,
                       ),
-                      child: const Text(
-                        'Destek Ekibine Ulaşın',
+                      child: Text(
+                        'Destek Ekibine Ulaşın'.tr(),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

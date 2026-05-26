@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
-import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/create_request_screen.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/events_screen.dart';
-import 'package:izge_app_frontend/features/surveys/presentation/pages/surveys_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
-import 'package:izge_app_frontend/features/support/presentation/pages/live_support_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/event_detail_screen.dart';
 import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
-import 'package:izge_app_frontend/features/requests/presentation/pages/request_detail_screen.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,6 +27,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _refreshUserData();
+    LanguageController.instance.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    LanguageController.instance.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) setState(() {});
   }
 
   void _refreshUserData() {
@@ -49,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .eq('id', user.id)
           .single();
           
-      return response as Map<String, dynamic>;
+      return response;
     } catch (e) {
       debugPrint("Home Veri Çekme Hatası: ${e.toString()}");
       return {
@@ -143,11 +153,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           // KESİN ÇÖZÜM: Artık burada sadece 'firstName' basılıyor
                           Text(
-                            'Merhaba $firstName 👋', 
+                            LanguageController.instance.isTurkish ? 'Merhaba $firstName 👋' : 'Hello $firstName 👋', 
                             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                           ),
                           const SizedBox(height: 4),
-                          Text('Bekleyen 1 talebiniz var.', style: TextStyle(fontSize: 14, color: AppColors.accent)),
+                          Text('Bekleyen 1 talebiniz var.'.tr(), style: TextStyle(fontSize: 14, color: AppColors.accent)),
                         ],
                       ),
                       Container(
@@ -183,16 +193,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _QuickActionBtn(icon: Icons.volunteer_activism, label: 'Bağış Yap', onTap: () {
+                      _QuickActionBtn(icon: Icons.volunteer_activism, label: 'Bağış Yap'.tr(), onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const DonateScreen()));
                       }),
-                      _QuickActionBtn(icon: Icons.add_circle_outline, label: 'Talep Aç', onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const NewRequestScreen()));
+                      _QuickActionBtn(icon: Icons.add_circle_outline, label: 'Talep Aç'.tr(), onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateRequestScreen()));
                       }),
-                      _QuickActionBtn(icon: Icons.event, label: 'Etkinlikler', onTap: () {
+                      _QuickActionBtn(icon: Icons.event, label: 'Etkinlikler'.tr(), onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
                       }),
-                      _QuickActionBtn(icon: Icons.support_agent, label: 'Destek', onTap: () {
+                      _QuickActionBtn(icon: Icons.support_agent, label: 'Destek'.tr(), onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => const LiveSupportScreen()));
                       }),
                     ],
@@ -200,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 32),
 
                   // Öne Çıkanlar Section
-                  _SectionHeader(title: 'Öne Çıkanlar', actionLabel: 'Hepsini Gör', onActionTap: () {
+                  _SectionHeader(title: 'Öne Çıkanlar'.tr(), actionLabel: 'Hepsini Gör'.tr(), onActionTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsScreen()));
                   }),
                   const SizedBox(height: 16),
@@ -210,8 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       children: [
                         _FeaturedCard(
-                          tag: 'ETKİNLİK',
-                          title: 'Engelsiz Yaşam Buluşması',
+                          tag: 'ETKİNLİK'.tr(),
+                          title: 'Engelsiz Yaşam Buluşması'.tr(),
                           imageUrl: 'assets/images/images/featured_card.png',
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const EventDetailScreen()));
@@ -219,8 +229,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(width: 16),
                         _FeaturedCard(
-                          tag: 'DUYURU',
-                          title: 'Yeni Rehabilitasyon Merkezi',
+                          tag: 'DUYURU'.tr(),
+                          title: 'Yeni Rehabilitasyon Merkezi'.tr(),
                           imageUrl: 'assets/images/images/news_main.png',
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsDetailScreen()));
@@ -238,37 +248,37 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 32),
 
                   // Talepler Section
-                  _SectionHeader(title: 'Talepler', actionLabel: '+ Yeni Talep', onActionTap: () {
+                  _SectionHeader(title: 'Talepler'.tr(), actionLabel: LanguageController.instance.isTurkish ? '+ Yeni Talep' : '+ New Request', onActionTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const NewRequestScreen()),
+                      MaterialPageRoute(builder: (context) => const CreateRequestScreen()),
                     );
                   }),
                   const SizedBox(height: 16),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Henüz talep bulunmuyor', style: TextStyle(color: AppColors.textSecondary)),
+                      child: Text('Henüz talep bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
                     ),
                   ),
                   const SizedBox(height: 32),
 
                   // Yaklaşan Etkinlikler Section
-                  _SectionHeader(title: 'Yaklaşan Etkinlikler', actionLabel: 'Tümünü Gör', onActionTap: () {
+                  _SectionHeader(title: 'Yaklaşan Etkinlikler'.tr(), actionLabel: 'Tümünü Gör'.tr(), onActionTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
                   }),
                   const SizedBox(height: 16),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Yaklaşan etkinlik bulunmuyor', style: TextStyle(color: AppColors.textSecondary)),
+                      child: Text('Yaklaşan etkinlik bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
                     ),
                   ),
                   const SizedBox(height: 32),
 
                   // Anketler Section
                   Text(
-                    'Anketler',
+                    'Anketler'.tr(),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -279,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Aktif anket bulunmuyor', style: TextStyle(color: AppColors.textSecondary)),
+                      child: Text('Aktif anket bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
                     ),
                   ),
                   const SizedBox(height: 48),
@@ -287,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Social Links Section
                   Center(
                     child: Text(
-                      'Bizi Takip Edin',
+                      'Bizi Takip Edin'.tr(),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -486,7 +496,7 @@ class _LiveSupportCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Canlı Destek',
+                      'Canlı Destek'.tr(),
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -495,7 +505,7 @@ class _LiveSupportCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Size yardımcı olmak için buradayız. Hemen sohbete başlayın.',
+                      'Size yardımcı olmak için buradayız. Hemen sohbete başlayın.'.tr(),
                       style: TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,
@@ -512,9 +522,9 @@ class _LiveSupportCard extends StatelessWidget {
                         elevation: 4,
                       ),
                       icon: const Icon(Icons.chat),
-                      label: const Text(
-                        'Bize Yazın',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      label: Text(
+                        'Bize Yazın'.tr(),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

@@ -1,13 +1,14 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/personal_info_screen.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/my_events_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donation_history_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/linked_accounts_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/past_requests_screen.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -43,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .select()
           .eq('id', user.id)
           .single();
-      return response as Map<String, dynamic>;
+      return response;
     } catch (e) {
       return {
         'full_name': user.userMetadata?['name'] ?? 'Kullanıcı',
@@ -57,6 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      drawer: const CustomDrawer(),
       appBar: AppBar(
         leading: Builder(
           builder: (context) {
@@ -68,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
         ),
         title: Text(
-          'Profilim',
+          'Profilim'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -76,18 +78,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit, color: AppColors.accent),
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const EditProfileScreen()),
-              );
-              _refreshProfile();
-            },
-          ),
-        ],
         backgroundColor: AppColors.surface,
         elevation: 1,
         shadowColor: Colors.black.withOpacity(0.3),
@@ -188,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Icon(Icons.verified, color: AppColors.accent, size: 16),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'Gönüllü Üye',
+                                    'Gönüllü Üye'.tr(),
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -221,7 +211,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       _buildListTile(
                         icon: Icons.person,
-                        title: 'Kişisel Bilgiler',
+                        title: 'Kişisel Bilgiler'.tr(),
                         onTap: () async {
                           // DÜZELTİLDİ: Burası zaten await'liydi, tetikleme mekanizması tıkır tıkır çalışacak
                           await Navigator.push(
@@ -234,7 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildDivider(),
                       _buildListTile(
                         icon: Icons.volunteer_activism,
-                        title: 'Bağış Geçmişim',
+                        title: 'Bağış Geçmişim'.tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -245,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildDivider(),
                       _buildListTile(
                         icon: Icons.event_available,
-                        title: 'Etkinlik Katılımlarım',
+                        title: 'Etkinlik Katılımlarım'.tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -256,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildDivider(),
                       _buildListTile(
                         icon: Icons.support_agent,
-                        title: 'Taleplerim',
+                        title: 'Taleplerim'.tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -282,7 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: _buildListTile(
                     icon: Icons.settings,
-                    title: 'Ayarlar',
+                    title: 'Ayarlar'.tr(),
                     onTap: () async {
                       await Navigator.push(
                         context,
@@ -298,7 +288,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'BAĞLI HESAPLAR',
+                    'BAĞLI HESAPLAR'.tr(),
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -349,7 +339,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                         icon: Icon(Icons.add, color: AppColors.textPrimary),
                         label: Text(
-                          'Bağla',
+                          'Bağla'.tr(),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,

@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
 
 class DuesOperationsScreen extends StatefulWidget {
@@ -24,8 +25,8 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
         _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Aidat ödemesi başarıyla tamamlandı!'),
+        SnackBar(
+          content: Text('Aidat ödemesi başarıyla tamamlandı!'.tr()),
           backgroundColor: Color(0xFF1A8025),
         ),
       );
@@ -45,8 +46,8 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Aidat İşlemleri',
+        title: Text(
+          'Aidat İşlemleri'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -84,7 +85,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Yıllık Aidat',
+                    'Yıllık Aidat'.tr(),
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w800,
@@ -93,7 +94,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    '2024 yılı için belirlenen aidat tutarı ve ödeme koşulları aşağıda yer almaktadır. Katkılarınız derneğimizin gücüne güç katmaktadır.',
+                    '2024 yılı için belirlenen aidat tutarı ve ödeme koşulları aşağıda yer almaktadır. Katkılarınız derneğimizin gücüne güç katmaktadır.'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.textSecondary,
@@ -119,11 +120,11 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                           Expanded(
                             child: _buildInfoCard(
                               Icons.calendar_month,
-                              'Ödeme Takvimi',
+                              'Ödeme Takvimi'.tr(),
                               [
-                                const TextSpan(text: 'Yıllık aidat ödemelerinizi her yılın '),
-                                const TextSpan(text: 'Mart', style: TextStyle(color: Color(0xFF7ADC75), fontWeight: FontWeight.bold)), // primary
-                                const TextSpan(text: ' ayı sonuna kadar tamamlamanız rica olunur.'),
+                                TextSpan(text: 'Yıllık aidat ödemelerinizi her yılın '.tr()),
+                                TextSpan(text: 'Mart'.tr(), style: TextStyle(color: Color(0xFF7ADC75), fontWeight: FontWeight.bold)), // primary
+                                TextSpan(text: ' ayı sonuna kadar tamamlamanız rica olunur.'.tr()),
                               ],
                             ),
                           ),
@@ -136,13 +137,13 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                       const SizedBox(height: 16),
                       _buildInfoCard(
                         Icons.receipt_long,
-                        'Makbuz Talebi',
+                        'Makbuz Talebi'.tr(),
                         [
-                          const TextSpan(text: 'Havale/EFT ile yapılan ödemelerde açıklama kısmına '),
-                          const TextSpan(text: 'TC Kimlik Numaranızı', style: TextStyle(fontWeight: FontWeight.bold)),
-                          const TextSpan(text: ' ve '),
-                          const TextSpan(text: 'Ad Soyad', style: TextStyle(fontWeight: FontWeight.bold)),
-                          const TextSpan(text: ' yazmayı unutmayınız. Makbuzunuz e-posta adresinize gönderilecektir.'),
+                          TextSpan(text: 'Havale/EFT ile yapılan ödemelerde açıklama kısmına '.tr()),
+                          TextSpan(text: 'TC Kimlik Numaranızı'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: ' ve '.tr()),
+                          TextSpan(text: 'Ad Soyad'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: ' yazmayı unutmayınız. Makbuzunuz e-posta adresinize gönderilecektir.'.tr()),
                         ],
                       ),
                     ],
@@ -152,11 +153,11 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                     children: [
                       _buildInfoCard(
                         Icons.calendar_month,
-                        'Ödeme Takvimi',
+                        'Ödeme Takvimi'.tr(),
                         [
-                          const TextSpan(text: 'Yıllık aidat ödemelerinizi her yılın '),
-                          const TextSpan(text: 'Mart', style: TextStyle(color: Color(0xFF7ADC75), fontWeight: FontWeight.bold)), // primary
-                          const TextSpan(text: ' ayı sonuna kadar tamamlamanız rica olunur.'),
+                          TextSpan(text: 'Yıllık aidat ödemelerinizi her yılın '.tr()),
+                          TextSpan(text: 'Mart'.tr(), style: TextStyle(color: Color(0xFF7ADC75), fontWeight: FontWeight.bold)),
+                          TextSpan(text: ' ayı sonuna kadar tamamlamanız rica olunur.'.tr()),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -164,13 +165,13 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                       const SizedBox(height: 16),
                       _buildInfoCard(
                         Icons.receipt_long,
-                        'Makbuz Talebi',
+                        'Makbuz Talebi'.tr(),
                         [
-                          const TextSpan(text: 'Havale/EFT ile yapılan ödemelerde açıklama kısmına '),
-                          const TextSpan(text: 'TC Kimlik Numaranızı', style: TextStyle(fontWeight: FontWeight.bold)),
-                          const TextSpan(text: ' ve '),
-                          const TextSpan(text: 'Ad Soyad', style: TextStyle(fontWeight: FontWeight.bold)),
-                          const TextSpan(text: ' yazmayı unutmayınız. Makbuzunuz e-posta adresinize gönderilecektir.'),
+                          TextSpan(text: 'Havale/EFT ile yapılan ödemelerde açıklama kısmına '.tr()),
+                          TextSpan(text: 'TC Kimlik Numaranızı'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: ' ve '.tr()),
+                          TextSpan(text: 'Ad Soyad'.tr(), style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: ' yazmayı unutmayınız. Makbuzunuz e-posta adresinize gönderilecektir.'.tr()),
                         ],
                       ),
                     ],
@@ -186,7 +187,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Ödeme Bilgileri',
+                  'Ödeme Bilgileri'.tr(),
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
                 Container(
@@ -197,12 +198,12 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
-                    children: const [
-                      Icon(Icons.lock, color: Color(0xFF7ADC75), size: 14),
-                      SizedBox(width: 4),
+                    children: [
+                      const Icon(Icons.lock, color: Color(0xFF7ADC75), size: 14),
+                      const SizedBox(width: 4),
                       Text(
-                        'SSL Güvenli',
-                        style: TextStyle(color: Color(0xFF7ADC75), fontSize: 12, fontWeight: FontWeight.bold),
+                        'SSL Güvenli'.tr(),
+                        style: const TextStyle(color: Color(0xFF7ADC75), fontSize: 12, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -223,11 +224,11 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildPaymentFieldLabel('Kart Üzerindeki İsim'),
+                  _buildPaymentFieldLabel('Kart Üzerindekinki İsim'.tr()),
                   const CustomTextField(hintText: 'Ad Soyad'),
                   SizedBox(height: 16),
                   
-                  _buildPaymentFieldLabel('Kart Numarası'),
+                  _buildPaymentFieldLabel('Kart Numarası'.tr()),
                   const CustomTextField(hintText: '0000 0000 0000 0000', prefixIcon: Icons.credit_card),
                   const SizedBox(height: 16),
                   
@@ -237,7 +238,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildPaymentFieldLabel('Son Kullanma'),
+                            _buildPaymentFieldLabel('Son Kullanma'.tr()),
                             const CustomTextField(hintText: 'AA/YY'),
                           ],
                         ),
@@ -247,7 +248,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildPaymentFieldLabel('CVV'),
+                            _buildPaymentFieldLabel('CVV'.tr()),
                             const CustomTextField(hintText: '***', obscureText: true),
                           ],
                         ),
@@ -284,7 +285,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                   )
                 : const Icon(Icons.payment, color: Color(0xFFD3FFC8)), // on-primary-container
             label: Text(
-              _isLoading ? 'İşleniyor...' : 'Aidat Öde',
+              _isLoading ? 'İşleniyor...'.tr() : 'Aidat Öde'.tr(),
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -393,7 +394,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
               ),
               SizedBox(width: 16),
               Text(
-                'Ödeme Yöntemleri',
+                'Ödeme Yöntemleri'.tr(),
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -403,9 +404,9 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
             ],
           ),
           const SizedBox(height: 16),
-          _buildPaymentMethodItem('Kredi Kartı', 'Uygulama üzerinden güvenle ödeyebilirsiniz.'),
+          _buildPaymentMethodItem('Kredi Kartı'.tr(), 'Uygulama üzerinden güvenle ödeyebilirsiniz.'.tr()),
           const SizedBox(height: 12),
-          _buildPaymentMethodItem('Banka Havalesi', 'Dernek hesaplarına doğrudan transfer.'),
+          _buildPaymentMethodItem('Banka Havalesi'.tr(), 'Dernek hesaplarına doğrudan transfer.'.tr()),
         ],
       ),
     );

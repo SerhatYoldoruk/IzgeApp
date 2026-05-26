@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
 
 class SupportSuccessScreen extends StatefulWidget {
@@ -100,7 +101,7 @@ class _SupportSuccessScreenState extends State<SupportSuccessScreen> with Single
                           FadeTransition(
                             opacity: _fadeAnimation1,
                             child: Text(
-                              'Talebiniz Alındı',
+                              'Talebiniz Alındı'.tr(),
                               style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800, color: AppColors.textPrimary, letterSpacing: -0.5),
                               textAlign: TextAlign.center,
                             ),
@@ -109,7 +110,7 @@ class _SupportSuccessScreenState extends State<SupportSuccessScreen> with Single
                           FadeTransition(
                             opacity: _fadeAnimation2,
                             child: Text(
-                              'Destek ekibimiz en kısa sürede size dönüş yapacaktır.',
+                              'Destek ekibimiz en kısa sürede size dönüş yapacaktır.'.tr(),
                               style: TextStyle(fontSize: 18, color: AppColors.textSecondary),
                               textAlign: TextAlign.center,
                             ),
@@ -132,7 +133,7 @@ class _SupportSuccessScreenState extends State<SupportSuccessScreen> with Single
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Süreç Takibi', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                                  Text('Süreç Takibi'.tr(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
                                   SizedBox(height: 24),
                                   
                                   Stack(
@@ -159,21 +160,21 @@ class _SupportSuccessScreenState extends State<SupportSuccessScreen> with Single
                                           _buildStep(
                                             active: true,
                                             completed: true,
-                                            label: 'Alındı',
+                                            label: 'Alındı'.tr(),
                                             labelColor: const Color(0xFF7ADC75), // primary
                                           ),
                                           // Step 2
                                           _buildStep(
                                             active: true,
                                             completed: false,
-                                            label: 'İşleniyor',
+                                            label: 'İşleniyor'.tr(),
                                             labelColor: AppColors.textPrimary,
                                           ),
                                           // Step 3
                                           _buildStep(
                                             active: false,
                                             completed: false,
-                                            label: 'Tamamlandı',
+                                            label: 'Tamamlandı'.tr(),
                                             labelColor: AppColors.textSecondary,
                                           ),
                                         ],
@@ -208,7 +209,7 @@ class _SupportSuccessScreenState extends State<SupportSuccessScreen> with Single
                           );
                         },
                         icon: const Icon(Icons.arrow_forward, color: Color(0xFF003908)),
-                        label: const Text('Ana Sayfaya Dön', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF003908))),
+                        label: Text('Ana Sayfaya Dön'.tr(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF003908))),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF7ADC75), // primary
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

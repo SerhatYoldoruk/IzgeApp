@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
 
 class ConnectionIssuesScreen extends StatelessWidget {
@@ -18,7 +19,7 @@ class ConnectionIssuesScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Teknik Destek',
+          'Teknik Destek'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -40,7 +41,7 @@ class ConnectionIssuesScreen extends StatelessWidget {
           children: [
             // Page Title & Intro
             Text(
-              'Bağlantı Sorunları',
+              'Bağlantı Sorunları'.tr(),
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -49,7 +50,7 @@ class ConnectionIssuesScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Uygulama ile ilgili bağlantı problemlerini çözmek için aşağıdaki adımları kontrol edebilirsiniz.',
+              'Uygulama ile ilgili bağlantı problemlerini çözmek için aşağıdaki adımları kontrol edebilirsiniz.'.tr(),
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -117,7 +118,7 @@ class ConnectionIssuesScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Sorun devam ediyor mu?',
+                    'Sorun devam ediyor mu?'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.textPrimary,
@@ -135,9 +136,9 @@ class ConnectionIssuesScreen extends StatelessWidget {
                         );
                       },
                       icon: const Icon(Icons.headset_mic, color: Color(0xFF003908)),
-                      label: const Text(
-                        'Destek Ekibine Ulaşın',
-                        style: TextStyle(
+                      label: Text(
+                        'Destek Ekibine Ulaşın'.tr(),
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF003908),
@@ -175,86 +176,66 @@ class ConnectionIssuesScreen extends StatelessWidget {
         border: Border.all(color: AppColors.border.withOpacity(0.3)),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
       ),
-      child: Stack(
-        clipBehavior: Clip.none,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Positioned(
-            top: -48,
-            right: -48,
-            child: Container(
-              width: 192,
-              height: 192,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFF7ADC75).withOpacity(0.1),
-                boxShadow: [
-                  BoxShadow(color: const Color(0xFF7ADC75).withOpacity(0.1), blurRadius: 80),
-                ],
-              ),
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: Color(0xFF1A8025), // primary-container
+              shape: BoxShape.circle,
             ),
+            child: Icon(icon, color: const Color(0xFFD3FFC8)),
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Color(0xFF1A8025), // primary-container
-                  shape: BoxShape.circle,
+          SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title.tr(),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
-                child: Icon(icon, color: const Color(0xFFD3FFC8)),
-              ),
-              SizedBox(width: 16),
-              Expanded(
-                child: Column(
+                SizedBox(height: 8),
+                Text(
+                  description.tr(),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppColors.textSecondary,
+                    height: 1.5,
+                  ),
+                ),
+                SizedBox(height: 12),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: AppColors.textSecondary,
-                        height: 1.5,
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: bullets.map((bullet) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('• ', style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
-                              Expanded(
-                                child: Text(
-                                  bullet,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: AppColors.textSecondary.withOpacity(0.8),
-                                  ),
-                                ),
+                  children: bullets.map((bullet) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('• ', style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+                          Expanded(
+                            child: Text(
+                              bullet.tr(),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.textSecondary.withOpacity(0.8),
                               ),
-                            ],
+                            ),
                           ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -287,7 +268,7 @@ class ConnectionIssuesScreen extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Text(
-            title,
+            title.tr(),
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -296,7 +277,7 @@ class ConnectionIssuesScreen extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            description,
+            description.tr(),
             style: TextStyle(
               fontSize: 16,
               color: AppColors.textSecondary,

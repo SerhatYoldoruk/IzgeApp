@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class SurveyResultsScreen extends StatelessWidget {
   const SurveyResultsScreen({super.key});
@@ -14,7 +15,7 @@ class SurveyResultsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Anket Sonuçları',
+          'Anket Sonuçları'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -32,7 +33,7 @@ class SurveyResultsScreen extends StatelessWidget {
           children: [
             // Title & Summary
             Text(
-              'Haftalık Memnuniyet Anketi',
+              'Haftalık Memnuniyet Anketi'.tr(),
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -67,7 +68,7 @@ class SurveyResultsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Katılım',
+                              'Katılım'.tr(),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -75,7 +76,7 @@ class SurveyResultsScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '1,240 Kişi',
+                              '1,240 Kişi'.tr(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -100,7 +101,7 @@ class SurveyResultsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              'Durum',
+                              'Durum'.tr(),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -108,7 +109,7 @@ class SurveyResultsScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Tamamlandı',
+                              'Tamamlandı'.tr(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -138,11 +139,11 @@ class SurveyResultsScreen extends StatelessWidget {
             
             // Question 1
             _buildResultCard(
-              question: 'Hizmet kalitemizden memnun musunuz?',
+              question: 'Hizmet kalitemizden memnun musunuz?'.tr(),
               options: [
-                _ResultOption(label: 'Çok Memnunum', percentage: 65, color: const Color(0xFF1A8025)),
-                _ResultOption(label: 'Memnunum', percentage: 25, color: const Color(0xFF1A8025).withValues(alpha: 0.6)),
-                _ResultOption(label: 'Kararsızım', percentage: 10, color: const Color(0xFF1A8025).withValues(alpha: 0.3)),
+                _ResultOption(label: 'Çok Memnunum'.tr(), percentage: 65, color: const Color(0xFF1A8025)),
+                _ResultOption(label: 'Memnunum'.tr(), percentage: 25, color: const Color(0xFF1A8025).withValues(alpha: 0.6)),
+                _ResultOption(label: 'Kararsızım'.tr(), percentage: 10, color: const Color(0xFF1A8025).withValues(alpha: 0.3)),
               ],
             ),
             
@@ -150,11 +151,11 @@ class SurveyResultsScreen extends StatelessWidget {
             
             // Question 2
             _buildResultCard(
-              question: 'Yeni etkinlik önerilerinizi bizimle paylaşır mısınız?',
+              question: 'Yeni etkinlik önerilerinizi bizimle paylaşır mısınız?'.tr(),
               options: [
-                _ResultOption(label: 'Eğitim', percentage: 45, color: const Color(0xFF1A8025)),
-                _ResultOption(label: 'Sosyal Etkinlik', percentage: 35, color: const Color(0xFF1A8025).withValues(alpha: 0.6)),
-                _ResultOption(label: 'Spor', percentage: 20, color: const Color(0xFF1A8025).withValues(alpha: 0.3)),
+                _ResultOption(label: 'Eğitim'.tr(), percentage: 45, color: const Color(0xFF1A8025)),
+                _ResultOption(label: 'Sosyal Etkinlik'.tr(), percentage: 35, color: const Color(0xFF1A8025).withValues(alpha: 0.6)),
+                _ResultOption(label: 'Spor'.tr(), percentage: 20, color: const Color(0xFF1A8025).withValues(alpha: 0.3)),
               ],
             ),
             
@@ -178,9 +179,9 @@ class SurveyResultsScreen extends StatelessWidget {
                   elevation: 0,
                 ),
                 icon: const Icon(Icons.manage_search),
-                label: const Text(
-                  'Diğer Anketlere Göz At',
-                  style: TextStyle(
+                label: Text(
+                  'Diğer Anketlere Göz At'.tr(),
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),

@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donation_success_screen.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class DonateScreen extends StatefulWidget {
   const DonateScreen({super.key});
@@ -52,9 +53,9 @@ class _DonateScreenState extends State<DonateScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Bağış Yap',
-          style: TextStyle(
+        title: Text(
+          'Bağış Yap'.tr(),
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75), // primary
@@ -91,7 +92,7 @@ class _DonateScreenState extends State<DonateScreen> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          'Tek Seferlik',
+                          'Tek Seferlik'.tr(),
                           style: TextStyle(
                             color: !_isMonthly ? AppColors.textPrimary : AppColors.textSecondary, // on-surface-variant
                             fontWeight: FontWeight.w500,
@@ -115,7 +116,7 @@ class _DonateScreenState extends State<DonateScreen> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          'Aylık Düzenli',
+                          'Aylık Düzenli'.tr(),
                           style: TextStyle(
                             color: _isMonthly ? AppColors.textPrimary : AppColors.textSecondary, // on-surface-variant
                             fontWeight: FontWeight.w500,
@@ -132,7 +133,7 @@ class _DonateScreenState extends State<DonateScreen> {
 
             // Category Selection
             Text(
-              'Nereye Destek Olmak İstersiniz?',
+              'Nereye Destek Olmak İstersiniz?'.tr(),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
             ),
             const SizedBox(height: 16),
@@ -170,7 +171,7 @@ class _DonateScreenState extends State<DonateScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          cat['title'],
+                          (cat['title'] as String).tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppColors.textPrimary,
@@ -188,7 +189,7 @@ class _DonateScreenState extends State<DonateScreen> {
 
             // Amount Selection
             Text(
-              'Bağış Miktarı',
+              'Bağış Miktarı'.tr(),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
             ),
             const SizedBox(height: 16),
@@ -256,7 +257,7 @@ class _DonateScreenState extends State<DonateScreen> {
                   }
                 },
                 decoration: InputDecoration(
-                  hintText: 'Diğer Miktar',
+                  hintText: 'Diğer Miktar'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.5)),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -276,7 +277,7 @@ class _DonateScreenState extends State<DonateScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Ödeme Bilgileri',
+                  'Ödeme Bilgileri'.tr(),
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
                 Container(
@@ -287,12 +288,12 @@ class _DonateScreenState extends State<DonateScreen> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
-                    children: const [
-                      Icon(Icons.lock, color: Color(0xFF7ADC75), size: 14),
-                      SizedBox(width: 4),
+                    children: [
+                      const Icon(Icons.lock, color: Color(0xFF7ADC75), size: 14),
+                      const SizedBox(width: 4),
                       Text(
-                        'SSL Güvenli',
-                        style: TextStyle(color: Color(0xFF7ADC75), fontSize: 12, fontWeight: FontWeight.bold),
+                        'SSL Güvenli'.tr(),
+                        style: const TextStyle(color: Color(0xFF7ADC75), fontSize: 12, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -362,7 +363,7 @@ class _DonateScreenState extends State<DonateScreen> {
                 },
                 icon: Icon(Icons.favorite, color: Color(0xFF003908)),
                 label: Text(
-                  _isMonthly ? 'Aylık Bağışı Başlat' : 'Bağışı Tamamla',
+                  _isMonthly ? 'Aylık Bağışı Başlat'.tr() : 'Bağışı Tamamla'.tr(),
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -385,7 +386,7 @@ class _DonateScreenState extends State<DonateScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  'Aylık düzenli bağışlarınız, her ayın aynı gününde kartınızdan otomatik olarak çekilecektir. İstediğiniz zaman iptal edebilirsiniz.',
+                  'Aylık düzenli bağışlarınız, her ayın aynı gününde kartınızdan otomatik olarak çekilecektir. İstediğiniz zaman iptal edebilirsiniz.'.tr(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
@@ -399,7 +400,7 @@ class _DonateScreenState extends State<DonateScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Yukarıdaki butona tıklayarak Aydınlatma Metni\'ni okuduğunuzu ve kabul ettiğinizi onaylamış olursunuz.',
+                'Yukarıdaki butona tıklayarak Aydınlatma Metni\'ni okuduğunuzu ve kabul ettiğinizi onaylamış olursunuz.'.tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
@@ -418,7 +419,7 @@ class _DonateScreenState extends State<DonateScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4, left: 4),
       child: Text(
-        text,
+        text.tr(),
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
@@ -440,7 +441,7 @@ class _DonateScreenState extends State<DonateScreen> {
         obscureText: obscureText,
         style: TextStyle(color: AppColors.textPrimary, fontSize: 16, letterSpacing: 1.5),
         decoration: InputDecoration(
-          hintText: hint,
+          hintText: hint.tr(),
           hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.6), letterSpacing: 0),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: icon != null ? 18 : 16),

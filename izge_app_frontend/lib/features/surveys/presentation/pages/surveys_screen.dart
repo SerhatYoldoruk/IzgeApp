@@ -3,10 +3,12 @@ import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/pages/survey_detail_screen.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/pages/survey_results_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_bloc.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_state.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_event.dart';
+import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
 
 class SurveysScreen extends StatelessWidget {
   const SurveysScreen({super.key});
@@ -14,6 +16,7 @@ class SurveysScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const CustomDrawer(),
       appBar: AppBar(
         leading: Builder(
           builder: (context) {
@@ -72,7 +75,7 @@ class SurveysScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Aktif Anketler',
+              'Aktif Anketler'.tr(),
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -88,7 +91,7 @@ class SurveysScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   ));
                 } else if (state is SurveyError) {
-                  return Center(child: Text('Hata: ${state.message}', style: TextStyle(color: Colors.red)));
+                  return Center(child: Text('${LanguageController.instance.isTurkish ? 'Hata' : 'Error'}: ${state.message}', style: const TextStyle(color: Colors.red)));
                 } else if (state is SurveyLoaded) {
                   final activeSurveys = state.surveys.where((s) => s.status == 'active').toList();
                   final pastSurveys = state.surveys.where((s) => s.status != 'active').toList();
@@ -98,7 +101,7 @@ class SurveysScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 32.0),
                         child: Text(
-                          'Henüz oluşturulmuş bir anket yok.',
+                          'Henüz oluşturulmuş bir anket yok.'.tr(),
                           style: TextStyle(color: AppColors.textSecondary),
                         ),
                       ),
@@ -112,7 +115,7 @@ class SurveysScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 24.0),
                           child: Text(
-                            'Şu anda aktif anket bulunmuyor.',
+                            'Şu anda aktif anket bulunmuyor.'.tr(),
                             style: TextStyle(color: AppColors.textSecondary),
                           ),
                         ),
@@ -120,11 +123,11 @@ class SurveysScreen extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
                           child: _ActiveSurveyCard(
-                            title: survey.title,
+                            title: survey.title.tr(),
                             timeRemaining: survey.endDate != null 
-                              ? '${survey.endDate!.difference(DateTime.now()).inDays} Gün Kaldı' 
-                              : 'Devam Ediyor',
-                            description: survey.description ?? '',
+                              ? '${survey.endDate!.difference(DateTime.now()).inDays} ${'Gün Kaldı'.tr()}' 
+                              : 'Devam Ediyor'.tr(),
+                            description: (survey.description ?? '').tr(),
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -137,7 +140,7 @@ class SurveysScreen extends StatelessWidget {
                       
                       SizedBox(height: 32),
                       Text(
-                        'Geçmiş Anketler',
+                        'Geçmiş Anketler'.tr(),
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -147,13 +150,13 @@ class SurveysScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       if (pastSurveys.isEmpty)
                         Text(
-                          'Geçmiş anket bulunmuyor.',
+                          'Geçmiş anket bulunmuyor.'.tr(),
                           style: TextStyle(color: AppColors.textSecondary),
                         ),
                       ...pastSurveys.map((survey) {
                         return _PastSurveyCard(
-                          title: survey.title,
-                          stats: 'Sonuçlandı',
+                          title: survey.title.tr(),
+                          stats: 'Sonuçlandı'.tr(),
                         );
                       }),
                     ],
@@ -253,9 +256,9 @@ class _ActiveSurveyCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
-                'Ankete Katıl',
-                style: TextStyle(
+              child: Text(
+                'Ankete Katıl'.tr(),
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

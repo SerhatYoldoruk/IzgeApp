@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/request_detail_screen.dart';
 
 class RequestStatusScreen extends StatefulWidget {
@@ -25,8 +26,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Talep Durumu Sorgulama',
+        title: Text(
+          'Talep Durumu Sorgulama'.tr(),
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -41,7 +42,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
           children: [
             // Intro
             Text(
-              'Daha önce oluşturduğunuz bir talebin güncel durumunu öğrenmek için talep numaranızı aşağıya giriniz.',
+              'Daha önce oluşturduğunuz bir talebin güncel durumunu öğrenmek için talep numaranızı aşağıya giriniz.'.tr(),
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -57,7 +58,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                 filled: true,
                 fillColor: AppColors.surfaceElevated, // surface-container-high
                 prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
-                hintText: 'Talep Numarası (Örn: TLP-12345)',
+                hintText: 'Talep Numarası (Örn: TLP-12345)'.tr(),
                 hintStyle: TextStyle(color: AppColors.textSecondary),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
@@ -93,7 +94,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      _isLoading ? 'Sorgulanıyor...' : 'Sorgula',
+                      _isLoading ? 'Sorgulaniyor...'.tr() : 'Sorgula'.tr(),
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -143,7 +144,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Talep Numaramı Nereden Bulabilirim?',
+                          'Talep Numaramı Nereden Bulabilirim?'.tr(),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -152,7 +153,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          "Talebinizi oluşturduğunuzda size gönderilen onay e-postasında veya SMS mesajında 'TLP-' ile başlayan numaranızı bulabilirsiniz.",
+                          "Talebinizi oluşturduğunuzda size gönderilen onay e-postasında veya SMS mesajında 'TLP-' ile başlayan numaranızı bulabilirsiniz.".tr(),
                           style: TextStyle(
                             fontSize: 14,
                             color: AppColors.textSecondary,
@@ -176,7 +177,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'ÖRNEK SONUÇ',
+                      'ÖRNEK SONUÇ'.tr(),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -242,7 +243,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'Tekerlekli Sandalye Bakımı',
+                                'Tekerlekli Sandalye Bakımı'.tr(),
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -252,7 +253,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                'Oluşturulma: 12 Ekim 2023',
+                                'Oluşturulma: 12 Ekim 2023'.tr(),
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: AppColors.textSecondary,
@@ -273,7 +274,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                               Icon(Icons.pending, color: Color(0xFFB4B5B5), size: 16), // on-secondary-container
                               SizedBox(width: 4),
                               Text(
-                                'İşlemde',
+                                'İşlemde'.tr(),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -291,13 +292,13 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                     // Progress Stepper (Simplified for Flutter)
                     Row(
                       children: [
-                        _buildStep(Icons.check, 'Alındı', true, true),
+                        _buildStep(Icons.check, 'Alındı'.tr(), true, true),
                         Expanded(child: _buildLine(true)),
-                        _buildStep(Icons.circle, 'Değerlendirmede', true, false),
+                        _buildStep(Icons.circle, 'Değerlendirmede'.tr(), true, false),
                         Expanded(child: _buildLine(false)),
-                        _buildStep(null, 'Onay', false, false),
+                        _buildStep(null, 'Onay'.tr(), false, false),
                         Expanded(child: _buildLine(false)),
-                        _buildStep(null, 'Tamamlandı', false, false),
+                        _buildStep(null, 'Tamamlandı'.tr(), false, false),
                       ],
                     ),
                     
@@ -320,11 +321,11 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: 'Güncelleme: ',
+                              text: 'Güncelleme: '.tr(),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             TextSpan(
-                              text: 'Talebiniz ilgili uzman ekibimize iletilmiştir. İnceleme süreci devam etmektedir.',
+                              text: 'Talebiniz ilgili uzman ekibimize iletilmiştir. İnceleme süreci devam etmektedir.'.tr(),
                             ),
                           ],
                         ),

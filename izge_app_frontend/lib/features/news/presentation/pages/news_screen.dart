@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,12 +48,18 @@ class _NewsScreenState extends State<NewsScreen> {
   void initState() {
     super.initState();
     initializeDateFormatting('tr_TR');
+    LanguageController.instance.addListener(_onLanguageChanged);
   }
 
   @override
   void dispose() {
+    LanguageController.instance.removeListener(_onLanguageChanged);
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) setState(() {});
   }
 
   void _loadMore() async {
@@ -97,14 +104,19 @@ class _NewsScreenState extends State<NewsScreen> {
     return Scaffold(
       drawer: const CustomDrawer(),
       appBar: AppBar(
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            );
-          }
-        ),
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
+                onPressed: () => Navigator.pop(context),
+              )
+            : Builder(
+                builder: (context) {
+                  return IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  );
+                }
+              ),
         title: Row(
           children: [
             Container(
@@ -155,7 +167,7 @@ class _NewsScreenState extends State<NewsScreen> {
           children: [
             // Header Section
             Text(
-              'Haberler ve Duyurular',
+              'Haberler ve Duyurular'.tr(),
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -164,7 +176,7 @@ class _NewsScreenState extends State<NewsScreen> {
             ),
             SizedBox(height: 4),
             Text(
-              'Dernekten en güncel haberler',
+              'Dernekten en güncel haberler'.tr(),
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -188,7 +200,7 @@ class _NewsScreenState extends State<NewsScreen> {
                 },
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Haberlerde ara...',
+                  hintText: 'Haberlerde ara...'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   border: InputBorder.none,
@@ -205,22 +217,22 @@ class _NewsScreenState extends State<NewsScreen> {
               child: Row(
                 children: [
                   _FilterChip(
-                    label: 'Tümü', 
+                    label: 'Tümü'.tr(), 
                     isSelected: _selectedCategory == 'Tümü',
                     onTap: () => setState(() => _selectedCategory = 'Tümü'),
                   ),
                   _FilterChip(
-                    label: 'Duyurular', 
+                    label: 'Duyurular'.tr(), 
                     isSelected: _selectedCategory == 'Duyurular',
                     onTap: () => setState(() => _selectedCategory = 'Duyurular'),
                   ),
                   _FilterChip(
-                    label: 'Etkinlikler', 
+                    label: 'Etkinlikler'.tr(), 
                     isSelected: _selectedCategory == 'Etkinlikler',
                     onTap: () => setState(() => _selectedCategory = 'Etkinlikler'),
                   ),
                   _FilterChip(
-                    label: 'Projeler', 
+                    label: 'Projeler'.tr(), 
                     isSelected: _selectedCategory == 'Projeler',
                     onTap: () => setState(() => _selectedCategory = 'Projeler'),
                   ),
@@ -238,7 +250,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     child: CircularProgressIndicator(),
                   ));
                 } else if (state is NewsError) {
-                  return Center(child: Text('Hata: ${state.message}', style: TextStyle(color: Colors.red)));
+                  return Center(child: Text('${LanguageController.instance.isTurkish ? 'Hata' : 'Error'}: ${state.message}', style: const TextStyle(color: Colors.red)));
                 } else if (state is NewsLoaded) {
                   final filteredNews = _filteredNews(state.news);
                   final displayedNews = filteredNews.take(_visibleCount).toList();
@@ -275,7 +287,7 @@ class _NewsScreenState extends State<NewsScreen> {
                           ),
                           SizedBox(height: 24),
                           Text(
-                            'Haber Bulunamadı',
+                            'Haber Bulunamadı'.tr(),
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -284,7 +296,7 @@ class _NewsScreenState extends State<NewsScreen> {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            'Aradığınız kriterlere uygun haber veya duyuru bulunmuyor. Farklı bir arama yapmayı deneyebilirsiniz.',
+                            'Aradığınız kriterlere uygun haber veya duyuru bulunmuyor. Farklı bir arama yapmayı deneyebilirsiniz.'.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 16,
@@ -304,9 +316,9 @@ class _NewsScreenState extends State<NewsScreen> {
                                 });
                               },
                               icon: const Icon(Icons.refresh, color: Color(0xFFD3FFC8)),
-                              label: const Text(
-                                'Tüm Haberleri Gör',
-                                style: TextStyle(
+                              label: Text(
+                                'Tüm Haberleri Gör'.tr(),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFFD3FFC8),
@@ -332,9 +344,9 @@ class _NewsScreenState extends State<NewsScreen> {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 24.0),
                           child: _AdvancedNewsCard(
-                            tag: 'DUYURU', // Or dynamic depending on category
+                            tag: 'DUYURU'.tr(), // Or dynamic depending on category
                             tagColor: AppColors.accentDark,
-                            date: DateFormat('dd MMM yyyy', 'tr_TR').format(news.createdAt),
+                            date: DateFormat('dd MMM yyyy', LanguageController.instance.isTurkish ? 'tr_TR' : 'en_US').format(news.createdAt),
                             title: news.title,
                             description: news.content,
                             imageUrl: news.imageUrl ?? 'https://via.placeholder.com/400x200?text=Izge',
@@ -356,7 +368,7 @@ class _NewsScreenState extends State<NewsScreen> {
                               ? SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent))
                               : Icon(Icons.refresh, color: AppColors.accent),
                           label: Text(
-                            _isLoadingMore ? 'Yükleniyor...' : 'Daha Fazla Yükle', 
+                            _isLoadingMore ? 'Yükleniyor...'.tr() : 'Daha Fazla Yükle'.tr(), 
                             style: TextStyle(color: AppColors.accent, fontSize: 16, fontWeight: FontWeight.bold)
                           ),
                           style: ElevatedButton.styleFrom(
@@ -563,7 +575,7 @@ class _AdvancedNewsCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        'Devamını Oku',
+                        'Devamını Oku'.tr(),
                         style: TextStyle(
                           color: AppColors.accent,
                           fontWeight: FontWeight.bold,

@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/connection_issues_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/other_issues_screen.dart';
@@ -22,8 +23,8 @@ class TechnicalSupportScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Teknik Destek',
+        title: Text(
+          'Teknik Destek'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -38,7 +39,7 @@ class TechnicalSupportScreen extends StatelessWidget {
           children: [
             // Hero Section
             Text(
-              'Nasıl yardımcı olabiliriz?',
+              'Nasıl yardımcı olabiliriz?'.tr(),
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -49,7 +50,7 @@ class TechnicalSupportScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Uygulama ile ilgili teknik sorunlarınızı çözmek için buradayız.',
+              'Uygulama ile ilgili teknik sorunlarınızı çözmek için buradayız.'.tr(),
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -74,7 +75,7 @@ class TechnicalSupportScreen extends StatelessWidget {
               child: TextField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Sorununuzu arayın (örn. giriş hatası)',
+                  hintText: 'Sorununuzu arayın (örn. giriş hatası)'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   filled: true,
@@ -97,8 +98,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card1 = _buildTopicCard(
                   icon: Icons.login,
-                  title: 'Giriş Problemleri',
-                  subtitle: 'Şifremi unuttum, hesabıma erişemiyorum veya doğrulama kodu gelmiyor.',
+                  title: 'Giriş Problemleri'.tr(),
+                  subtitle: 'Şifremi unuttum, hesabıma erişemiyorum veya doğrulama kodu gelmiyor.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -109,8 +110,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card2 = _buildTopicCard(
                   icon: Icons.bug_report,
-                  title: 'Hata Bildirimi',
-                  subtitle: 'Uygulama çöküyor, ekran donuyor veya beklenmedik bir hata mesajı alıyorum.',
+                  title: 'Hata Bildirimi'.tr(),
+                  subtitle: 'Uygulama çöküyor, ekran donuyor veya beklenmedik bir hata mesajı alıyorum.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -121,8 +122,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card3 = _buildTopicCard(
                   icon: Icons.devices,
-                  title: 'Cihaz ve Sistem Uyumluluğu',
-                  subtitle: 'Uygulamanın sürümü, işletim sistemi gereksinimleri ve performans ayarları hakkında destek alın.',
+                  title: 'Cihaz ve Sistem Uyumluluğu'.tr(),
+                  subtitle: 'Uygulamanın sürümü, işletim sistemi gereksinimleri ve performans ayarları hakkında destek alın.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -134,8 +135,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card4 = _buildTopicCard(
                   icon: Icons.wifi_off,
-                  title: 'Bağlantı Sorunları',
-                  subtitle: 'İnternet bağlantısı hatası, veri senkronizasyonu veya yavaş yüklenme problemleri.',
+                  title: 'Bağlantı Sorunları'.tr(),
+                  subtitle: 'İnternet bağlantısı hatası, veri senkronizasyonu veya yavaş yüklenme problemleri.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -146,8 +147,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card5 = _buildTopicCard(
                   icon: Icons.help,
-                  title: 'Diğer Sorunlar',
-                  subtitle: 'Yukarıdaki kategorilere uymayan diğer tüm teknik sorunlar için destek talebi oluşturun.',
+                  title: 'Diğer Sorunlar'.tr(),
+                  subtitle: 'Yukarıdaki kategorilere uymayan diğer tüm teknik sorunlar için destek talebi oluşturun.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -215,7 +216,7 @@ class TechnicalSupportScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Aradığınızı bulamadınız mı?',
+                    'Aradığınızı bulamadınız mı?'.tr(),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -225,7 +226,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Destek ekibimizle doğrudan iletişime geçerek detaylı yardım alabilirsiniz.',
+                    'Destek ekibimizle doğrudan iletişime geçerek detaylı yardım alabilirsiniz.'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.textSecondary,
@@ -243,8 +244,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                         );
                       },
                       icon: const Icon(Icons.support_agent, color: Color(0xFF00530F)), // on-primary-fixed-variant
-                      label: const Text(
-                        'Canlı Destek Başlat',
+                      label: Text(
+                        'Canlı Destek Başlat'.tr(),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

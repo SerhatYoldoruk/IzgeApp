@@ -1,15 +1,16 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/notification_settings_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/language_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/privacy_policy_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/account_security_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/about_us_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/login_screen.dart';
 import 'package:izge_app_frontend/core/theme/theme_controller.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/language_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -24,7 +25,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
+    ThemeController.instance.addListener(_onThemeChanged);
+    LanguageController.instance.addListener(_onLanguageChanged);
     _refreshProfile();
+  }
+
+  @override
+  void dispose() {
+    ThemeController.instance.removeListener(_onThemeChanged);
+    LanguageController.instance.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onThemeChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _refreshProfile() {
@@ -45,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           .select()
           .eq('id', user.id)
           .single();
-      return response as Map<String, dynamic>;
+      return response;
     } catch (e) {
       return {
         'name': user.userMetadata?['name'] ?? 'Kullanıcı',
@@ -70,7 +92,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Ayarlar',
+          'Ayarlar'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -179,11 +201,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const SizedBox(height: 32),
                 _buildSettingsGroup(
-                  title: 'Genel',
+                  title: 'Genel'.tr(),
                   items: [
                     _buildSettingsItem(
                       icon: Icons.notifications,
-                      title: 'Bildirim Ayarları',
+                      title: 'Bildirim Ayarları'.tr(),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -193,22 +215,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     _buildSettingsItem(
                       icon: Icons.language,
-                      title: 'Dil Tercihi',
-                      trailingText: 'Türkçe',
-                      onTap: () {},
+                      title: 'Dil Tercihi'.tr(),
+                      trailingText: LanguageController.instance.isTurkish ? 'Türkçe' : 'English',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (ctx) => const LanguageScreen()),
+                        );
+                      },
                     ),
                     AnimatedBuilder(
                       animation: ThemeController.instance,
                       builder: (ctx, child) {
                         return _buildSettingsItem(
                           icon: Icons.dark_mode,
-                          title: 'Karanlık Mod',
+                          title: 'Karanlık Mod'.tr(),
                           trailingWidget: Switch(
                             value: ThemeController.instance.isDarkMode,
                             onChanged: (value) {
                               ThemeController.instance.toggleTheme();
                             },
-                            activeColor: const Color(0xFF1A8025),
+                            activeThumbColor: const Color(0xFF1A8025),
                           ),
                           onTap: () {
                             ThemeController.instance.toggleTheme();
@@ -221,11 +248,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const SizedBox(height: 16),
                 _buildSettingsGroup(
-                  title: 'Güvenlik',
+                  title: 'Güvenlik'.tr(),
                   items: [
                     _buildSettingsItem(
                       icon: Icons.lock,
-                      title: 'Hesap Güvenliği',
+                      title: 'Hesap Güvenliği'.tr(),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -235,7 +262,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     _buildSettingsItem(
                       icon: Icons.policy,
-                      title: 'Gizlilik Politikası',
+                      title: 'Gizlilik Politikası'.tr(),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -248,11 +275,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 const SizedBox(height: 16),
                 _buildSettingsGroup(
-                  title: 'Diğer',
+                  title: 'Diğer'.tr(),
                   items: [
                     _buildSettingsItem(
                       icon: Icons.info,
-                      title: 'Hakkımızda',
+                      title: 'Hakkımızda'.tr(),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -262,7 +289,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     _buildSettingsItem(
                       icon: Icons.help_outline,
-                      title: 'Yardım Merkezi',
+                      title: 'Yardım Merkezi'.tr(),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -285,9 +312,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       );
                     },
                     icon: const Icon(Icons.logout, color: Color(0xFFFFB4AB)),
-                    label: const Text(
-                      'Çıkış Yap',
-                      style: TextStyle(
+                    label: Text(
+                      'Çıkış Yap'.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFFFFB4AB),

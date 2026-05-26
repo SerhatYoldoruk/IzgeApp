@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/support_success_screen.dart';
 
 class OtherIssuesScreen extends StatefulWidget {
@@ -24,9 +25,9 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Teknik Destek',
-          style: TextStyle(
+        title: Text(
+          'Teknik Destek'.tr(),
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75), // primary
@@ -45,7 +46,7 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Diğer Sorunlar',
+              'Diğer Sorunlar'.tr(),
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -54,7 +55,7 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
             ),
             SizedBox(height: 8),
             Text(
-              'Aradığınız sorunu bulamadıysanız aşağıdaki form ile bize ulaşabilirsiniz. Ekibimiz en kısa sürede size dönüş yapacaktır.',
+              'Aradığınız sorunu bulamadıysanız aşağıdaki form ile bize ulaşabilirsiniz. Ekibimiz en kısa sürede size dönüş yapacaktır.'.tr(),
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary.withOpacity(0.9),
@@ -65,7 +66,7 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
             
             // Topic Dropdown
             Text(
-              'Konu Başlığı',
+              'Konu Başlığı'.tr(),
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
             ),
             SizedBox(height: 8),
@@ -85,17 +86,17 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   value: _selectedTopic,
-                  hint: Text('Lütfen bir konu seçin...', style: TextStyle(color: AppColors.textSecondary)),
+                  hint: Text('Lütfen bir konu seçin...'.tr(), style: TextStyle(color: AppColors.textSecondary)),
                   isExpanded: true,
                   dropdownColor: AppColors.border,
                   icon: Icon(Icons.keyboard_arrow_down, color: AppColors.textSecondary),
                   style: TextStyle(color: AppColors.textPrimary, fontSize: 16),
-                  items: const [
-                    DropdownMenuItem(value: 'hesap', child: Text('Hesap İşlemleri ve Profil')),
-                    DropdownMenuItem(value: 'etkinlik', child: Text('Etkinlik Katılımı / İptali')),
-                    DropdownMenuItem(value: 'bagis', child: Text('Bağış ve Ödeme Sorunları')),
-                    DropdownMenuItem(value: 'uygulama', child: Text('Uygulama İçi Hata (Bug)')),
-                    DropdownMenuItem(value: 'diger', child: Text('Farklı Bir Konu')),
+                  items: [
+                    DropdownMenuItem(value: 'hesap', child: Text('Hesap İşlemleri ve Profil'.tr())),
+                    DropdownMenuItem(value: 'etkinlik', child: Text('Etkinlik Katılımı / İptali'.tr())),
+                    DropdownMenuItem(value: 'bagis', child: Text('Bağış ve Ödeme Sorunları'.tr())),
+                    DropdownMenuItem(value: 'uygulama', child: Text('Uygulama İçi Hata (Bug)'.tr())),
+                    DropdownMenuItem(value: 'diger', child: Text('Farklı Bir Konu'.tr())),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -109,7 +110,7 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
             
             // Details Textarea
             Text(
-              'Detaylı Açıklama',
+              'Detaylı Açıklama'.tr(),
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
             ),
             SizedBox(height: 8),
@@ -129,7 +130,7 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
                 maxLines: 6,
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Yaşadığınız sorunu, ne yaparken karşılaştığınızı ve ek detayları buraya yazabilirsiniz...',
+                  hintText: 'Yaşadığınız sorunu, ne yaparken karşılaştığınızı ve ek detayları buraya yazabilirsiniz...'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.7)),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.all(20),
@@ -170,11 +171,11 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ekran Görüntüsü Ekle',
+                            'Ekran Görüntüsü Ekle'.tr(),
                             style: TextStyle(fontSize: 16, color: AppColors.textPrimary),
                           ),
                           Text(
-                            'İsteğe bağlı, max 5MB',
+                            'İsteğe bağlı, max 5MB'.tr(),
                             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textSecondary),
                           ),
                         ],
@@ -199,9 +200,9 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
                   );
                 },
                 icon: const Icon(Icons.send, color: Color(0xFF003908)),
-                label: const Text(
-                  'Destek Talebi Oluştur',
-                  style: TextStyle(
+                label: Text(
+                  'Destek Talebi Oluştur'.tr(),
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF003908),

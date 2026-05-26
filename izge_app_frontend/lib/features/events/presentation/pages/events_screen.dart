@@ -7,6 +7,7 @@ import 'package:izge_app_frontend/features/events/presentation/bloc/event_bloc.d
 import 'package:izge_app_frontend/features/events/presentation/bloc/event_state.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
@@ -20,6 +21,19 @@ class _EventsScreenState extends State<EventsScreen> {
   void initState() {
     super.initState();
     initializeDateFormatting('tr_TR');
+    LanguageController.instance.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    LanguageController.instance.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -54,7 +68,7 @@ class _EventsScreenState extends State<EventsScreen> {
             ),
             SizedBox(width: 12),
             Text(
-              'Etkinlik Takvimi',
+              'Etkinlik Takvimi'.tr(),
               style: TextStyle(
                 color: AppColors.accent,
                 fontWeight: FontWeight.bold,
@@ -91,7 +105,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Ekim 2023',
+                        'Ekim 2023'.tr(),
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -124,7 +138,7 @@ class _EventsScreenState extends State<EventsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Günün Etkinlikleri',
+                  'Günün Etkinlikleri'.tr(),
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -132,7 +146,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
                 ),
                 Text(
-                  'Bugün, 12 Ekim',
+                  'Bugün, 12 Ekim'.tr(),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -149,8 +163,8 @@ class _EventsScreenState extends State<EventsScreen> {
                 } else if (state is EventError) {
                   return Center(
                     child: Text(
-                      'Etkinlikler yüklenirken hata oluştu: ${state.message}',
-                      style: TextStyle(color: Colors.red),
+                      'Etkinlikler yüklenirken hata oluştu: '.tr() + state.message,
+                      style: const TextStyle(color: Colors.red),
                     ),
                   );
                 } else if (state is EventLoaded) {
@@ -175,7 +189,7 @@ class _EventsScreenState extends State<EventsScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Henüz planlanmış bir etkinlik yok',
+                              'Henüz planlanmış bir etkinlik yok'.tr(),
                               style: TextStyle(color: AppColors.textSecondary),
                             ),
                           ],
@@ -217,7 +231,9 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Widget _buildCalendarDays() {
-    final days = ['Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct', 'Pz'];
+    final days = LanguageController.instance.isTurkish
+        ? ['Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct', 'Pz']
+        : ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: days

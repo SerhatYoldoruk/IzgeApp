@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/privacy_policy_screen.dart';
@@ -285,8 +285,8 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> with SingleTicker
             ),
             CupertinoSwitch(
               value: value,
-              activeColor: const Color(0xFF7ADC75),
-              trackColor: AppColors.border,
+              activeTrackColor: const Color(0xFF7ADC75),
+              inactiveTrackColor: AppColors.border,
               onChanged: onChanged,
             ),
           ],

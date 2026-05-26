@@ -10,8 +10,8 @@ import 'package:izge_app_frontend/features/profile/presentation/pages/donate_scr
 import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/about_us_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:izge_app_frontend/core/theme/theme_controller.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -28,16 +28,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
   void initState() {
     super.initState();
     ThemeController.instance.addListener(_onThemeChanged);
+    LanguageController.instance.addListener(_onLanguageChanged);
     _refreshDrawerUserData();
   }
 
   @override
   void dispose() {
     ThemeController.instance.removeListener(_onThemeChanged);
+    LanguageController.instance.removeListener(_onLanguageChanged);
     super.dispose();
   }
 
   void _onThemeChanged() {
+    if (mounted) setState(() {});
+  }
+
+  void _onLanguageChanged() {
     if (mounted) setState(() {});
   }
 
@@ -60,7 +66,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
           .eq('id', user.id)
           .single();
           
-      return response as Map<String, dynamic>;
+      return response;
     } catch (e) {
       debugPrint("Drawer Veri Çekme Hatası: ${e.toString()}");
       return {
@@ -73,19 +79,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   // Veritabanından gelen rol değerini ekranda göstereceğimiz Türkçe karşılığına eşleyen fonksiyon
   String _getRoleDisplayName(String? role) {
-    if (role == null) return 'Gönüllü Üye';
+    if (role == null) return 'Gönüllü Üye'.tr();
     
     switch (role.toLowerCase()) {
       case 'admin':
-        return 'Yönetici';
+        return 'Yönetici'.tr();
       case 'moderator':
-        return 'Moderatör';
+        return 'Moderatör'.tr();
       case 'corporate':
       case 'enterprise':
-        return 'Kurumsal Erişim';
+        return 'Kurumsal Erişim'.tr();
       case 'member':
       default:
-        return 'Gönüllü Üye';
+        return 'Gönüllü Üye'.tr();
     }
   }
 
@@ -223,57 +229,73 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: Column(
                     children: [
                       // Language
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'DİL',
-                            style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: AppColors.surface,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.border),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.surfaceElevated,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    'TR',
-                                    style: TextStyle(
-                                      color: AppColors.accent,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                      AnimatedBuilder(
+                        animation: LanguageController.instance,
+                        builder: (context, _) {
+                          final isTr = LanguageController.instance.isTurkish;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'DİL'.tr(),
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  child: Text(
-                                    'EN',
-                                    style: TextStyle(
-                                      color: AppColors.textSecondary,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: AppColors.surface,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: AppColors.border),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => LanguageController.instance.changeLanguage('tr'),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                        decoration: BoxDecoration(
+                                          color: isTr ? AppColors.surfaceElevated : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          'TR',
+                                          style: TextStyle(
+                                            color: isTr ? AppColors.accent : AppColors.textSecondary,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () => LanguageController.instance.changeLanguage('en'),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                        decoration: BoxDecoration(
+                                          color: !isTr ? AppColors.surfaceElevated : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          'EN',
+                                          style: TextStyle(
+                                            color: !isTr ? AppColors.accent : AppColors.textSecondary,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       const SizedBox(height: 16),
                       // Theme Toggle
@@ -368,7 +390,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             children: [
                               _DrawerItem(
                                 icon: Icons.person, 
-                                title: 'Profilim', 
+                                title: 'Profilim'.tr(), 
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.push(
@@ -379,7 +401,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.volunteer_activism, 
-                                title: 'Bağış Yap', 
+                                title: 'Bağış Yap'.tr(), 
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const DonateScreen()));
@@ -387,7 +409,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.history, 
-                                title: 'Bağış Geçmişi', 
+                                title: 'Bağış Geçmişi'.tr(), 
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const DonationHistoryScreen()));
@@ -395,7 +417,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.settings, 
-                                title: 'Ayarlar', 
+                                title: 'Ayarlar'.tr(), 
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
@@ -403,7 +425,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.info, 
-                                title: 'Dernek Hakkında', 
+                                title: 'Dernek Hakkında'.tr(), 
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutUsScreen()));
@@ -411,7 +433,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.help_center, 
-                                title: 'Yardım Merkezi', 
+                                title: 'Yardım Merkezi'.tr(), 
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpCenterScreen()));
@@ -439,7 +461,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'AKTİVİTEM',
+                                'AKTİVİTEM'.tr(),
                                 style: TextStyle(
                                   color: AppColors.textSecondary,
                                   fontSize: 12,
@@ -454,7 +476,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     child: ValueListenableBuilder<int>(
                                       valueListenable: ActivityState.instance.likedCount,
                                       builder: (context, count, _) {
-                                        return _StatCard(icon: Icons.favorite, count: count.toString(), label: 'Beğenilenler');
+                                        return _StatCard(icon: Icons.favorite, count: count.toString(), label: 'Beğenilenler'.tr());
                                       },
                                     ),
                                   ),
@@ -463,7 +485,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     child: ValueListenableBuilder<int>(
                                       valueListenable: ActivityState.instance.savedCount,
                                       builder: (context, count, _) {
-                                        return _StatCard(icon: Icons.bookmark, count: count.toString(), label: 'Kaydedilenler');
+                                        return _StatCard(icon: Icons.bookmark, count: count.toString(), label: 'Kaydedilenler'.tr());
                                       },
                                     ),
                                   ),
@@ -472,7 +494,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     child: ValueListenableBuilder<int>(
                                       valueListenable: ActivityState.instance.eventsCount,
                                       builder: (context, count, _) {
-                                        return _StatCard(icon: Icons.event_available, count: count.toString(), label: 'Etkinlikler');
+                                        return _StatCard(icon: Icons.event_available, count: count.toString(), label: 'Etkinlikler'.tr());
                                       },
                                     ),
                                   ),
@@ -489,7 +511,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'KAYDEDİLENLER',
+                                'KAYDEDİLENLER'.tr(),
                                 style: TextStyle(
                                   color: AppColors.textSecondary,
                                   fontSize: 12,
@@ -500,7 +522,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               const SizedBox(height: 8),
                               _MiniListItem(
                                 icon: Icons.bookmark, 
-                                title: 'Kaydedilen Haberler',
+                                title: 'Kaydedilen Haberler'.tr(),
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SavedContentScreen()));
@@ -508,7 +530,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _MiniListItem(
                                 icon: Icons.favorite, 
-                                title: 'Favori Etkinlikler',
+                                title: 'Favori Etkinlikler'.tr(),
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SavedContentScreen()));
@@ -525,7 +547,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'DESTEK ÖZETİ',
+                                'DESTEK ÖZETİ'.tr(),
                                 style: TextStyle(
                                   color: AppColors.textSecondary,
                                   fontSize: 12,
@@ -534,7 +556,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              _MiniListItem(icon: Icons.volunteer_activism, title: 'Bağış Geçmişim'),
+                              _MiniListItem(icon: Icons.volunteer_activism, title: 'Bağış Geçmişim'.tr()),
                             ],
                           ),
                         ),
@@ -574,7 +596,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               Icon(Icons.logout, color: AppColors.accent, size: 20),
                               const SizedBox(width: 8),
                               Text(
-                                'Çıkış Yap',
+                                'Çıkış Yap'.tr(),
                                 style: TextStyle(
                                   color: AppColors.textPrimary,
                                   fontSize: 14,
@@ -616,6 +638,7 @@ class _DrawerItem extends StatelessWidget {
   const _DrawerItem({
     required this.icon,
     required this.title,
+    // ignore: unused_element_parameter
     this.isActive = false,
     required this.onTap,
   });

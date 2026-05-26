@@ -1,8 +1,30 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    LanguageController.instance.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    LanguageController.instance.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +39,7 @@ class NotificationsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Bildirimler',
+          'Bildirimler'.tr(),
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -57,7 +79,7 @@ class NotificationsScreen extends StatelessWidget {
               ),
               SizedBox(height: 48),
               Text(
-                'Yeni Bildiriminiz Yok',
+                'Yeni Bildiriminiz Yok'.tr(),
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -66,7 +88,7 @@ class NotificationsScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                'Dernekten veya katıldığınız etkinliklerden gelecek güncel bildirimler burada listelenecektir.',
+                'Dernekten veya katıldığınız etkinliklerden gelecek güncel bildirimler burada listelenecektir.'.tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -80,9 +102,9 @@ class NotificationsScreen extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.home, color: Color(0xFFD3FFC8)),
-                  label: const Text(
-                    'Ana Sayfaya Dön',
-                    style: TextStyle(
+                  label: Text(
+                    'Ana Sayfaya Dön'.tr(),
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFFD3FFC8),
