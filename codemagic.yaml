@@ -21,10 +21,15 @@ workflows:
             cd IzgeApp
           fi
           
-          # Derlemeyi yap:
+          # 1. Flutter arşivi başarıyla oluşturuyor
           flutter build ipa --release --no-codesign
           
-          # BÜYÜK FİNAL: Üretilen .ipa dosyasını doğrudan internete yükle ve indirme linkini loglara bas!
-          curl --upload-file build/ios/ipa/*.ipa https://transfer.sh/izge_app_release.ipa
+          # 2. .xcarchive dosyasını Payload klasörüne kopyalayıp .ipa haline getiriyoruz (Sihirli Dokunuş)
+          mkdir -p Payload
+          cp -r build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload/
+          zip -r izge_app.ipa Payload
+          
+          # 3. Oluşan bu bağımsız .ipa dosyasını internete yüklüyoruz:
+          curl --upload-file izge_app.ipa https://transfer.sh/izge_app.ipa
     artifacts:
-      - build/ios/ipa/*.ipa
+      - "*.ipa"
