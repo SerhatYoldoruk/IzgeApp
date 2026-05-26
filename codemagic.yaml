@@ -27,7 +27,6 @@ workflows:
           cp -r build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload/
           zip -r izge_app.ipa Payload
           
-          # DEĞİŞEN TEK SATIR BURASI: Sağlam sunucuya yüklüyoruz
           curl https://bashupload.com/izge_app.ipa --data-binary @izge_app.ipa
     artifacts:
-      - "*.ipa"git add ../codemagic.yaml
+      - "*.ipa"
