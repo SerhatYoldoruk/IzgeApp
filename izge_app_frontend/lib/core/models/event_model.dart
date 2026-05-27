@@ -20,12 +20,12 @@ class EventModel {
   factory EventModel.fromMap(Map<String, dynamic> map) {
     return EventModel(
       id: map['id'].toString(),
-      title: map['title'] as String,
-      description: map['description'] as String,
+      title: (map['title'] as String?) ?? '',
+      description: (map['description'] as String?) ?? '',
       location: map['location'] as String?,
-      eventDate: DateTime.parse(map['event_date'] as String),
+      eventDate: DateTime.parse((map['event_date'] as String?) ?? DateTime.now().toIso8601String()),
       imageUrl: map['image_url'] as String?,
-      createdAt: DateTime.parse(map['created_at'] as String),
+      createdAt: DateTime.parse((map['created_at'] as String?) ?? DateTime.now().toIso8601String()),
     );
   }
 

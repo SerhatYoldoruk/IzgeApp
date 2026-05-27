@@ -783,7 +783,6 @@ class LanguageController extends ChangeNotifier {
     'Etkinlikler yüklenirken hata oluştu: ': 'Etkinlikler yüklenirken hata oluştu: ',
     'Henüz planlanmış bir etkinlik yok': 'Henüz planlanmış bir etkinlik yok',
 
-    'Bağla': 'Bağla',
   };
 
   static final Map<String, String> _enTranslations = {
@@ -1528,7 +1527,6 @@ class LanguageController extends ChangeNotifier {
     'Etkinlikler yüklenirken hata oluştu: ': 'An error occurred while loading events: ',
     'Henüz planlanmış bir etkinlik yok': 'No events planned yet',
 
-    'Bağla': 'Link',
   };
 }
 

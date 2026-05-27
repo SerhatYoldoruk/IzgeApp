@@ -17,11 +17,14 @@ class EventsScreen extends StatefulWidget {
 }
 
 class _EventsScreenState extends State<EventsScreen> {
+  late DateTime _currentDate;
+
   @override
   void initState() {
     super.initState();
     initializeDateFormatting('tr_TR');
     LanguageController.instance.addListener(_onLanguageChanged);
+    _currentDate = DateTime.now();
   }
 
   @override
@@ -34,6 +37,18 @@ class _EventsScreenState extends State<EventsScreen> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void _onPrevMonth() {
+    setState(() {
+      _currentDate = DateTime(_currentDate.year, _currentDate.month - 1);
+    });
+  }
+
+  void _onNextMonth() {
+    setState(() {
+      _currentDate = DateTime(_currentDate.year, _currentDate.month + 1);
+    });
   }
 
   @override
@@ -104,24 +119,25 @@ class _EventsScreenState extends State<EventsScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Ekim 2023'.tr(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                        Text(
+                          DateFormat('MMMM yyyy', LanguageController.instance.isTurkish ? 'tr_TR' : 'en_US')
+                              .format(_currentDate),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
-                      ),
                       Row(
                         children: [
-                          IconButton(
-                            icon: Icon(Icons.chevron_left, color: AppColors.accent),
-                            onPressed: () {},
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.chevron_right, color: AppColors.accent),
-                            onPressed: () {},
-                          ),
+                            IconButton(
+                              icon: Icon(Icons.chevron_left, color: AppColors.accent),
+                              onPressed: _onPrevMonth,
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.chevron_right, color: AppColors.accent),
+                              onPressed: _onNextMonth,
+                            ),
                         ],
                       )
                     ],
@@ -146,7 +162,8 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
                 ),
                 Text(
-                  'Bugün, 12 Ekim'.tr(),
+                  '${LanguageController.instance.isTurkish ? 'Bugün, ' : 'Today, '}'
+                  '${DateFormat('d MMMM', LanguageController.instance.isTurkish ? 'tr_TR' : 'en_US').format(DateTime.now())}'.tr(),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -201,7 +218,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   return Column(
                     children: state.events.map((event) {
                       final dayStr = event.eventDate.day.toString();
-                      final monthStr = DateFormat('MMM', 'tr_TR').format(event.eventDate).toUpperCase();
+                      final monthStr = DateFormat('MMM', LanguageController.instance.isTurkish ? 'tr_TR' : 'en_US').format(event.eventDate).toUpperCase();
                       final timeStr = DateFormat('HH:mm').format(event.eventDate);
 
                       return Padding(
@@ -249,23 +266,31 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Widget _buildCalendarGrid() {
-    // Dummy calendar grid
+    // Generate a list of days to display for the current month, including leading empty cells.
+    final firstDayOfMonth = DateTime(_currentDate.year, _currentDate.month, 1);
+    final daysInMonth = DateUtils.getDaysInMonth(_currentDate.year, _currentDate.month);
+    final firstWeekday = firstDayOfMonth.weekday % 7; // Make Sunday = 0
+    final totalCells = ((firstWeekday + daysInMonth) / 7).ceil() * 7;
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 28,
+      itemCount: totalCells,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
       ),
       itemBuilder: (context, index) {
-        final dayStr = (index + 1).toString();
-        final isSelected = dayStr == '12';
-        final hasEvent = ['6', '7', '13', '14'].contains(dayStr);
+        final dayNumber = index - firstWeekday + 1;
+        final isInMonth = dayNumber > 0 && dayNumber <= daysInMonth;
+        final isToday = isInMonth &&
+            dayNumber == DateTime.now().day &&
+            _currentDate.month == DateTime.now().month &&
+            _currentDate.year == DateTime.now().year;
 
         return Container(
-          decoration: isSelected
+          decoration: isToday
               ? BoxDecoration(
                   color: AppColors.accentDark,
                   borderRadius: BorderRadius.circular(12),
@@ -273,33 +298,20 @@ class _EventsScreenState extends State<EventsScreen> {
                     BoxShadow(
                       color: AppColors.accent.withOpacity(0.2),
                       blurRadius: 8,
-                    )
+                    ),
                   ],
                 )
               : null,
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  dayStr,
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : AppColors.textPrimary,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  ),
-                ),
-                if (hasEvent && !isSelected)
-                  Container(
-                    margin: const EdgeInsets.only(top: 2),
-                    width: 4,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: AppColors.accent,
-                      shape: BoxShape.circle,
+            child: isInMonth
+                ? Text(
+                    dayNumber.toString(),
+                    style: TextStyle(
+                      color: isToday ? Colors.white : AppColors.textPrimary,
+                      fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
                     ),
                   )
-              ],
-            ),
+                : const SizedBox.shrink(),
           ),
         );
       },
