@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
+import 'package:izge_app_frontend/core/services/supabase_service.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -29,23 +30,35 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       _isLoading = true;
     });
 
-    // Simulate network request
-    await Future.delayed(const Duration(seconds: 1, milliseconds: 500));
+    try {
+      await SupabaseService.instance.resetPassword(email: email);
+      
+      if (!mounted) return;
 
-    if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+      });
 
-    setState(() {
-      _isLoading = false;
-    });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Şifre sıfırlama bağlantısı gönderildi.', style: TextStyle(color: Colors.white)),
+          backgroundColor: AppColors.positive,
+        ),
+      );
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Şifre sıfırlama bağlantısı gönderildi.', style: TextStyle(color: Colors.white)),
-        backgroundColor: AppColors.positive,
-      ),
-    );
-
-    Navigator.pop(context);
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString().replaceAll('Exception: ', ''), style: const TextStyle(color: Colors.white)),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
   }
 
   @override

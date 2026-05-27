@@ -12,6 +12,7 @@ import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/features/requests/data/requests_repository.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -85,16 +86,27 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               padding: const EdgeInsets.all(4),
-              child: Image.asset(
-                'assets/images/images/logo.jpeg',
-                fit: BoxFit.contain,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.asset(
+                  'assets/images/images/logo.jpeg',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -157,7 +169,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                           ),
                           const SizedBox(height: 4),
-                          Text('Bekleyen 1 talebiniz var.'.tr(), style: TextStyle(fontSize: 14, color: AppColors.accent)),
+                          Builder(
+                            builder: (context) {
+                              // Canlı veri olarak RequestsRepository'den çekiyoruz
+                              final pendingCount = const RequestsRepository().items.where((req) => req.status == 'İşlemde' || req.status == 'Bekliyor').length;
+                              if (pendingCount > 0) {
+                                return Text(
+                                  LanguageController.instance.isTurkish ? 'Bekleyen $pendingCount talebiniz var.' : 'You have $pendingCount pending requests.', 
+                                  style: TextStyle(fontSize: 14, color: AppColors.accent)
+                                );
+                              } else {
+                                return Text(
+                                  LanguageController.instance.isTurkish ? 'Bekleyen talebiniz yok.' : 'No pending requests.', 
+                                  style: TextStyle(fontSize: 14, color: AppColors.textSecondary)
+                                );
+                              }
+                            }
+                          ),
                         ],
                       ),
                       Container(

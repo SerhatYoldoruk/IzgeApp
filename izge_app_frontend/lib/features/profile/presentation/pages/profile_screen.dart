@@ -5,7 +5,6 @@ import 'package:izge_app_frontend/features/profile/presentation/pages/personal_i
 import 'package:izge_app_frontend/features/events/presentation/pages/my_events_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donation_history_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/linked_accounts_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/past_requests_screen.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
@@ -283,82 +282,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     iconColor: AppColors.textSecondary,
                   ),
                 ),
-                const SizedBox(height: 32),
-                Container(
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'BAĞLI HESAPLAR'.tr(),
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textSecondary,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const LinkedAccountsScreen()),
-                          );
-                        },
-                        icon: const Icon(Icons.share, color: Color(0xFF1DA1F2)),
-                        label: const Text(
-                          'X (Twitter)',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF1DA1F2),
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1DA1F2).withOpacity(0.1),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: const Color(0xFF1DA1F2).withOpacity(0.2)),
-                          ),
-                          elevation: 0,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const LinkedAccountsScreen()),
-                          );
-                        },
-                        icon: Icon(Icons.add, color: AppColors.textPrimary),
-                        label: Text(
-                          'Bağla'.tr(),
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.surfaceElevated,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: AppColors.border.withOpacity(0.3)),
-                          ),
-                          elevation: 0,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+
               ],
             ),
           );

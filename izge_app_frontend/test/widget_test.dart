@@ -4,7 +4,7 @@ import 'package:izge_app_frontend/main.dart';
 
 void main() {
   testWidgets('app opens on the login screen', (WidgetTester tester) async {
-    IzgeApp.isTesting = true;
+    // IzgeApp.isTesting = true;
     await tester.pumpWidget(const IzgeApp());
     await tester.pump();
 
