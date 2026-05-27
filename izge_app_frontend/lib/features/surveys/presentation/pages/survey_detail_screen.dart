@@ -1,5 +1,8 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SurveyDetailScreen extends StatefulWidget {
   const SurveyDetailScreen({super.key});
@@ -12,9 +15,28 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
   String? _selectedOption;
   bool _isSubmitting = false;
   bool _isSuccess = false;
+  bool _hasSubmittedBefore = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkSubmissionStatus();
+  }
+
+  Future<void> _checkSubmissionStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? submittedOption = prefs.getString('submitted_survey_1');
+    if (submittedOption != null && mounted) {
+      setState(() {
+        _hasSubmittedBefore = true;
+        _isSuccess = true;
+        _selectedOption = submittedOption;
+      });
+    }
+  }
 
   void _submit() async {
-    if (_selectedOption == null || _isSubmitting || _isSuccess) return;
+    if (_selectedOption == null || _isSubmitting || _isSuccess || _hasSubmittedBefore) return;
 
     setState(() {
       _isSubmitting = true;
@@ -23,10 +45,14 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 1500));
 
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('submitted_survey_1', _selectedOption!);
+
     if (mounted) {
       setState(() {
         _isSubmitting = false;
         _isSuccess = true;
+        _hasSubmittedBefore = true;
       });
 
       // Optionally navigate back after success

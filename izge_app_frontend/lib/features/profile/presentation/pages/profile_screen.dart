@@ -1,11 +1,10 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/personal_info_screen.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/my_events_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donation_history_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/edit_profile_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/linked_accounts_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/past_requests_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -103,6 +102,7 @@ class ProfileScreen extends StatelessWidget {
                                 return Icon(Icons.person, size: 48, color: AppColors.textSecondary);
                               },
                             ),
+
                           ),
                         ),
                         SizedBox(height: 8),
@@ -116,13 +116,11 @@ class ProfileScreen extends StatelessWidget {
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        SizedBox(height: 8),
-                        
-                        // Badge
+                        const SizedBox(height: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1A8025).withOpacity(0.2), // primary-container
+                            color: const Color(0xFF1A8025).withOpacity(0.2),
                             borderRadius: BorderRadius.circular(999),
                             border: Border.all(color: AppColors.accent.withOpacity(0.3)),
                           ),
@@ -130,9 +128,9 @@ class ProfileScreen extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(Icons.verified, color: AppColors.accent, size: 16),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               Text(
-                                'Gönüllü Üye',
+                                'Gönüllü Üye'.tr(),
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -142,108 +140,102 @@ class ProfileScreen extends StatelessWidget {
                             ],
                           ),
                         ),
+                        const SizedBox(height: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              _buildListTile(
+                                icon: Icons.person,
+                                title: 'Kişisel Bilgiler'.tr(),
+                                onTap: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const PersonalInfoScreen()),
+                                  );
+                                  _refreshProfile();
+                                },
+                              ),
+                              _buildDivider(),
+                              _buildListTile(
+                                icon: Icons.volunteer_activism,
+                                title: 'Bağış Geçmişim'.tr(),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const DonationHistoryScreen()),
+                                  );
+                                },
+                              ),
+                              _buildDivider(),
+                              _buildListTile(
+                                icon: Icons.event_available,
+                                title: 'Etkinlik Katılımlarım'.tr(),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const MyEventsScreen()),
+                                  );
+                                },
+                              ),
+                              _buildDivider(),
+                              _buildListTile(
+                                icon: Icons.support_agent,
+                                title: 'Taleplerim'.tr(),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const PastRequestsScreen()),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: _buildListTile(
+                            icon: Icons.settings,
+                            title: 'Ayarlar'.tr(),
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                              );
+                              _refreshProfile();
+                            },
+                            iconColor: AppColors.textSecondary,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            
-            SizedBox(height: 16),
-            
-            // Profile Actions List Group 1
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  _buildListTile(
-                    icon: Icons.person,
-                    title: 'Kişisel Bilgiler',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const PersonalInfoScreen()),
-                      );
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildListTile(
-                    icon: Icons.volunteer_activism,
-                    title: 'Bağış Geçmişim',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const DonationHistoryScreen()),
-                      );
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildListTile(
-                    icon: Icons.event_available,
-                    title: 'Etkinlik Katılımlarım',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyEventsScreen()),
-                      );
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildListTile(
-                    icon: Icons.support_agent,
-                    title: 'Taleplerim',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const PastRequestsScreen()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            
-            SizedBox(height: 16),
-            
-            // Profile Actions List Group 2
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: _buildListTile(
-                icon: Icons.settings,
-                title: 'Ayarlar',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SettingsScreen()),
-                  );
-                },
-                iconColor: AppColors.textSecondary,
-              ),
-            ),
-            
-            SizedBox(height: 32),
-            
             // Social Integration Section
+            const SizedBox(height: 24),
             Container(
               width: double.infinity,
               alignment: Alignment.centerLeft,
@@ -317,6 +309,97 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      _buildListTile(
+                        icon: Icons.person,
+                        title: 'Kişisel Bilgiler'.tr(),
+                        onTap: () async {
+                          // DÜZELTİLDİ: Burası zaten await'liydi, tetikleme mekanizması tıkır tıkır çalışacak
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PersonalInfoScreen()),
+                          );
+                          _refreshProfile();
+                        },
+                      ),
+                      _buildDivider(),
+                      _buildListTile(
+                        icon: Icons.volunteer_activism,
+                        title: 'Bağış Geçmişim'.tr(),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const DonationHistoryScreen()),
+                          );
+                        },
+                      ),
+                      _buildDivider(),
+                      _buildListTile(
+                        icon: Icons.event_available,
+                        title: 'Etkinlik Katılımlarım'.tr(),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const MyEventsScreen()),
+                          );
+                        },
+                      ),
+                      _buildDivider(),
+                      _buildListTile(
+                        icon: Icons.support_agent,
+                        title: 'Taleplerim'.tr(),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const PastRequestsScreen()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: _buildListTile(
+                    icon: Icons.settings,
+                    title: 'Ayarlar'.tr(),
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      );
+                      _refreshProfile();
+                    },
+                    iconColor: AppColors.textSecondary,
+                  ),
+                ),
+
+
               ],
             ),
           ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
 import 'package:izge_app_frontend/core/services/supabase_service.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -35,38 +34,27 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       await SupabaseService.instance.resetPassword(email: email);
       
       if (!mounted) return;
-      
+
       setState(() {
         _isLoading = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.', style: TextStyle(color: Colors.white)),
+        SnackBar(
+          content: Text('Şifre sıfırlama bağlantısı gönderildi.', style: TextStyle(color: Colors.white)),
           backgroundColor: AppColors.positive,
         ),
       );
 
       Navigator.pop(context);
-    } on AuthException catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.message, style: const TextStyle(color: Colors.white)),
-          backgroundColor: Colors.redAccent,
-        ),
-      );
     } catch (e) {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Bir hata oluştu, lütfen daha sonra tekrar deneyin.', style: TextStyle(color: Colors.white)),
+        SnackBar(
+          content: Text(e.toString().replaceAll('Exception: ', ''), style: const TextStyle(color: Colors.white)),
           backgroundColor: Colors.redAccent,
         ),
       );

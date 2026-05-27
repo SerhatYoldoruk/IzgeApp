@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'package:izge_app_frontend/core/models/profile_model.dart';
 import 'package:izge_app_frontend/core/models/announcement_model.dart';
+import 'package:izge_app_frontend/core/models/chat_model.dart';
 import 'package:izge_app_frontend/core/models/event_model.dart';
 import 'package:izge_app_frontend/core/models/poll_model.dart';
-import 'package:izge_app_frontend/core/models/chat_model.dart';
+import 'package:izge_app_frontend/core/models/profile_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Supabase Kimlik Doğrulama ve Veritabanı Servis Sınıfı
 /// Tüm Supabase işlemleri bu servis üzerinden yapılır
@@ -46,20 +45,12 @@ class SupabaseService {
   }) {
     // E-posta ile kayıt
     if (email != null && email.isNotEmpty) {
-      return _client.auth.signUp(
-        email: email,
-        password: password,
-        data: data,
-      );
+      return _client.auth.signUp(email: email, password: password, data: data);
     }
 
     // Telefon numarası ile kayıt
     if (phone != null && phone.isNotEmpty) {
-      return _client.auth.signUp(
-        phone: phone,
-        password: password,
-        data: data,
-      );
+      return _client.auth.signUp(phone: phone, password: password, data: data);
     }
 
     // E-posta veya telefon zorunlu
@@ -77,15 +68,21 @@ class SupabaseService {
     required String password,
   }) async {
     AuthResponse response;
-    
+
     // E-posta ile giriş
     if (email != null && email.isNotEmpty) {
-      response = await _client.auth.signInWithPassword(email: email, password: password);
-    } 
+      response = await _client.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+    }
     // Telefon numarası ile giriş
     else if (phone != null && phone.isNotEmpty) {
-      response = await _client.auth.signInWithPassword(phone: phone, password: password);
-    } 
+      response = await _client.auth.signInWithPassword(
+        phone: phone,
+        password: password,
+      );
+    }
     // E-posta veya telefon zorunlu
     else {
       throw ArgumentError('Email veya telefon numarası gerekli.');
@@ -105,7 +102,9 @@ class SupabaseService {
   }
 
   /// Şifre sıfırlama bağlantısı gönder
+  /// @param email - Kullanıcının kayıtlı e-posta adresi
   Future<void> resetPassword({required String email}) async {
+    // Supabase Flutter v2 API: resetPasswordForEmail göndererek e-posta ile sıfırlama bağlantısı yollar
     await _client.auth.resetPasswordForEmail(email);
   }
 
@@ -114,9 +113,13 @@ class SupabaseService {
   Future<ProfileModel> getProfile() async {
     // Oturum açmış kullanıcı var mı kontrol et
     final user = _requireCurrentUser();
-    
+
     // Kullanıcı profilini getir
-    final data = await _client.from('profiles').select('*').eq('id', user.id).single();
+    final data = await _client
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
     return ProfileModel.fromMap(Map<String, dynamic>.from(data as Map));
   }
 
@@ -134,7 +137,9 @@ class SupabaseService {
 
   /// Tüm etkinlikleri getir (etkinlik tarihine göre sıralı)
   Future<List<EventModel>> getEvents() async {
-    final list = await _fetchList(_client.from('events').select('*').order('event_date'));
+    final list = await _fetchList(
+      _client.from('events').select('*').order('event_date'),
+    );
     return list.map((e) => EventModel.fromMap(e)).toList();
   }
 
@@ -145,7 +150,9 @@ class SupabaseService {
 
   /// Tüm anketleri getir
   Future<List<PollModel>> getPolls() async {
-    final list = await _fetchList(_client.from('polls').select('*, poll_options(*)'));
+    final list = await _fetchList(
+      _client.from('polls').select('*, poll_options(*)'),
+    );
     return list.map((e) => PollModel.fromMap(e)).toList();
   }
 
@@ -159,17 +166,29 @@ class SupabaseService {
   }
 
   Future<List<Map<String, dynamic>>> getPollResults(String pollId) {
-    return _fetchList(_client.from('poll_votes').select('option_index').eq('poll_id', pollId));
+    return _fetchList(
+      _client.from('poll_votes').select('option_index').eq('poll_id', pollId),
+    );
   }
 
   Future<ChatRoomModel> getChatRoom() async {
     final user = _requireCurrentUser();
-    final data = await _client.from('chat_rooms').select('*').eq('user_id', user.id).single();
+    final data = await _client
+        .from('chat_rooms')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
     return ChatRoomModel.fromMap(Map<String, dynamic>.from(data as Map));
   }
 
   Future<List<MessageModel>> getMessages(int roomId) async {
-    final list = await _fetchList(_client.from('messages').select('*').eq('room_id', roomId).order('created_at'));
+    final list = await _fetchList(
+      _client
+          .from('messages')
+          .select('*')
+          .eq('room_id', roomId)
+          .order('created_at'),
+    );
     return list.map((e) => MessageModel.fromMap(e)).toList();
   }
 
@@ -201,7 +220,9 @@ class SupabaseService {
         value: roomId,
       ),
       callback: (payload) {
-        onMessage(MessageModel.fromMap(Map<String, dynamic>.from(payload.newRecord)));
+        onMessage(
+          MessageModel.fromMap(Map<String, dynamic>.from(payload.newRecord)),
+        );
       },
     );
 
