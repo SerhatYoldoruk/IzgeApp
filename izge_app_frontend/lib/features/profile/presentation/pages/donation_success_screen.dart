@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/share_certificate_screen.dart';
 
 class DonationSuccessScreen extends StatefulWidget {
@@ -120,9 +119,9 @@ class _DonationSuccessScreenState extends State<DonationSuccessScreen> with Sing
                   SizedBox(height: 32),
                   
                   // Typography
-                  Text(
-                    'Teşekkür Ederiz!'.tr(),
-                    style: const TextStyle(
+                  const Text(
+                    'Teşekkür Ederiz!',
+                    style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF7ADC75), // primary
@@ -131,7 +130,7 @@ class _DonationSuccessScreenState extends State<DonationSuccessScreen> with Sing
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Bağışınız başarıyla ulaştırıldı. Desteğinizle daha güçlüyüz.'.tr(),
+                    'Bağışınız başarıyla ulaştırıldı. Desteğinizle daha güçlüyüz.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -162,7 +161,7 @@ class _DonationSuccessScreenState extends State<DonationSuccessScreen> with Sing
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Bağış Tutarı'.tr(),
+                              'Bağış Tutarı',
                               style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                             ),
                             const Text(
@@ -183,11 +182,11 @@ class _DonationSuccessScreenState extends State<DonationSuccessScreen> with Sing
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Kategori'.tr(),
+                              'Kategori',
                               style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                             ),
                             Text(
-                              'Genel Bağış'.tr(),
+                              'Genel Bağış',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -201,11 +200,11 @@ class _DonationSuccessScreenState extends State<DonationSuccessScreen> with Sing
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Tarih'.tr(),
+                              'Tarih',
                               style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                             ),
                             Text(
-                              '12 Ekim 2023'.tr(),
+                              '12 Ekim 2023',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.textPrimary,
@@ -232,7 +231,7 @@ class _DonationSuccessScreenState extends State<DonationSuccessScreen> with Sing
                       },
                       icon: Icon(Icons.share, color: AppColors.textPrimary, size: 20),
                       label: Text(
-                        'Sertifikayı Paylaş'.tr(),
+                        'Sertifikayı Paylaş',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -258,9 +257,9 @@ class _DonationSuccessScreenState extends State<DonationSuccessScreen> with Sing
                         Navigator.popUntil(context, (route) => route.isFirst);
                       },
                       icon: const Icon(Icons.home, color: Color(0xFF003908), size: 20),
-                      label: Text(
-                        'Ana Sayfaya Dön'.tr(),
-                        style: const TextStyle(
+                      label: const Text(
+                        'Ana Sayfaya Dön',
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF003908),

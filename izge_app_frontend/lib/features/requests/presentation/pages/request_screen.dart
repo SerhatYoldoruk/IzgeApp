@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/request_detail_screen.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
-import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
 
 class RequestsScreen extends StatelessWidget {
   const RequestsScreen({super.key});
@@ -12,15 +9,10 @@ class RequestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const CustomDrawer(),
       appBar: AppBar(
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-            );
-          }
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
         title: Row(
           children: [
@@ -50,9 +42,7 @@ class RequestsScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
-            },
+            onPressed: () {},
             icon: Icon(Icons.notifications_none, color: AppColors.textPrimary),
           ),
         ],
@@ -74,7 +64,7 @@ class RequestsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Talepler'.tr(),
+                  'Talepler',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
@@ -95,7 +85,7 @@ class RequestsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   ),
                   icon: const Icon(Icons.add, size: 18),
-                  label: Text('Yeni Talep'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  label: const Text('Yeni Talep', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -127,9 +117,9 @@ class RequestsScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  Text(
-                    'Henüz Bir Talep Oluşturmadınız'.tr(),
-                    style: const TextStyle(
+                  const Text(
+                    'Henüz Bir Talep Oluşturmadınız',
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -138,7 +128,7 @@ class RequestsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'İhtiyaç duyduğunuz konularda talep oluşturarak\nbizden destek alabilirsiniz.'.tr(),
+                    'İhtiyaç duyduğunuz konularda talep oluşturarak\nbizden destek alabilirsiniz.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -156,7 +146,6 @@ class RequestsScreen extends StatelessWidget {
   }
 }
 
-// ignore: unused_element
 class _RequestCard extends StatelessWidget {
   final String title;
   final String statusText;

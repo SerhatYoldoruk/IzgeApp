@@ -1,73 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/create_request_screen.dart';
+import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/events_screen.dart';
+import 'package:izge_app_frontend/features/surveys/presentation/pages/surveys_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
+import 'package:izge_app_frontend/features/support/presentation/pages/live_support_screen.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/event_detail_screen.dart';
 import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/features/requests/presentation/pages/request_detail_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  Future<Map<String, dynamic>>? _userDataFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _refreshUserData();
-    LanguageController.instance.addListener(_onLanguageChanged);
-  }
-
-  @override
-  void dispose() {
-    LanguageController.instance.removeListener(_onLanguageChanged);
-    super.dispose();
-  }
-
-  void _onLanguageChanged() {
-    if (mounted) setState(() {});
-  }
-
-  void _refreshUserData() {
-    if (mounted) {
-      setState(() {
-        _userDataFuture = _fetchUserData();
-      });
-    }
-  }
-
-  Future<Map<String, dynamic>> _fetchUserData() async {
-    final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) return {};
-
-    try {
-      final response = await Supabase.instance.client
-          .from('profiles')
-          .select()
-          .eq('id', user.id)
-          .single();
-          
-      return response;
-    } catch (e) {
-      debugPrint("Home Veri Çekme Hatası: ${e.toString()}");
-      return {
-        'full_name': user.userMetadata?['name'] ?? 'Kullanıcı',
-        'avatar_url': user.userMetadata?['avatar_url'] ?? '',
-      };
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fit: BoxFit.contain,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Text(
               'İzge App',
               style: TextStyle(
@@ -117,202 +64,163 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: _userDataFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: RefreshIndicator(
+        color: AppColors.accent,
+        backgroundColor: AppColors.surfaceElevated,
+        onRefresh: () async {
+          await Future.delayed(const Duration(milliseconds: 800));
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Karşılama
+            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Merhaba Ahmet 👋', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                    SizedBox(height: 4),
+                    Text('Bekleyen 1 talebiniz var.', style: TextStyle(fontSize: 14, color: AppColors.accent)),
+                  ],
+                ),
+                CircleAvatar(
+                  radius: 24,
+                  backgroundColor: AppColors.accent.withOpacity(0.2),
+                  backgroundImage: const NetworkImage('https://i.pravatar.cc/150?img=11'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
 
-          final userData = snapshot.data ?? {};
-          final fullName = userData['full_name'] ?? userData['name'] ?? 'Kullanıcı';
-          final avatarUrl = userData['avatar_url'] ?? '';
+            // Hızlı İşlemler
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _QuickActionBtn(icon: Icons.volunteer_activism, label: 'Bağış Yap', onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DonateScreen()));
+                }),
+                _QuickActionBtn(icon: Icons.add_circle_outline, label: 'Talep Aç', onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const NewRequestScreen()));
+                }),
+                _QuickActionBtn(icon: Icons.event, label: 'Etkinlikler', onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
+                }),
+                _QuickActionBtn(icon: Icons.support_agent, label: 'Destek', onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const LiveSupportScreen()));
+                }),
+              ],
+            ),
+            const SizedBox(height: 32),
 
-          // KESİN ÇÖZÜM: İsim soyisimi boşluklardan ayırıp sadece ilk kelimeyi (yani ilk ismi) alıyoruz
-          final firstName = fullName.trim().split(' ').first;
-
-          return RefreshIndicator(
-            color: AppColors.accent,
-            backgroundColor: AppColors.surfaceElevated,
-            onRefresh: () async {
-              _refreshUserData();
-              await Future.delayed(const Duration(milliseconds: 500));
-            },
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            // Öne Çıkanlar Section
+            _SectionHeader(title: 'Öne Çıkanlar', actionLabel: 'Hepsini Gör', onActionTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsScreen()));
+            }),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 180,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
                 children: [
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // KESİN ÇÖZÜM: Artık burada sadece 'firstName' basılıyor
-                          Text(
-                            LanguageController.instance.isTurkish ? 'Merhaba $firstName 👋' : 'Hello $firstName 👋', 
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-                          ),
-                          const SizedBox(height: 4),
-                          Text('Bekleyen 1 talebiniz var.'.tr(), style: TextStyle(fontSize: 14, color: AppColors.accent)),
-                        ],
-                      ),
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.accent.withOpacity(0.2),
-                        ),
-                        child: ClipOval(
-                          child: avatarUrl.isNotEmpty
-                              ? Image.network(
-                                  avatarUrl,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) => Icon(
-                                    Icons.person,
-                                    size: 24,
-                                    color: AppColors.textSecondary,
-                                  ),
-                                )
-                              : Icon(
-                                  Icons.person,
-                                  size: 24,
-                                  color: AppColors.textSecondary,
-                                ),
-                        ),
-                      ),
-                    ],
+                  _FeaturedCard(
+                    tag: 'ETKİNLİK',
+                    title: 'Engelsiz Yaşam Buluşması',
+                    imageUrl: 'assets/images/images/featured_card.png',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const EventDetailScreen()));
+                    },
                   ),
-                  const SizedBox(height: 32),
-
-                  // Hızlı İşlemler
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _QuickActionBtn(icon: Icons.volunteer_activism, label: 'Bağış Yap'.tr(), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const DonateScreen()));
-                      }),
-                      _QuickActionBtn(icon: Icons.add_circle_outline, label: 'Talep Aç'.tr(), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateRequestScreen()));
-                      }),
-                      _QuickActionBtn(icon: Icons.event, label: 'Etkinlikler'.tr(), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
-                      }),
-                      _QuickActionBtn(icon: Icons.support_agent, label: 'Destek'.tr(), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const LiveSupportScreen()));
-                      }),
-                    ],
+                  const SizedBox(width: 16),
+                  _FeaturedCard(
+                    tag: 'DUYURU',
+                    title: 'Yeni Rehabilitasyon Merkezi',
+                    imageUrl: 'assets/images/images/news_main.png',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsDetailScreen()));
+                    },
                   ),
-                  const SizedBox(height: 32),
-
-                  // Öne Çıkanlar Section
-                  _SectionHeader(title: 'Öne Çıkanlar'.tr(), actionLabel: 'Hepsini Gör'.tr(), onActionTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsScreen()));
-                  }),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    height: 180,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        _FeaturedCard(
-                          tag: 'ETKİNLİK'.tr(),
-                          title: 'Engelsiz Yaşam Buluşması'.tr(),
-                          imageUrl: 'assets/images/images/featured_card.png',
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const EventDetailScreen()));
-                          },
-                        ),
-                        const SizedBox(width: 16),
-                        _FeaturedCard(
-                          tag: 'DUYURU'.tr(),
-                          title: 'Yeni Rehabilitasyon Merkezi'.tr(),
-                          imageUrl: 'assets/images/images/news_main.png',
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsDetailScreen()));
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Canlı Destek Section
-                  _LiveSupportCard(onActionTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LiveSupportScreen()));
-                  }),
-                  const SizedBox(height: 32),
-
-                  // Talepler Section
-                  _SectionHeader(title: 'Talepler'.tr(), actionLabel: LanguageController.instance.isTurkish ? '+ Yeni Talep' : '+ New Request', onActionTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const CreateRequestScreen()),
-                    );
-                  }),
-                  const SizedBox(height: 16),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Henüz talep bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Yaklaşan Etkinlikler Section
-                  _SectionHeader(title: 'Yaklaşan Etkinlikler'.tr(), actionLabel: 'Tümünü Gör'.tr(), onActionTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
-                  }),
-                  const SizedBox(height: 16),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Yaklaşan etkinlik bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Anketler Section
-                  Text(
-                    'Anketler'.tr(),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Aktif anket bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
-                    ),
-                  ),
-                  const SizedBox(height: 48),
-                  
-                  // Social Links Section
-                  Center(
-                    child: Text(
-                      'Bizi Takip Edin'.tr(),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const SocialLinksRow(),
-                  const SizedBox(height: 32),
                 ],
               ),
             ),
-          );
-        },
+            const SizedBox(height: 32),
+
+            // Canlı Destek Section
+            _LiveSupportCard(onActionTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const LiveSupportScreen()));
+            }),
+            const SizedBox(height: 32),
+
+            // Talepler Section
+            _SectionHeader(title: 'Talepler', actionLabel: '+ Yeni Talep', onActionTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NewRequestScreen()),
+              );
+            }),
+            const SizedBox(height: 16),
+            const SizedBox(height: 16),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Text('Henüz talep bulunmuyor', style: TextStyle(color: AppColors.textSecondary)),
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // Yaklaşan Etkinlikler Section
+            _SectionHeader(title: 'Yaklaşan Etkinlikler', actionLabel: 'Tümünü Gör', onActionTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
+            }),
+            const SizedBox(height: 16),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Text('Yaklaşan etkinlik bulunmuyor', style: TextStyle(color: AppColors.textSecondary)),
+              ),
+            ),
+            SizedBox(height: 32),
+
+            // Anketler Section
+            Text(
+              'Anketler',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Text('Aktif anket bulunmuyor', style: TextStyle(color: AppColors.textSecondary)),
+              ),
+            ),
+            SizedBox(height: 48),
+            
+            // Social Links Section
+            Center(
+              child: Text(
+                'Bizi Takip Edin',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const SocialLinksRow(),
+            const SizedBox(height: 32),
+          ],
+        ),
+      ),
       ),
     );
   }
@@ -496,22 +404,22 @@ class _LiveSupportCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Canlı Destek'.tr(),
+                      'Canlı Destek',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Text(
-                      'Size yardımcı olmak için buradayız. Hemen sohbete başlayın.'.tr(),
+                      'Size yardımcı olmak için buradayız. Hemen sohbete başlayın.',
                       style: TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     ElevatedButton.icon(
                       onPressed: onActionTap,
                       style: ElevatedButton.styleFrom(
@@ -521,16 +429,16 @@ class _LiveSupportCard extends StatelessWidget {
                         shape: const StadiumBorder(),
                         elevation: 4,
                       ),
-                      icon: const Icon(Icons.chat),
-                      label: Text(
-                        'Bize Yazın'.tr(),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      icon: Icon(Icons.chat),
+                      label: const Text(
+                        'Bize Yazın',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 80),
+              SizedBox(width: 80), // Space for background icon
             ],
           ),
           Positioned(
@@ -540,6 +448,271 @@ class _LiveSupportCard extends StatelessWidget {
               Icons.forum,
               size: 120,
               color: AppColors.textPrimary.withOpacity(0.05),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RequestListCard extends StatelessWidget {
+  final String title;
+  final String status;
+  final Color statusColor;
+  final IconData icon;
+
+  const _RequestListCard({
+    required this.title,
+    required this.status,
+    required this.statusColor,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const RequestDetailScreen()));
+      },
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: AppColors.accent.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(icon, color: AppColors.accent),
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: statusColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        status,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: AppColors.textSecondary),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EventListCard extends StatelessWidget {
+  final String month;
+  final String day;
+  final String title;
+  final String details;
+  final VoidCallback onTap;
+
+  const _EventListCard({
+    required this.month,
+    required this.day,
+    required this.title,
+    required this.details,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: AppColors.accent.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    month,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.accent,
+                    ),
+                  ),
+                  Text(
+                    day,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.accent,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    details,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: AppColors.textSecondary),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SurveyCard extends StatelessWidget {
+  final String title;
+  final String description;
+  final VoidCallback onTap;
+
+  const _SurveyCard({
+    required this.title,
+    required this.description,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.accent.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Icon(Icons.poll, color: AppColors.accent),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
+          InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Ankete Katıl',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward, color: AppColors.accent),
+                ],
+              ),
             ),
           ),
         ],
@@ -575,7 +748,7 @@ class _QuickActionBtn extends StatelessWidget {
             ),
             child: Icon(icon, color: AppColors.accent, size: 28),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
         ],
       ),

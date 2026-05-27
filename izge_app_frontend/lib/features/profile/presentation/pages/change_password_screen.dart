@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -27,11 +26,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     if (_newPasswordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Row(
+          content: const Row(
             children: [
-              const Icon(Icons.error_outline, color: Colors.white),
-              const SizedBox(width: 12),
-              Text('Şifreler eşleşmiyor!'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+              Icon(Icons.error_outline, color: Colors.white),
+              SizedBox(width: 12),
+              Text('Şifreler eşleşmiyor!', style: TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
           backgroundColor: const Color(0xFF93000A),
@@ -50,11 +49,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Row(
+        content: const Row(
           children: [
-            const Icon(Icons.check_circle, color: Colors.white),
-            const SizedBox(width: 12),
-            Text('Şifreniz başarıyla güncellendi!'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+            Icon(Icons.check_circle, color: Colors.white),
+            SizedBox(width: 12),
+            Text('Şifreniz başarıyla güncellendi!', style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
         backgroundColor: const Color(0xFF1A8025),
@@ -110,7 +109,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           children: [
             // Header
             Text(
-              'Şifre Değiştir'.tr(),
+              'Şifre Değiştir',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -119,7 +118,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
             SizedBox(height: 8),
             Text(
-              'Hesap güvenliğiniz için şifrenizi güncel tutun.'.tr(),
+              'Hesap güvenliğiniz için şifrenizi güncel tutun.',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -127,25 +126,25 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // Mevcut Şifre
-            _buildLabel('Mevcut Şifre'.tr()),
+            _buildLabel('Mevcut Şifre'),
             const SizedBox(height: 8),
             _buildPasswordField(
               controller: _currentPasswordController,
-              hint: 'Mevcut şifrenizi girin'.tr(),
+              hint: 'Mevcut şifrenizi girin',
               obscure: _obscureCurrent,
               onToggle: () => setState(() => _obscureCurrent = !_obscureCurrent),
             ),
             const SizedBox(height: 24),
 
             // Yeni Şifre
-            _buildLabel('Yeni Şifre'.tr()),
+            _buildLabel('Yeni Şifre'),
             const SizedBox(height: 8),
             _buildPasswordField(
               controller: _newPasswordController,
-              hint: 'Yeni şifrenizi belirleyin'.tr(),
+              hint: 'Yeni şifrenizi belirleyin',
               obscure: _obscureNew,
               onToggle: () => setState(() => _obscureNew = !_obscureNew),
             ),
@@ -170,7 +169,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Şifre Gereksinimleri:'.tr(),
+                    'Şifre Gereksinimleri:',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -179,22 +178,22 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildRequirement('En az 8 karakter'.tr(), _hasMinLength),
+                  _buildRequirement('En az 8 karakter', _hasMinLength),
                   const SizedBox(height: 8),
-                  _buildRequirement('En az 1 rakam'.tr(), _hasNumber),
+                  _buildRequirement('En az 1 rakam', _hasNumber),
                   const SizedBox(height: 8),
-                  _buildRequirement('En az 1 özel karakter'.tr(), _hasSpecialChar),
+                  _buildRequirement('En az 1 özel karakter', _hasSpecialChar),
                 ],
               ),
             ),
             const SizedBox(height: 24),
 
             // Yeni Şifre Tekrar
-            _buildLabel('Yeni Şifre (Tekrar)'.tr()),
+            _buildLabel('Yeni Şifre (Tekrar)'),
             const SizedBox(height: 8),
             _buildPasswordField(
               controller: _confirmPasswordController,
-              hint: 'Yeni şifrenizi doğrulayın'.tr(),
+              hint: 'Yeni şifrenizi doğrulayın',
               obscure: _obscureConfirm,
               onToggle: () => setState(() => _obscureConfirm = !_obscureConfirm),
             ),
@@ -217,7 +216,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       )
                     : const Icon(Icons.lock_reset, color: Color(0xFFD3FFC8)),
                 label: Text(
-                  _isLoading ? 'Güncelleniyor...'.tr() : 'Şifreyi Güncelle'.tr(),
+                  _isLoading ? 'Güncelleniyor...' : 'Şifreyi Güncelle',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

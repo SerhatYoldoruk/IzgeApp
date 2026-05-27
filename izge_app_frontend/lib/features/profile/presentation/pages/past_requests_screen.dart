@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/request_detail_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/create_request_screen.dart';
 
 class PastRequestsScreen extends StatefulWidget {
@@ -11,7 +11,7 @@ class PastRequestsScreen extends StatefulWidget {
 }
 
 class _PastRequestsScreenState extends State<PastRequestsScreen> {
-
+  int _selectedTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class _PastRequestsScreenState extends State<PastRequestsScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Geçmiş Talepler'.tr(),
-          style: const TextStyle(
+        title: const Text(
+          'Geçmiş Talepler',
+          style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75), // primary
@@ -64,9 +64,9 @@ class _PastRequestsScreenState extends State<PastRequestsScreen> {
                 ),
               ),
               SizedBox(height: 32),
-              Text(
-                'Henüz Bir Talep Oluşturmadınız'.tr(),
-                style: const TextStyle(
+              const Text(
+                'Henüz Bir Talep Oluşturmadınız',
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -75,7 +75,7 @@ class _PastRequestsScreenState extends State<PastRequestsScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                'İhtiyaç duyduğunuz konularda talep oluşturarak bizden destek alabilirsiniz.'.tr(),
+                'İhtiyaç duyduğunuz konularda talep oluşturarak bizden destek alabilirsiniz.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -94,9 +94,9 @@ class _PastRequestsScreenState extends State<PastRequestsScreen> {
                     );
                   },
                   icon: const Icon(Icons.add, color: Color(0xFFD3FFC8)),
-                  label: Text(
-                    'Yeni Talep Oluştur'.tr(),
-                    style: const TextStyle(
+                  label: const Text(
+                    'Yeni Talep Oluştur',
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFFD3FFC8),

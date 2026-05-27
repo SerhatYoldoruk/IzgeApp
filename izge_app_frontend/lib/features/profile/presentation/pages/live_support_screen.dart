@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class LiveSupportScreen extends StatefulWidget {
   const LiveSupportScreen({super.key});
@@ -14,7 +13,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
   final List<Map<String, dynamic>> _messages = [
     {
       'isMe': false,
-      'text': 'Merhaba! İzge Uygulaması Destek Hattına hoş geldiniz. Size nasıl yardımcı olabilirim?'.tr(),
+      'text': 'Merhaba! İzge Uygulaması Destek Hattına hoş geldiniz. Size nasıl yardımcı olabilirim?',
       'time': '14:00',
     },
   ];
@@ -30,6 +29,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
       });
     });
 
+    final sentMessage = _messageController.text;
     _messageController.clear();
 
     // Mock auto-reply
@@ -38,7 +38,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
         setState(() {
           _messages.add({
             'isMe': false,
-            'text': 'Talebiniz alınmıştır. Destek ekibimiz şu an yoğun olduğu için size birazdan dönüş yapacaktır. Anlayışınız için teşekkür ederiz.'.tr(),
+            'text': 'Talebiniz alınmıştır. Destek ekibimiz şu an yoğun olduğu için size birazdan dönüş yapacaktır. Anlayışınız için teşekkür ederiz.',
             'time': '14:01',
           });
         });
@@ -77,7 +77,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Canlı Destek'.tr(),
+                  'Canlı Destek',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                   ),
                 ),
                 Text(
-                  'Çevrimiçi'.tr(),
+                  'Çevrimiçi',
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(0xFF7ADC75),
@@ -195,7 +195,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                         controller: _messageController,
                         style: TextStyle(color: AppColors.textPrimary),
                         decoration: InputDecoration(
-                          hintText: 'Mesajınızı yazın...'.tr(),
+                          hintText: 'Mesajınızı yazın...',
                           hintStyle: TextStyle(color: AppColors.textSecondary),
                           border: InputBorder.none,
                         ),

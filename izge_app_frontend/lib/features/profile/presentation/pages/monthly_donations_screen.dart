@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
 
 class MonthlyDonationsScreen extends StatelessWidget {
@@ -19,7 +18,7 @@ class MonthlyDonationsScreen extends StatelessWidget {
           splashRadius: 24,
         ),
         title: Text(
-          'Aylık Bağışlarım'.tr(),
+          'Aylık Bağışlarım',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
@@ -71,7 +70,7 @@ class MonthlyDonationsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 48),
                     Text(
-                      'Aylık Bağışınız Yok'.tr(),
+                      'Aylık Bağışınız Yok',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -81,7 +80,7 @@ class MonthlyDonationsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      'Henüz düzenli bir bağış talimatınız bulunmamaktadır. Düzenli bağış yaparak sürdürülebilir projelere destek olabilirsiniz.'.tr(),
+                      'Henüz düzenli bir bağış talimatınız bulunmamaktadır. Düzenli bağış yaparak sürdürülebilir projelere destek olabilirsiniz.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -100,8 +99,8 @@ class MonthlyDonationsScreen extends StatelessWidget {
                           );
                         },
                         icon: const Icon(Icons.favorite, color: Color(0xFFD3FFC8)),
-                        label: Text(
-                          'Düzenli Bağış Başlat'.tr(),
+                        label: const Text(
+                          'Düzenli Bağış Başlat',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

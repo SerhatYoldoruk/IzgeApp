@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({super.key});
@@ -10,22 +9,15 @@ class LanguageScreen extends StatefulWidget {
 }
 
 class _LanguageScreenState extends State<LanguageScreen> {
-  late String _selectedLanguage;
+  String _selectedLanguage = 'tr';
   bool _isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedLanguage = LanguageController.instance.currentLanguage;
-  }
 
   void _handleSave() async {
     setState(() {
       _isLoading = true;
     });
 
-    await LanguageController.instance.changeLanguage(_selectedLanguage);
-    await Future.delayed(const Duration(milliseconds: 150));
+    await Future.delayed(const Duration(milliseconds: 1200));
 
     if (!mounted) return;
 
@@ -68,7 +60,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Dil Tercihi'.tr(),
+          'Dil Tercihi',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -87,7 +79,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Uygulamayı kullanmak istediğiniz dili seçin.'.tr(),
+                      'Uygulamayı kullanmak istediğiniz dili seçin.',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -149,9 +141,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
                             strokeWidth: 2,
                           ),
                         )
-                      : Text(
-                          'Kaydet'.tr(),
-                          style: const TextStyle(
+                      : const Text(
+                          'Kaydet',
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

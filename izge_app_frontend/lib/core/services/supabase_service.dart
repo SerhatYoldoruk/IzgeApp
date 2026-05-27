@@ -104,6 +104,11 @@ class SupabaseService {
     return _client.auth.signInWithOAuth(OAuthProvider.google);
   }
 
+  /// Şifre sıfırlama bağlantısı gönder
+  Future<void> resetPassword({required String email}) async {
+    await _client.auth.resetPasswordForEmail(email);
+  }
+
   /// Kullanıcının profil bilgilerini getir
   /// Veritabanında profiles tablosundan kullanıcı ID'sine göre çeker
   Future<ProfileModel> getProfile() async {

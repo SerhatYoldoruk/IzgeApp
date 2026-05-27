@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/request_status_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/new_request_types_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/past_requests_screen.dart';
@@ -22,8 +21,8 @@ class RequestsHelpScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Talepler'.tr(),
+        title: const Text(
+          'Talepler',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -38,7 +37,7 @@ class RequestsHelpScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Nasıl yardımcı olabiliriz?'.tr(),
+              'Nasıl yardımcı olabiliriz?',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -47,7 +46,7 @@ class RequestsHelpScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Taleplerinizle ilgili sıkça sorulan sorular ve rehberler.'.tr(),
+              'Taleplerinizle ilgili sıkça sorulan sorular ve rehberler.',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -63,8 +62,8 @@ class RequestsHelpScreen extends StatelessWidget {
                 final card1 = _buildTopicCard(
                   context: context,
                   icon: Icons.sync,
-                  title: 'Talep Durumu Sorgulama'.tr(),
-                  subtitle: 'Mevcut taleplerinizin hangi aşamada olduğunu nasıl öğrenebilirsiniz?'.tr(),
+                  title: 'Talep Durumu Sorgulama',
+                  subtitle: 'Mevcut taleplerinizin hangi aşamada olduğunu nasıl öğrenebilirsiniz?',
                   onTap: () {
                     Navigator.push(
                       context,
@@ -76,8 +75,8 @@ class RequestsHelpScreen extends StatelessWidget {
                 final card2 = _buildTopicCard(
                   context: context,
                   icon: Icons.add_circle,
-                  title: 'Yeni Talep Türleri'.tr(),
-                  subtitle: 'Sisteme yeni eklenen hizmet talebi kategorileri ve başvuru süreçleri.'.tr(),
+                  title: 'Yeni Talep Türleri',
+                  subtitle: 'Sisteme yeni eklenen hizmet talebi kategorileri ve başvuru süreçleri.',
                   onTap: () {
                     Navigator.push(
                       context,
@@ -89,8 +88,8 @@ class RequestsHelpScreen extends StatelessWidget {
                 final card3 = _buildTopicCard(
                   context: context,
                   icon: Icons.build,
-                  title: 'Sorun Giderme'.tr(),
-                  subtitle: 'Talep oluştururken hata alıyorsanız, belgeleriniz yüklenmiyorsa veya uygulamanın çökmesi durumunda izlenecek adımlar.'.tr(),
+                  title: 'Sorun Giderme',
+                  subtitle: 'Talep oluştururken hata alıyorsanız, belgeleriniz yüklenmiyorsa veya uygulamanın çökmesi durumunda izlenecek adımlar.',
                   onTap: () {
                     Navigator.push(
                       context,
@@ -103,8 +102,8 @@ class RequestsHelpScreen extends StatelessWidget {
                 final card4 = _buildTopicCard(
                   context: context,
                   icon: Icons.history,
-                  title: 'Geçmiş Talepler'.tr(),
-                  subtitle: 'Tamamlanmış veya iptal edilmiş taleplerinizin arşivine erişim.'.tr(),
+                  title: 'Geçmiş Talepler',
+                  subtitle: 'Tamamlanmış veya iptal edilmiş taleplerinizin arşivine erişim.',
                   onTap: () {
                     Navigator.push(
                       context,
@@ -124,11 +123,11 @@ class RequestsHelpScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      card4, // Col span 2
+                      card3, // Col span 2
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          Expanded(child: card3),
+                          Expanded(child: card4),
                           const SizedBox(width: 16),
                           Expanded(child: Container()), // Empty space for layout balance
                         ],
@@ -142,9 +141,9 @@ class RequestsHelpScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       card2,
                       const SizedBox(height: 16),
-                      card4,
-                      const SizedBox(height: 16),
                       card3,
+                      const SizedBox(height: 16),
+                      card4,
                     ],
                   );
                 }
@@ -165,8 +164,8 @@ class RequestsHelpScreen extends StatelessWidget {
                   );
                 },
                 icon: const Icon(Icons.headset_mic, color: Color(0xFFD3FFC8)), // on-primary-container
-                label: Text(
-                  'Canlı Destek Başlat'.tr(),
+                label: const Text(
+                  'Canlı Destek Başlat',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -250,7 +249,7 @@ class RequestsHelpScreen extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Çözüm Rehberini İncele'.tr(),
+                                'Çözüm Rehberini İncele',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,

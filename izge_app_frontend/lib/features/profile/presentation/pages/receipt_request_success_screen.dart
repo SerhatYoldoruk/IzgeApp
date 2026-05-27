@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class ReceiptRequestSuccessScreen extends StatefulWidget {
   final String date;
@@ -72,7 +71,7 @@ class _ReceiptRequestSuccessScreenState extends State<ReceiptRequestSuccessScree
                         onPressed: () => Navigator.pop(context),
                       ),
                       Text(
-                        'İşlem Başarılı'.tr(), // Changed from Teknik Destek to fit context better
+                        'İşlem Başarılı', // Changed from Teknik Destek to fit context better
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -131,7 +130,7 @@ class _ReceiptRequestSuccessScreenState extends State<ReceiptRequestSuccessScree
                         
                         // Typography
                         Text(
-                          'Makbuz Talebiniz Alındı'.tr(),
+                          'Makbuz Talebiniz Alındı',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
@@ -141,7 +140,7 @@ class _ReceiptRequestSuccessScreenState extends State<ReceiptRequestSuccessScree
                         ),
                         SizedBox(height: 16),
                         Text(
-                          'Bağış makbuzunuz hazırlandığında sistemimizde kayıtlı olan e-posta adresinize 24 saat içerisinde PDF formatında gönderilecektir.'.tr(),
+                          'Bağış makbuzunuz hazırlandığında sistemimizde kayıtlı olan e-posta adresinize 24 saat içerisinde PDF formatında gönderilecektir.',
                           style: TextStyle(
                             fontSize: 16,
                             color: AppColors.textSecondary,
@@ -168,11 +167,11 @@ class _ReceiptRequestSuccessScreenState extends State<ReceiptRequestSuccessScree
                           ),
                           child: Column(
                             children: [
-                              _buildInfoRow('Tarih'.tr(), widget.date),
+                              _buildInfoRow('Tarih', widget.date),
                               Divider(color: AppColors.border), // surface-container-highest
-                              _buildInfoRow('Tutar'.tr(), widget.amount),
+                              _buildInfoRow('Tutar', widget.amount),
                               Divider(color: AppColors.border),
-                              _buildInfoRow('İşlem No'.tr(), widget.transactionNo, isMono: true),
+                              _buildInfoRow('İşlem No', widget.transactionNo, isMono: true),
                             ],
                           ),
                         ),
@@ -186,9 +185,9 @@ class _ReceiptRequestSuccessScreenState extends State<ReceiptRequestSuccessScree
                           child: ElevatedButton.icon(
                             onPressed: () => Navigator.pop(context),
                             icon: const Icon(Icons.receipt_long, color: Color(0xFFD3FFC8)), // on-primary-container
-                            label: Text(
-                              'Makbuzlara Dön'.tr(),
-                              style: const TextStyle(
+                            label: const Text(
+                              'Makbuzlara Dön',
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFD3FFC8), // on-primary-container

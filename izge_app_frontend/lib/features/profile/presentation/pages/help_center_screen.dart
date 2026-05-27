@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/membership_help_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donations_help_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/requests_help_screen.dart';
@@ -56,15 +55,21 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Yardım Merkezi'.tr(),
-          style: const TextStyle(
+        title: const Text(
+          'Yardım Merkezi',
+          style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75), // primary
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle, color: AppColors.textSecondary),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -73,7 +78,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           children: [
             // Search Bar Section
             Text(
-              'Size nasıl yardımcı\nolabiliriz?'.tr(),
+              'Size nasıl yardımcı\nolabiliriz?',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -95,7 +100,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               child: TextField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Sorunuzu arayın (örn: bağış yapmak)'.tr(),
+                  hintText: 'Sorunuzu arayın (örn: bağış yapmak)',
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   filled: true,
@@ -113,7 +118,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             
             // Categories Bento Grid
             Text(
-              'Kategoriler'.tr(),
+              'Kategoriler',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -176,7 +181,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             
             // FAQ Section
             Text(
-              'Sıkça Sorulan Sorular'.tr(),
+              'Sıkça Sorulan Sorular',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -209,7 +214,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                           child: ExpansionTile(
                             title: Text(
-                              item['question']!.tr(),
+                              item['question']!,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -227,7 +232,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                             },
                             children: [
                               Text(
-                                item['answer']!.tr(),
+                                item['answer']!,
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: AppColors.textSecondary,
@@ -250,9 +255,9 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                                       backgroundColor: const Color(0xFF1A8025).withOpacity(0.2), // primary-container
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                     ),
-                                    child: Text(
-                                      'Detaylı Oku'.tr(),
-                                      style: const TextStyle(color: Color(0xFF7ADC75), fontSize: 13, fontWeight: FontWeight.bold),
+                                    child: const Text(
+                                      'Detaylı Oku',
+                                      style: TextStyle(color: Color(0xFF7ADC75), fontSize: 13, fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
@@ -313,7 +318,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Aradığınızı bulamadınız mı?'.tr(),
+                    'Aradığınızı bulamadınız mı?',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -323,7 +328,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Destek ekibimiz size yardımcı olmak için hazır. Hafta içi 09:00 - 18:00 arası canlı destek alabilirsiniz.'.tr(),
+                    'Destek ekibimiz size yardımcı olmak için hazır. Hafta içi 09:00 - 18:00 arası canlı destek alabilirsiniz.',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.textSecondary,
@@ -343,9 +348,9 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                         );
                       },
                       icon: const Icon(Icons.chat, color: Color(0xFF003908)),
-                      label: Text(
-                        'Canlı Destek Başlat'.tr(),
-                        style: const TextStyle(
+                      label: const Text(
+                        'Canlı Destek Başlat',
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF003908),
@@ -400,7 +405,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               ),
               const Spacer(),
               Text(
-                title.tr(),
+                title,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,

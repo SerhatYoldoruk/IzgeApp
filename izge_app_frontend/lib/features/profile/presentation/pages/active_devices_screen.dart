@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class ActiveDevicesScreen extends StatefulWidget {
   const ActiveDevicesScreen({super.key});
@@ -41,17 +40,17 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
-          'Oturumu Kapat'.tr(),
+          'Oturumu Kapat',
           style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
         ),
         content: Text(
-          '${_devices[index]['name']} ${'cihazındaki oturumu kapatmak istediğinize emin misiniz?'.tr()}',
+          '${_devices[index]['name']} cihazındaki oturumu kapatmak istediğinize emin misiniz?',
           style: TextStyle(color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('İptal'.tr(), style: TextStyle(color: AppColors.textSecondary)),
+            child: Text('İptal', style: TextStyle(color: AppColors.textSecondary)),
           ),
           TextButton(
             onPressed: () {
@@ -61,14 +60,11 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
               });
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Row(
+                  content: const Row(
                     children: [
-                      const Icon(Icons.check_circle, color: Colors.white),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Oturum başarıyla kapatıldı!'.tr(),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      Icon(Icons.check_circle, color: Colors.white),
+                      SizedBox(width: 12),
+                      Text('Oturum başarıyla kapatıldı!', style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                   ),
                   backgroundColor: const Color(0xFF1A8025),
@@ -78,7 +74,7 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
                 ),
               );
             },
-            child: Text('Kapat'.tr(), style: const TextStyle(color: Color(0xFFFFB4AB), fontWeight: FontWeight.bold)),
+            child: const Text('Kapat', style: TextStyle(color: Color(0xFFFFB4AB), fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -97,9 +93,9 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Aktif Cihazlar'.tr(),
-          style: const TextStyle(
+        title: const Text(
+          'Aktif Cihazlar',
+          style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75), // primary
@@ -113,7 +109,7 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hesabınıza erişimi olan tüm cihazlar burada listelenir.'.tr(),
+              'Hesabınıza erişimi olan tüm cihazlar burada listelenir.',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -183,7 +179,7 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
                             Row(
                               children: [
                                 Text(
-                                  '${(device['location'] as String).tr()} • ',
+                                  '${device['location']} • ',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -191,9 +187,9 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
                                   ),
                                 ),
                                 if (isCurrent)
-                                  Text(
-                                    'Şu an aktif'.tr(),
-                                    style: const TextStyle(
+                                  const Text(
+                                    'Şu an aktif',
+                                    style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       color: Color(0xFF7ADC75), // primary
@@ -202,7 +198,7 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
                                 else
                                   Expanded(
                                     child: Text(
-                                      (device['status'] as String).tr(),
+                                      device['status'] as String,
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
@@ -220,7 +216,7 @@ class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
                         IconButton(
                           onPressed: () => _logoutDevice(index),
                           icon: const Icon(Icons.logout, color: Color(0xFFFFB4AB)), // error
-                          tooltip: 'Oturumu Kapat'.tr(),
+                          tooltip: 'Oturumu Kapat',
                         ),
                     ],
                   ),

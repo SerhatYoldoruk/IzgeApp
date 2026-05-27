@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class HowToBecomeMemberScreen extends StatelessWidget {
   const HowToBecomeMemberScreen({super.key});
@@ -40,7 +39,7 @@ class HowToBecomeMemberScreen extends StatelessWidget {
               children: [
                 // Header Section
                 Text(
-                  'Nasıl Üye Olunur?'.tr(),
+                  'Nasıl Üye Olunur?',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
@@ -50,7 +49,7 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Aramıza katılmak için aşağıdaki adımları takip ederek üyelik sürecinizi tamamlayabilirsiniz.'.tr(),
+                  'Aramıza katılmak için aşağıdaki adımları takip ederek üyelik sürecinizi tamamlayabilirsiniz.',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -64,35 +63,35 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                 // Timeline Steps
                 _buildTimelineStep(
                   stepNumber: '1',
-                  title: 'Başvuru Formu'.tr(),
-                  description: 'Sistem üzerinden dijital üyelik başvuru formunu eksiksiz ve doğru bilgilerle doldurun.'.tr(),
+                  title: 'Başvuru Formu',
+                  description: 'Sistem üzerinden dijital üyelik başvuru formunu eksiksiz ve doğru bilgilerle doldurun.',
                   icon: Icons.edit_document,
                   isLast: false,
                   isActive: false,
                 ),
                 _buildTimelineStep(
                   stepNumber: '2',
-                  title: 'Belge Yükleme'.tr(),
-                  description: 'Kimlik fotokopisi ve dernek tüzüğünce talep edilen ek belgelerinizi sisteme güvenle yükleyin.'.tr(),
+                  title: 'Belge Yükleme',
+                  description: 'Kimlik fotokopisi ve dernek tüzüğünce talep edilen ek belgelerinizi sisteme güvenle yükleyin.',
                   icon: Icons.upload_file,
                   isLast: false,
                   isActive: false,
                 ),
                 _buildTimelineStep(
                   stepNumber: '3',
-                  title: 'Değerlendirme Süreci'.tr(),
-                  description: 'Yönetim kurulumuz başvurunuzu ve belgelerinizi inceler. Bu süreç uygulama üzerinden takip edilebilir.'.tr(),
+                  title: 'Değerlendirme Süreci',
+                  description: 'Yönetim kurulumuz başvurunuzu ve belgelerinizi inceler. Bu süreç uygulama üzerinden takip edilebilir.',
                   icon: Icons.rule,
                   isLast: false,
                   isActive: false,
                 ),
                 _buildTimelineStep(
                   stepNumber: '4',
-                  title: 'Üyelik Aktifleşmesi'.tr(),
-                  description: "Onay sonrası giriş aidatınızı uygulama içinden ödeyerek İzge App'in tüm özelliklerini kullanmaya başlayın.".tr(),
+                  title: 'Üyelik Aktifleşmesi',
+                  description: 'Onay sonrası giriş aidatınızı uygulama içinden ödeyerek İzge App\'in tüm özelliklerini kullanmaya başlayın.',
                   icon: Icons.check_circle,
                   isLast: true,
-                  isActive: true,
+                  isActive: true, // The final step is highlighted
                 ),
               ],
             ),
@@ -124,8 +123,8 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Başvuru formuna yönlendiriliyorsunuz...'.tr()),
+                    const SnackBar(
+                      content: Text('Başvuru formuna yönlendiriliyorsunuz...'),
                       backgroundColor: Color(0xFF1A8025),
                     ),
                   );
@@ -139,19 +138,19 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                       elevation: 8,
                       shadowColor: const Color(0xFF7ADC75).withOpacity(0.5),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Hemen Başvur'.tr(),
-                          style: const TextStyle(
+                          'Hemen Başvur',
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.5,
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.arrow_forward, size: 20),
+                        SizedBox(width: 8),
+                        Icon(Icons.arrow_forward, size: 20),
                       ],
                     ),
                   ),

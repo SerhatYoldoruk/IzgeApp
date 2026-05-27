@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
 
 class TaxReceiptsScreen extends StatelessWidget {
@@ -19,7 +18,7 @@ class TaxReceiptsScreen extends StatelessWidget {
           splashRadius: 24,
         ),
         title: Text(
-          'Vergi Makbuzları'.tr(),
+          'Vergi Makbuzları',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
@@ -65,7 +64,7 @@ class TaxReceiptsScreen extends StatelessWidget {
               ),
               SizedBox(height: 48),
               Text(
-                'Makbuz Bulunamadı'.tr(),
+                'Makbuz Bulunamadı',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -75,7 +74,7 @@ class TaxReceiptsScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                'Sistemimizde adınıza düzenlenmiş bir vergi makbuzu bulunmamaktadır. Yaptığınız bağışların makbuzlarını buradan takip edebilirsiniz.'.tr(),
+                'Sistemimizde adınıza düzenlenmiş bir vergi makbuzu bulunmamaktadır. Yaptığınız bağışların makbuzlarını buradan takip edebilirsiniz.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -94,8 +93,8 @@ class TaxReceiptsScreen extends StatelessWidget {
                     );
                   },
                   icon: const Icon(Icons.volunteer_activism, color: Color(0xFFD3FFC8)),
-                  label: Text(
-                    'Şimdi Bağış Yap'.tr(),
+                  label: const Text(
+                    'Şimdi Bağış Yap',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

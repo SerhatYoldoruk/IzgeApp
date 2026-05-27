@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class DeviceCompatibilityScreen extends StatelessWidget {
   const DeviceCompatibilityScreen({super.key});
@@ -17,10 +16,10 @@ class DeviceCompatibilityScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Cihaz Uyumluluğu'.tr(),
-          style: const TextStyle(
-            fontSize: 20,
+        title: const Text(
+          'Cihaz Uyumluluğu',
+          style: TextStyle(
+            fontSize: 24,
             fontWeight: FontWeight.w800,
             color: Color(0xFF7ADC75),
           ),
@@ -59,12 +58,12 @@ class DeviceCompatibilityScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Mevcut Versiyon'.tr(),
+                          'Mevcut Versiyon',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'İzge App v1.0.4 (Güncel)'.tr(),
+                          'İzge App v1.0.4 (Güncel)',
                           style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
                         ),
                       ],
@@ -77,12 +76,12 @@ class DeviceCompatibilityScreen extends StatelessWidget {
             
             // OS Requirements Bento Grid
             Text(
-              'Sistem Gereksinimleri'.tr(),
+              'Sistem Gereksinimleri',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
             ),
             SizedBox(height: 8),
             Text(
-              'En iyi deneyim için cihazınızın aşağıdaki işletim sistemlerinden birini desteklediğinden emin olun.'.tr(),
+              'En iyi deneyim için cihazınızın aşağıdaki işletim sistemlerinden birini desteklediğinden emin olun.',
               style: TextStyle(fontSize: 16, color: AppColors.textSecondary, height: 1.5),
             ),
             const SizedBox(height: 16),
@@ -139,17 +138,15 @@ class DeviceCompatibilityScreen extends StatelessWidget {
                     children: [
                       Icon(Icons.speed, color: AppColors.textSecondary), // tertiary
                       SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'Performans Bildirimi'.tr(),
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-                        ),
+                      Text(
+                        'Performans Bildirimi',
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                       ),
                     ],
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Uygulamamız, düşük donanımlı cihazlarda dahi akıcı çalışacak şekilde optimize edilmiştir. Ancak eski işletim sistemlerinde bazı modern grafiksel geçişler otomatik olarak devre dışı bırakılabilir.\n\nEğer cihazınızda donma veya yavaşlama hissediyorsanız, arka planda çalışan diğer uygulamaları kapatmayı deneyebilirsiniz.'.tr(),
+                    'Uygulamamız, düşük donanımlı cihazlarda dahi akıcı çalışacak şekilde optimize edilmiştir. Ancak eski işletim sistemlerinde bazı modern grafiksel geçişler otomatik olarak devre dışı bırakılabilir.\n\nEğer cihazınızda donma veya yavaşlama hissediyorsanız, arka planda çalışan diğer uygulamaları kapatmayı deneyebilirsiniz.',
                     style: TextStyle(fontSize: 16, color: AppColors.textSecondary, height: 1.5),
                   ),
                 ],
@@ -173,19 +170,39 @@ class DeviceCompatibilityScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.border), // surface-variant
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Icon(icon, color: const Color(0xFF7ADC75), size: 36),
-          SizedBox(height: 16),
-          Text(
-            title.tr(),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+          Positioned(
+            right: -16,
+            top: -16,
+            child: Container(
+              width: 96,
+              height: 96,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF7ADC75).withOpacity(0.1),
+                boxShadow: [
+                  BoxShadow(color: const Color(0xFF7ADC75).withOpacity(0.1), blurRadius: 24),
+                ],
+              ),
+            ),
           ),
-          SizedBox(height: 8),
-          Text(
-            description.tr(),
-            style: TextStyle(fontSize: 16, color: AppColors.textSecondary, height: 1.5),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: const Color(0xFF7ADC75), size: 36),
+              SizedBox(height: 16),
+              Text(
+                title,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              ),
+              SizedBox(height: 8),
+              Text(
+                description,
+                style: TextStyle(fontSize: 16, color: AppColors.textSecondary, height: 1.5),
+              ),
+            ],
           ),
         ],
       ),

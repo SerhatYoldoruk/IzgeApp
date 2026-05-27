@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
@@ -7,6 +7,8 @@ import 'package:izge_app_frontend/features/surveys/presentation/pages/surveys_sc
 import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
 import 'package:izge_app_frontend/features/support/presentation/pages/live_support_screen.dart';
+import 'package:izge_app_frontend/features/events/presentation/pages/events_screen.dart';
+import 'package:izge_app_frontend/features/surveys/presentation/pages/surveys_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

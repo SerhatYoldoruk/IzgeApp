@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class NewRequestScreen extends StatefulWidget {
   const NewRequestScreen({super.key});
@@ -121,7 +120,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Yeni Talep Oluştur'.tr(),
+              'Yeni Talep Oluştur',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
@@ -130,7 +129,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
             ),
             SizedBox(height: 8),
             Text(
-              'İhtiyacınızı bize bildirin, size en kısa sürede yardımcı olalım.'.tr(),
+              'İhtiyacınızı bize bildirin, size en kısa sürede yardımcı olalım.',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -140,7 +139,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
 
             // Dropdown
             Text(
-              'Talep Türü'.tr(),
+              'Talep Türü',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
@@ -159,18 +158,18 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                 contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               ),
               dropdownColor: AppColors.surfaceElevated,
-              initialValue: _selectedType,
+              value: _selectedType,
               hint: Text(
-                'Lütfen bir tür seçin'.tr(),
-                style: TextStyle(color: AppColors.fieldHint),
+                'Lütfen bir tür seçin',
+                style: TextStyle(color: AppColors.textSecondary),
               ),
-              icon: Icon(Icons.expand_more, color: AppColors.fieldHint),
+              icon: Icon(Icons.expand_more, color: AppColors.textSecondary),
               items: [
-                DropdownMenuItem(value: 'tekerlekli-sandalye', child: Text('Tekerlekli Sandalye Bakımı'.tr(), style: TextStyle(color: AppColors.textPrimary))),
-                DropdownMenuItem(value: 'ilac-yardimi', child: Text('İlaç Yardımı'.tr(), style: TextStyle(color: AppColors.textPrimary))),
-                DropdownMenuItem(value: 'egitim-destegi', child: Text('Eğitim Desteği'.tr(), style: TextStyle(color: AppColors.textPrimary))),
-                DropdownMenuItem(value: 'psikolojik-destek', child: Text('Psikolojik Destek'.tr(), style: TextStyle(color: AppColors.textPrimary))),
-                DropdownMenuItem(value: 'diger', child: Text('Diğer'.tr(), style: TextStyle(color: AppColors.textPrimary))),
+                DropdownMenuItem(value: 'tekerlekli-sandalye', child: Text('Tekerlekli Sandalye Bakımı', style: TextStyle(color: AppColors.textPrimary))),
+                DropdownMenuItem(value: 'ilac-yardimi', child: Text('İlaç Yardımı', style: TextStyle(color: AppColors.textPrimary))),
+                DropdownMenuItem(value: 'egitim-destegi', child: Text('Eğitim Desteği', style: TextStyle(color: AppColors.textPrimary))),
+                DropdownMenuItem(value: 'psikolojik-destek', child: Text('Psikolojik Destek', style: TextStyle(color: AppColors.textPrimary))),
+                DropdownMenuItem(value: 'diger', child: Text('Diğer', style: TextStyle(color: AppColors.textPrimary))),
               ],
               onChanged: (val) {
                 setState(() {
@@ -182,7 +181,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
 
             // Text Area
             Text(
-              'Talep Detayı'.tr(),
+              'Talep Detayı',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
@@ -196,8 +195,8 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColors.fieldBackground,
-                hintText: 'Talebinizi buraya detaylı bir şekilde yazınız...'.tr(),
-                hintStyle: TextStyle(color: AppColors.fieldHint),
+                hintText: 'Talebinizi buraya detaylı bir şekilde yazınız...',
+                hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.5)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide.none,
@@ -209,7 +208,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
 
             // Add File Button
             Text(
-              'Ek Dosya (İsteğe Bağlı)'.tr(),
+              'Ek Dosya (İsteğe Bağlı)',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
@@ -221,7 +220,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
               onPressed: () => _showFilePickerBottomSheet(context),
               icon: Icon(Icons.upload_file, color: AppColors.accent),
               label: Text(
-                'Dosya Ekle'.tr(),
+                'Dosya Ekle',
                 style: TextStyle(color: AppColors.textPrimary, fontSize: 16),
               ),
               style: OutlinedButton.styleFrom(
@@ -251,13 +250,13 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
               onPressed: () {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Talebiniz başarıyla gönderildi.'.tr())),
+                  const SnackBar(content: Text('Talebiniz başarıyla gönderildi.')),
                 );
               },
               icon: const Icon(Icons.send, color: Colors.white, size: 20),
-              label: Text(
-                'Talep Gönder'.tr(),
-                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              label: const Text(
+                'Talep Gönder',
+                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF1A8025),

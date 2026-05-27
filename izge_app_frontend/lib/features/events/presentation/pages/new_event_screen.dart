@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/event_success_screen.dart';
 
@@ -155,7 +155,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
                           _isOnline = val;
                         });
                       },
-                      activeThumbColor: AppColors.accent,
+                      activeColor: AppColors.accent,
                       inactiveThumbColor: AppColors.textSecondary,
                       inactiveTrackColor: AppColors.surfaceElevated,
                     ),
