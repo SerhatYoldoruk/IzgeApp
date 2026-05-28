@@ -92,8 +92,10 @@ class LoadingOverlay extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                             children: [
                               // Animasyonlu logo ve yükleme göstergesi
                               Stack(
@@ -191,6 +193,7 @@ class LoadingOverlay extends StatelessWidget {
                               ],
                             ],
                           ),
+                        ),
                         ),
                       ),
                     ),

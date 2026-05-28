@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/core/state/activity_state.dart';
+import 'package:izge_app_frontend/core/services/supabase_service.dart';
+import 'package:izge_app_frontend/features/requests/presentation/pages/request_success_screen.dart';
 
 class NewRequestScreen extends StatefulWidget {
   const NewRequestScreen({super.key});
@@ -11,6 +14,14 @@ class NewRequestScreen extends StatefulWidget {
 
 class _NewRequestScreenState extends State<NewRequestScreen> {
   String? _selectedType;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _detailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _detailController.dispose();
+    super.dispose();
+  }
 
   void _showFilePickerBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -117,8 +128,10 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Yeni Talep Oluştur'.tr(),
@@ -149,6 +162,8 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
             ),
             SizedBox(height: 8),
             DropdownButtonFormField<String>(
+              validator: (value) => value == null ? 'Lütfen bir talep türü seçin'.tr() : null,
+              style: TextStyle(color: AppColors.fieldText),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColors.fieldBackground,
@@ -166,11 +181,11 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
               ),
               icon: Icon(Icons.expand_more, color: AppColors.fieldHint),
               items: [
-                DropdownMenuItem(value: 'tekerlekli-sandalye', child: Text('Tekerlekli Sandalye Bakımı'.tr(), style: TextStyle(color: AppColors.textPrimary))),
-                DropdownMenuItem(value: 'ilac-yardimi', child: Text('İlaç Yardımı'.tr(), style: TextStyle(color: AppColors.textPrimary))),
-                DropdownMenuItem(value: 'egitim-destegi', child: Text('Eğitim Desteği'.tr(), style: TextStyle(color: AppColors.textPrimary))),
-                DropdownMenuItem(value: 'psikolojik-destek', child: Text('Psikolojik Destek'.tr(), style: TextStyle(color: AppColors.textPrimary))),
-                DropdownMenuItem(value: 'diger', child: Text('Diğer'.tr(), style: TextStyle(color: AppColors.textPrimary))),
+                DropdownMenuItem(value: 'tekerlekli-sandalye', child: Text('Tekerlekli Sandalye Bakımı'.tr(), style: TextStyle(color: AppColors.fieldText))),
+                DropdownMenuItem(value: 'ilac-yardimi', child: Text('İlaç Yardımı'.tr(), style: TextStyle(color: AppColors.fieldText))),
+                DropdownMenuItem(value: 'egitim-destegi', child: Text('Eğitim Desteği'.tr(), style: TextStyle(color: AppColors.fieldText))),
+                DropdownMenuItem(value: 'psikolojik-destek', child: Text('Psikolojik Destek'.tr(), style: TextStyle(color: AppColors.fieldText))),
+                DropdownMenuItem(value: 'diger', child: Text('Diğer'.tr(), style: TextStyle(color: AppColors.fieldText))),
               ],
               onChanged: (val) {
                 setState(() {
@@ -191,8 +206,10 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
             ),
             SizedBox(height: 8),
             TextFormField(
+              controller: _detailController,
+              validator: (value) => (value == null || value.trim().isEmpty) ? 'Lütfen talep detayını yazın'.tr() : null,
               maxLines: 5,
-              style: TextStyle(color: AppColors.textPrimary),
+              style: TextStyle(color: AppColors.fieldText),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColors.fieldBackground,
@@ -234,6 +251,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
             SizedBox(height: 32),
           ],
         ),
+        ),
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
@@ -248,11 +266,36 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
             width: double.infinity,
             height: 52,
             child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Talebiniz başarıyla gönderildi.'.tr())),
-                );
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  try {
+                    // Start loading state if needed, or just await
+                    await SupabaseService.instance.createRequest(
+                      title: _selectedType == 'tekerlekli-sandalye' ? 'Tekerlekli Sandalye Bakımı' :
+                             _selectedType == 'ilac-yardimi' ? 'İlaç Yardımı' :
+                             _selectedType == 'egitim-destegi' ? 'Eğitim Desteği' :
+                             _selectedType == 'psikolojik-destek' ? 'Psikolojik Destek' : 'Diğer',
+                      description: _detailController.text.trim(),
+                      requestType: _selectedType!,
+                    );
+
+                    // Call the increment for backwards compatibility if needed, or remove it.
+                    ActivityState.instance.incrementRequestCount();
+
+                    if (mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const RequestSuccessScreen()),
+                      );
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Hata: ${e.toString()}')),
+                      );
+                    }
+                  }
+                }
               },
               icon: const Icon(Icons.send, color: Colors.white, size: 20),
               label: Text(

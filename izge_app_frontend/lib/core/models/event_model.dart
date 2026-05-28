@@ -19,13 +19,17 @@ class EventModel {
 
   factory EventModel.fromMap(Map<String, dynamic> map) {
     return EventModel(
-      id: map['id'].toString(),
-      title: map['title'] as String,
-      description: map['description'] as String,
-      location: map['location'] as String?,
-      eventDate: DateTime.parse(map['event_date'] as String),
-      imageUrl: map['image_url'] as String?,
-      createdAt: DateTime.parse(map['created_at'] as String),
+      id: map['id']?.toString() ?? '',
+      title: map['title']?.toString() ?? 'İsimsiz Etkinlik',
+      description: map['description']?.toString() ?? 'Açıklama belirtilmemiş',
+      location: map['location']?.toString(),
+      eventDate: map['event_date'] != null
+          ? DateTime.tryParse(map['event_date'].toString()) ?? DateTime.now()
+          : DateTime.now(),
+      imageUrl: map['image_url']?.toString(),
+      createdAt: map['created_at'] != null
+          ? DateTime.tryParse(map['created_at'].toString()) ?? DateTime.now()
+          : DateTime.now(),
     );
   }
 

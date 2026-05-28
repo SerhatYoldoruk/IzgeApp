@@ -5,6 +5,7 @@ import 'package:izge_app_frontend/core/models/chat_model.dart';
 import 'package:izge_app_frontend/core/models/event_model.dart';
 import 'package:izge_app_frontend/core/models/poll_model.dart';
 import 'package:izge_app_frontend/core/models/profile_model.dart';
+import 'package:izge_app_frontend/core/models/request_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Supabase Kimlik Doğrulama ve Veritabanı Servis Sınıfı
@@ -98,7 +99,10 @@ class SupabaseService {
 
   /// Google OAuth ile giriş yap
   Future<bool> signInWithGoogle() {
-    return _client.auth.signInWithOAuth(OAuthProvider.google);
+    return _client.auth.signInWithOAuth(
+      OAuthProvider.google,
+      redirectTo: 'izgeapp://login-callback',
+    );
   }
 
   /// Şifre sıfırlama bağlantısı gönder
@@ -154,6 +158,35 @@ class SupabaseService {
       _client.from('polls').select('*, poll_options(*)'),
     );
     return list.map((e) => PollModel.fromMap(e)).toList();
+  }
+
+  /// Kullanıcının kendi taleplerini getir
+  Future<List<RequestModel>> getRequests() async {
+    final user = _requireCurrentUser();
+    final list = await _fetchList(
+      _client
+          .from('requests')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false),
+    );
+    return list.map((e) => RequestModel.fromMap(e)).toList();
+  }
+
+  /// Yeni talep oluştur
+  Future<void> createRequest({
+    required String title,
+    required String description,
+    required String requestType,
+  }) async {
+    final user = _requireCurrentUser();
+    await _client.from('requests').insert({
+      'user_id': user.id,
+      'title': title,
+      'description': description,
+      'request_type': requestType,
+      'status': 'pending',
+    });
   }
 
   Future<void> vote({required String pollId, required int optionIndex}) async {

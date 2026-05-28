@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/personal_info_screen.dart';
-import 'package:izge_app_frontend/features/events/presentation/pages/my_events_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/donation_history_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/past_requests_screen.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/features/events/presentation/pages/my_events_screen.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/donation_history_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/past_requests_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/personal_info_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -61,10 +61,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         leading: Builder(
           builder: (context) {
+            final canPop = Navigator.canPop(context);
             return IconButton(
-              icon: const Icon(Icons.menu),
+              icon: Icon(canPop ? Icons.arrow_back : Icons.menu),
               color: AppColors.textPrimary,
-              onPressed: () => Scaffold.of(context).openDrawer(),
+              onPressed: () {
+                if (canPop) {
+                  Navigator.pop(context);
+                } else {
+                  Scaffold.of(context).openDrawer();
+                }
+              },
             );
           },
         ),
@@ -91,8 +98,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
 
           final userData = snapshot.data ?? {};
-          final name = userData['full_name'] ?? userData['name'] ?? 'Ahmet Yılmaz';
-          
+          final name =
+              userData['full_name'] ?? userData['name'] ?? 'Ahmet Yılmaz';
+
           // DÜZELTİLDİ: Veritabanındaki gerçek sütun adın 'avatar_url' olduğu için burası eşitlendi
           final avatarUrl = userData['avatar_url'] ?? '';
 
@@ -132,7 +140,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 96,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                border: Border.all(color: AppColors.surface, width: 4),
+                                border: Border.all(
+                                  color: AppColors.surface,
+                                  width: 4,
+                                ),
                                 color: AppColors.surfaceElevated,
                                 boxShadow: [
                                   BoxShadow(
@@ -147,11 +158,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ? Image.network(
                                         avatarUrl,
                                         fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return Icon(Icons.person, size: 48, color: AppColors.textSecondary);
-                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                              return Icon(
+                                                Icons.person,
+                                                size: 48,
+                                                color: AppColors.textSecondary,
+                                              );
+                                            },
                                       )
-                                    : Icon(Icons.person, size: 48, color: AppColors.textSecondary),
+                                    : Icon(
+                                        Icons.person,
+                                        size: 48,
+                                        color: AppColors.textSecondary,
+                                      ),
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -165,16 +185,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             const SizedBox(height: 8),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
                                 color: const Color(0xFF1A8025).withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(999),
-                                border: Border.all(color: AppColors.accent.withOpacity(0.3)),
+                                border: Border.all(
+                                  color: AppColors.accent.withOpacity(0.3),
+                                ),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.verified, color: AppColors.accent, size: 16),
+                                  Icon(
+                                    Icons.verified,
+                                    color: AppColors.accent,
+                                    size: 16,
+                                  ),
                                   const SizedBox(width: 8),
                                   Text(
                                     'Gönüllü Üye'.tr(),
@@ -215,7 +244,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           // DÜZELTİLDİ: Burası zaten await'liydi, tetikleme mekanizması tıkır tıkır çalışacak
                           await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const PersonalInfoScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => const PersonalInfoScreen(),
+                            ),
                           );
                           _refreshProfile();
                         },
@@ -227,7 +258,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const DonationHistoryScreen()),
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const DonationHistoryScreen(),
+                            ),
                           );
                         },
                       ),
@@ -238,7 +272,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const MyEventsScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => const MyEventsScreen(),
+                            ),
                           );
                         },
                       ),
@@ -249,7 +285,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const PastRequestsScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => const PastRequestsScreen(),
+                            ),
                           );
                         },
                       ),
@@ -275,14 +313,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsScreen(),
+                        ),
                       );
                       _refreshProfile();
                     },
                     iconColor: AppColors.textSecondary,
                   ),
                 ),
-
               ],
             ),
           );
@@ -332,9 +371,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildDivider() {
-    return Container(
-      height: 1,
-      color: AppColors.border.withOpacity(0.3),
-    );
+    return Container(height: 1, color: AppColors.border.withOpacity(0.3));
   }
 }

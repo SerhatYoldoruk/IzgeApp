@@ -69,6 +69,14 @@ class _ChangePhotoScreenState extends State<ChangePhotoScreen> {
           .from('profiles')
           .update({'avatar_url': null}).eq('id', user.id); // KESİN ÇÖZÜM: 'avatar_url' olarak güncellendi
 
+      await Supabase.instance.client.auth.updateUser(
+        UserAttributes(
+          data: {
+            'avatar_url': null,
+          },
+        ),
+      );
+
       _showSnackBar('Profil fotoğrafı kaldırıldı!', const Color(0xFF1A8025));
       if (mounted) Navigator.pop(context);
     } catch (e) {
@@ -108,6 +116,15 @@ class _ChangePhotoScreenState extends State<ChangePhotoScreen> {
       await Supabase.instance.client
           .from('profiles')
           .update({'avatar_url': publicUrl}).eq('id', user.id);
+
+      // Update auth.users metadata for avatar
+      await Supabase.instance.client.auth.updateUser(
+        UserAttributes(
+          data: {
+            'avatar_url': publicUrl,
+          },
+        ),
+      );
 
       _showSnackBar('Profil fotoğrafı güncellendi!', const Color(0xFF1A8025));
       if (mounted) Navigator.pop(context);

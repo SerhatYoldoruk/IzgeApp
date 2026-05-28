@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/new_event_screen.dart';
+import 'package:izge_app_frontend/features/events/presentation/pages/event_detail_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/events/presentation/bloc/event_bloc.dart';
@@ -8,7 +9,7 @@ import 'package:izge_app_frontend/features/events/presentation/bloc/event_state.
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
-
+import 'package:izge_app_frontend/core/theme/theme_controller.dart';
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
 
@@ -17,6 +18,9 @@ class EventsScreen extends StatefulWidget {
 }
 
 class _EventsScreenState extends State<EventsScreen> {
+  DateTime _focusedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -54,16 +58,27 @@ class _EventsScreenState extends State<EventsScreen> {
         title: Row(
           children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               padding: const EdgeInsets.all(4),
-              child: Image.asset(
-                'assets/images/images/logo.jpeg',
-                fit: BoxFit.contain,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.asset(
+                  'assets/images/images/logo.jpeg',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             SizedBox(width: 12),
@@ -91,36 +106,101 @@ class _EventsScreenState extends State<EventsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Calendar Section (Simplified for UI representation)
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.white.withOpacity(0.05)),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Ekim 2023'.tr(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+            // Calendar Section
+            GestureDetector(
+              onHorizontalDragEnd: (details) {
+                if (details.primaryVelocity! > 0) {
+                  // Sağa kaydırma -> Önceki Ay
+                  setState(() {
+                    _focusedDate = DateTime(_focusedDate.year, _focusedDate.month - 1);
+                  });
+                } else if (details.primaryVelocity! < 0) {
+                  // Sola kaydırma -> Sonraki Ay
+                  setState(() {
+                    _focusedDate = DateTime(_focusedDate.year, _focusedDate.month + 1);
+                  });
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.white.withOpacity(0.05)),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: _focusedDate,
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2030),
+                              locale: LanguageController.instance.isTurkish ? const Locale('tr', 'TR') : const Locale('en', 'US'),
+                              builder: (context, child) {
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: ThemeController.instance.isDarkMode
+                                      ? ColorScheme.dark(
+                                          primary: AppColors.accent,
+                                          onPrimary: Colors.black,
+                                          surface: AppColors.surfaceElevated,
+                                          onSurface: Colors.white,
+                                        )
+                                      : ColorScheme.light(
+                                          primary: AppColors.accent,
+                                          onPrimary: Colors.black,
+                                          surface: Colors.white,
+                                          onSurface: Colors.black,
+                                        ),
+                                    dialogBackgroundColor: AppColors.surface,
+                                  ),
+                                  child: child!,
+                                );
+                              },
+                            );
+                            if (picked != null) {
+                              setState(() {
+                                _focusedDate = picked;
+                                _selectedDate = picked;
+                              });
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                DateFormat('MMMM yyyy', LanguageController.instance.isTurkish ? 'tr_TR' : 'en_US').format(_focusedDate),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                              Icon(Icons.arrow_drop_down, color: AppColors.accent),
+                            ],
+                          ),
                         ),
-                      ),
                       Row(
                         children: [
                           IconButton(
                             icon: Icon(Icons.chevron_left, color: AppColors.accent),
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                _focusedDate = DateTime(_focusedDate.year, _focusedDate.month - 1);
+                              });
+                            },
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right, color: AppColors.accent),
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                _focusedDate = DateTime(_focusedDate.year, _focusedDate.month + 1);
+                              });
+                            },
                           ),
                         ],
                       )
@@ -129,13 +209,18 @@ class _EventsScreenState extends State<EventsScreen> {
                   SizedBox(height: 16),
                   _buildCalendarDays(),
                   const SizedBox(height: 16),
-                  _buildCalendarGrid(),
+                  BlocBuilder<EventBloc, EventState>(
+                    builder: (context, state) {
+                      return _buildCalendarGrid(state);
+                    },
+                  ),
                 ],
               ),
             ),
+            ),
             const SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Günün Etkinlikleri'.tr(),
@@ -145,11 +230,14 @@ class _EventsScreenState extends State<EventsScreen> {
                     color: AppColors.textPrimary,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  'Bugün, 12 Ekim'.tr(),
+                  LanguageController.instance.isTurkish 
+                    ? DateFormat("d MMMM yyyy, EEEE", 'tr_TR').format(_selectedDate)
+                    : DateFormat("MMMM d, yyyy - EEEE", 'en_US').format(_selectedDate),
                   style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                     color: AppColors.textSecondary,
                   ),
                 ),
@@ -162,13 +250,31 @@ class _EventsScreenState extends State<EventsScreen> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is EventError) {
                   return Center(
-                    child: Text(
-                      'Etkinlikler yüklenirken hata oluştu: '.tr() + state.message,
-                      style: const TextStyle(color: Colors.red),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.wifi_off, size: 48, color: AppColors.textSecondary),
+                          const SizedBox(height: 16),
+                          Text(
+                            LanguageController.instance.isTurkish 
+                              ? 'Bağlantı hatası. Lütfen internetinizi kontrol edin.'
+                              : 'Connection error. Please check your internet.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 } else if (state is EventLoaded) {
-                  if (state.events.isEmpty) {
+                  final filteredEvents = state.events.where((e) => 
+                      e.eventDate.year == _selectedDate.year && 
+                      e.eventDate.month == _selectedDate.month && 
+                      e.eventDate.day == _selectedDate.day).toList();
+
+                  if (filteredEvents.isEmpty) {
                     return Container(
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
@@ -189,7 +295,7 @@ class _EventsScreenState extends State<EventsScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Henüz planlanmış bir etkinlik yok'.tr(),
+                              'Bu tarihte planlanmış bir etkinlik yok'.tr(),
                               style: TextStyle(color: AppColors.textSecondary),
                             ),
                           ],
@@ -199,7 +305,7 @@ class _EventsScreenState extends State<EventsScreen> {
                   }
 
                   return Column(
-                    children: state.events.map((event) {
+                    children: filteredEvents.map((event) {
                       final dayStr = event.eventDate.day.toString();
                       final monthStr = DateFormat('MMM', 'tr_TR').format(event.eventDate).toUpperCase();
                       final timeStr = DateFormat('HH:mm').format(event.eventDate);
@@ -214,7 +320,12 @@ class _EventsScreenState extends State<EventsScreen> {
                           icon: event.location != null ? Icons.location_on : Icons.laptop_chromebook,
                           accentColor: AppColors.accent,
                           onTap: () {
-                            // Detay sayfasına model yollanacak şekilde ayarlanabilir
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EventDetailScreen(event: event),
+                              ),
+                            );
                           },
                         ),
                       );
@@ -248,57 +359,83 @@ class _EventsScreenState extends State<EventsScreen> {
     );
   }
 
-  Widget _buildCalendarGrid() {
-    // Dummy calendar grid
+  Widget _buildCalendarGrid(EventState state) {
+    final firstDayOfMonth = DateTime(_focusedDate.year, _focusedDate.month, 1);
+    final daysInMonth = DateTime(_focusedDate.year, _focusedDate.month + 1, 0).day;
+    final firstWeekdayOffset = firstDayOfMonth.weekday - 1; // 0 for Monday, 6 for Sunday
+
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: 28,
+      itemCount: daysInMonth + firstWeekdayOffset,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,
       ),
       itemBuilder: (context, index) {
-        final dayStr = (index + 1).toString();
-        final isSelected = dayStr == '12';
-        final hasEvent = ['6', '7', '13', '14'].contains(dayStr);
+        if (index < firstWeekdayOffset) {
+          return const SizedBox();
+        }
 
-        return Container(
-          decoration: isSelected
-              ? BoxDecoration(
-                  color: AppColors.accentDark,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.accent.withOpacity(0.2),
-                      blurRadius: 8,
-                    )
-                  ],
-                )
-              : null,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  dayStr,
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : AppColors.textPrimary,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  ),
-                ),
-                if (hasEvent && !isSelected)
-                  Container(
-                    margin: const EdgeInsets.only(top: 2),
-                    width: 4,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: AppColors.accent,
-                      shape: BoxShape.circle,
-                    ),
+        final day = index - firstWeekdayOffset + 1;
+        final dayStr = day.toString();
+        final isSelected = _selectedDate.year == _focusedDate.year && _selectedDate.month == _focusedDate.month && _selectedDate.day == day;
+        final isToday = DateTime.now().year == _focusedDate.year && DateTime.now().month == _focusedDate.month && DateTime.now().day == day;
+        
+        bool hasEvent = false;
+        if (state is EventLoaded) {
+          hasEvent = state.events.any((e) => 
+            e.eventDate.year == _focusedDate.year && 
+            e.eventDate.month == _focusedDate.month && 
+            e.eventDate.day == day);
+        }
+
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              _selectedDate = DateTime(_focusedDate.year, _focusedDate.month, day);
+            });
+          },
+          child: Container(
+            decoration: isSelected
+                ? BoxDecoration(
+                    color: AppColors.accentDark,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.accent.withOpacity(0.2),
+                        blurRadius: 8,
+                      )
+                    ],
                   )
-              ],
+                : (isToday ? BoxDecoration(
+                    border: Border.all(color: AppColors.accent.withOpacity(0.5), width: 1.5),
+                    borderRadius: BorderRadius.circular(12),
+                  ) : null),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    dayStr,
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : AppColors.textPrimary,
+                      fontWeight: (isSelected || isToday) ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                  if (hasEvent && !isSelected)
+                    Container(
+                      margin: const EdgeInsets.only(top: 2),
+                      width: 4,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: AppColors.accent,
+                        shape: BoxShape.circle,
+                      ),
+                    )
+                ],
+              ),
             ),
           ),
         );

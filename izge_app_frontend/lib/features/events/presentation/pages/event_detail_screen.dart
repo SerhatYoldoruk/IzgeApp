@@ -3,9 +3,13 @@ import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/event_success_screen.dart';
 import 'package:izge_app_frontend/core/state/activity_state.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/core/models/event_model.dart';
+import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class EventDetailScreen extends StatefulWidget {
-  const EventDetailScreen({super.key});
+  final EventModel event;
+  const EventDetailScreen({super.key, required this.event});
 
   @override
   State<EventDetailScreen> createState() => _EventDetailScreenState();
@@ -18,6 +22,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
   @override
   void initState() {
     super.initState();
+    isLiked = ActivityState.instance.likedIds.value.contains(widget.event.id);
+    isSaved = ActivityState.instance.savedIds.value.contains(widget.event.id);
     LanguageController.instance.addListener(_onLanguageChanged);
   }
 
@@ -37,14 +43,14 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     setState(() {
       isLiked = !isLiked;
     });
-    ActivityState.instance.toggleLike(isLiked);
+    ActivityState.instance.toggleLike(widget.event.id, isLiked);
   }
 
   void _toggleSave() {
     setState(() {
       isSaved = !isSaved;
     });
-    ActivityState.instance.toggleSave(isSaved);
+    ActivityState.instance.toggleSave(widget.event.id, isSaved);
   }
 
   @override
@@ -78,7 +84,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
           ),
           IconButton(
             icon: Icon(Icons.share, color: AppColors.textPrimary),
-            onPressed: () {},
+            onPressed: () {
+              final formattedDate = DateFormat('dd MMMM yyyy HH:mm').format(widget.event.eventDate);
+              Share.share('${widget.event.title}\n\n$formattedDate\n${widget.event.location ?? 'Çevrimiçi'}\n\n${widget.event.description}\n\nİzge App ile detayları incele!');
+            },
           ),
         ],
       ),
@@ -98,13 +107,15 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                       ),
-                      child: Image.network(
-                        'https://lh3.googleusercontent.com/aida-public/AB6AXuCllOx7_74sZN8rzuPNmyI7_gkL8cVKHs4JeeQ5G9mVgYnrtqYrJLn8vKcpPkoIGrFluLq8mXXYbigClLWM7fRorEM7Fu353qUXCRhjzV11HAmAr5v0t6rqxRTrp-xaca5G7IJI8Q9lVSHSqDIRG-sEqb8KLhXnYz4Xyg8AVtfPdfhRdOEV6qrXHvZSYZzUycYd8FKie0xyKTxOQITbVI4QBgx4iNod7rGwVkfIHqT8uqjZuCM8L2hyoeA-kmc5MiLyKnIE5qMm_PQC',
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Center(
-                          child: Icon(Icons.image, size: 64, color: AppColors.textSecondary),
-                        ),
-                      ),
+                      child: widget.event.imageUrl != null && widget.event.imageUrl!.isNotEmpty
+                        ? Image.network(
+                            widget.event.imageUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Center(
+                              child: Icon(Icons.image, size: 64, color: AppColors.textSecondary),
+                            ),
+                          )
+                        : Center(child: Icon(Icons.event, size: 64, color: AppColors.textSecondary)),
                     ),
                     Positioned.fill(
                       child: Container(
@@ -158,7 +169,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       
                       // Title
                       Text(
-                        'Engelsiz Yaşam Buluşması'.tr(),
+                        widget.event.title,
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.w800,
@@ -192,11 +203,11 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '12 Haziran 2024'.tr(),
+                                    DateFormat('d MMMM yyyy').format(widget.event.eventDate),
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
                                   ),
                                   Text(
-                                    'Çarşamba'.tr(),
+                                    DateFormat('EEEE').format(widget.event.eventDate),
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textSecondary),
                                   ),
                                 ],
@@ -206,7 +217,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  '14:00',
+                                  DateFormat('HH:mm').format(widget.event.eventDate),
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
                                 ),
                                 Text(
@@ -242,12 +253,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Kültür Merkezi'.tr(),
+                                    widget.event.location ?? 'Bilinmeyen Konum',
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
-                                  ),
-                                  Text(
-                                    'Ankara'.tr(),
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textSecondary),
                                   ),
                                 ],
                               ),
@@ -316,16 +323,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Engelli bireylerin sosyal hayata katılımını desteklemek ve farkındalık yaratmak amacıyla düzenlediğimiz "Engelsiz Yaşam Buluşması"nda sizleri de aramızda görmekten mutluluk duyarız.'.tr(),
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: AppColors.textSecondary,
-                          height: 1.5,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        'Bu özel etkinlikte, alanında uzman konuşmacılarımızın sunumları, atölye çalışmaları ve interaktif paneller yer alacaktır. Birlikte daha güçlü, erişilebilir ve kapsayıcı bir toplum inşa etmek için fikir alışverişinde bulunacağız.'.tr(),
+                        widget.event.description,
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.textSecondary,

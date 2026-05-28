@@ -9,8 +9,8 @@ import 'package:izge_app_frontend/features/news/presentation/bloc/news_bloc.dart
 import 'package:izge_app_frontend/features/news/presentation/bloc/news_state.dart';
 import 'package:intl/intl.dart';
 
-class SavedContentScreen extends StatelessWidget {
-  const SavedContentScreen({super.key});
+class LikedContentScreen extends StatelessWidget {
+  const LikedContentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class SavedContentScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Kaydedilenler',
+          'Beğenilenler',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -35,21 +35,21 @@ class SavedContentScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: ValueListenableBuilder<List<String>>(
-        valueListenable: ActivityState.instance.savedIds,
+        valueListenable: ActivityState.instance.likedIds,
         builder: (context, ids, _) {
           if (ids.isNotEmpty) {
             return BlocBuilder<NewsBloc, NewsState>(
               builder: (context, state) {
                 if (state is NewsLoaded) {
-                  final savedNews = state.news.where((news) => ids.contains(news.id)).toList();
-                  if (savedNews.isEmpty) {
+                  final likedNews = state.news.where((news) => ids.contains(news.id)).toList();
+                  if (likedNews.isEmpty) {
                     return _buildEmptyState(context);
                   }
                   return ListView.builder(
                     padding: const EdgeInsets.all(16),
-                    itemCount: savedNews.length,
+                    itemCount: likedNews.length,
                     itemBuilder: (context, index) {
-                      return _SavedNewsItem(news: savedNews[index]);
+                      return _LikedNewsItem(news: likedNews[index]);
                     },
                   );
                 } else if (state is NewsLoading) {
@@ -83,7 +83,7 @@ class SavedContentScreen extends StatelessWidget {
                 border: Border.all(color: AppColors.border),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF1A8025).withOpacity(0.15),
+                    color: Colors.redAccent.withOpacity(0.15),
                     blurRadius: 40,
                     spreadRadius: 10,
                   ),
@@ -91,15 +91,15 @@ class SavedContentScreen extends StatelessWidget {
               ),
               child: const Center(
                 child: Icon(
-                  Icons.bookmark_border,
+                  Icons.favorite_border,
                   size: 60,
-                  color: Color(0xFF7ADC75), // primary
+                  color: Colors.redAccent,
                 ),
               ),
             ),
             SizedBox(height: 48),
             Text(
-              'Henüz İçerik Kaydetmediniz',
+              'Henüz İçerik Beğenmediniz',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -109,7 +109,7 @@ class SavedContentScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Text(
-              'İlginizi çeken haberleri veya etkinlikleri kaydederek daha sonra buradan hızlıca ulaşabilirsiniz.',
+              'Beğendiğiniz haberler veya etkinlikler burada listelenecektir. Böylece ilginizi çeken içeriklere daha sonra kolayca dönebilirsiniz.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -154,9 +154,9 @@ class SavedContentScreen extends StatelessWidget {
   }
 }
 
-class _SavedNewsItem extends StatelessWidget {
+class _LikedNewsItem extends StatelessWidget {
   final AnnouncementModel news;
-  const _SavedNewsItem({required this.news});
+  const _LikedNewsItem({required this.news});
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +221,7 @@ class _SavedNewsItem extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        Icon(Icons.bookmark, color: AppColors.accent, size: 16),
+                        Icon(Icons.favorite, color: Colors.redAccent, size: 16),
                       ],
                     ),
                     const SizedBox(height: 8),

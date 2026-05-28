@@ -9,11 +9,13 @@ export 'app/app.dart';
 
 import 'core/theme/theme_controller.dart';
 import 'core/localization/language_controller.dart';
+import 'core/state/activity_state.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ThemeController.instance.init();
   await LanguageController.instance.init();
+  await ActivityState.instance.init();
   // Start Supabase initialization but don't await here so app can render
   // immediately. The app will show its UI and react when initialization
   // completes via the provided future.

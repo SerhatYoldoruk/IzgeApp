@@ -73,10 +73,21 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         updates['address'] = _addressController.text.trim();
       }
 
+      // Update profiles table
       await Supabase.instance.client
           .from('profiles')
           .update(updates)
           .eq('id', user.id);
+
+      // Update auth.users metadata so it shows correctly in Supabase Dashboard
+      await Supabase.instance.client.auth.updateUser(
+        UserAttributes(
+          data: {
+            'full_name': _nameController.text.trim(),
+            'name': _nameController.text.trim(),
+          },
+        ),
+      );
 
       if (!mounted) return;
 
@@ -110,6 +121,16 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
             'full_name': _nameController.text.trim(),
             'phone': _phoneController.text.trim(),
           }).eq('id', user.id);
+
+          // Update auth.users metadata so it shows correctly in Supabase Dashboard
+          await Supabase.instance.client.auth.updateUser(
+            UserAttributes(
+              data: {
+                'full_name': _nameController.text.trim(),
+                'name': _nameController.text.trim(),
+              },
+            ),
+          );
 
           if (!mounted) return;
           Navigator.pop(context);

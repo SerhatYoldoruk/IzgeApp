@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/core/state/activity_state.dart';
+import 'package:izge_app_frontend/core/theme/theme_controller.dart';
+import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/login_screen.dart';
+import 'package:izge_app_frontend/features/events/presentation/pages/my_events_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/about_us_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/donation_history_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/liked_content_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/profile_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/saved_content_screen.dart';
-import 'package:izge_app_frontend/core/state/activity_state.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/donation_history_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/about_us_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
-import 'package:izge_app_frontend/core/theme/theme_controller.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
-import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -22,6 +24,7 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  static Map<String, dynamic>? _cachedUserData;
   Future<Map<String, dynamic>>? _drawerUserDataFuture;
 
   @override
@@ -65,22 +68,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
           .select()
           .eq('id', user.id)
           .single();
-          
+
+      _cachedUserData = response;
       return response;
     } catch (e) {
       debugPrint("Drawer Veri Çekme Hatası: ${e.toString()}");
-      return {
-        'full_name': user.userMetadata?['name'] ?? 'Kullanıcı',
-        'avatar_url': user.userMetadata?['avatar_url'] ?? '',
-        'role': 'member',
-      };
+      return _cachedUserData ??
+          {'full_name': 'Kullanıcı', 'avatar_url': '', 'role': 'member'};
     }
   }
 
   // Veritabanından gelen rol değerini ekranda göstereceğimiz Türkçe karşılığına eşleyen fonksiyon
   String _getRoleDisplayName(String? role) {
     if (role == null) return 'Gönüllü Üye'.tr();
-    
+
     switch (role.toLowerCase()) {
       case 'admin':
         return 'Yönetici'.tr();
@@ -104,8 +105,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: FutureBuilder<Map<String, dynamic>>(
           future: _drawerUserDataFuture,
           builder: (context, snapshot) {
-            final userData = snapshot.data ?? {};
-            final fullName = userData['full_name'] ?? userData['name'] ?? 'Kullanıcı';
+            final userData = snapshot.hasData
+                ? snapshot.data!
+                : (_cachedUserData ?? {});
+            final fullName = userData['full_name'] ?? userData['name'] ?? '...';
             final avatarUrl = userData['avatar_url'] ?? '';
             final dbRole = userData['role'] as String?;
 
@@ -141,10 +144,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       const SizedBox(height: 24),
                       InkWell(
                         onTap: () {
-                          Navigator.pop(context); // Close drawer
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
+                            ),
                           );
                         },
                         borderRadius: BorderRadius.circular(12),
@@ -165,11 +169,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       ? Image.network(
                                           avatarUrl,
                                           fit: BoxFit.cover,
-                                          errorBuilder: (context, error, stackTrace) => Icon(
-                                            Icons.person,
-                                            color: AppColors.textSecondary,
-                                            size: 32,
-                                          ),
+                                          errorBuilder:
+                                              (context, error, stackTrace) =>
+                                                  Icon(
+                                                    Icons.person,
+                                                    color:
+                                                        AppColors.textSecondary,
+                                                    size: 32,
+                                                  ),
                                         )
                                       : Icon(
                                           Icons.person,
@@ -183,7 +190,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    firstName, 
+                                    firstName,
                                     style: TextStyle(
                                       color: AppColors.textPrimary,
                                       fontSize: 18,
@@ -193,7 +200,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   const SizedBox(height: 4),
                                   Row(
                                     children: [
-                                      Icon(Icons.verified, color: AppColors.accent, size: 14),
+                                      Icon(
+                                        Icons.verified,
+                                        color: AppColors.accent,
+                                        size: 14,
+                                      ),
                                       const SizedBox(width: 4),
                                       // DÜZELTİLDİ: Tamamen dinamik API (Supabase) rolü basılıyor
                                       Text(
@@ -209,7 +220,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 ],
                               ),
                               const Spacer(),
-                              Icon(Icons.chevron_right, color: AppColors.textSecondary),
+                              Icon(
+                                Icons.chevron_right,
+                                color: AppColors.textSecondary,
+                              ),
                             ],
                           ),
                         ),
@@ -217,14 +231,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ],
                   ),
                 ),
-                
+
                 // Language & Theme Switcher
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: AppColors.border),
-                    ),
+                    border: Border(bottom: BorderSide(color: AppColors.border)),
                   ),
                   child: Column(
                     children: [
@@ -255,17 +270,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 child: Row(
                                   children: [
                                     GestureDetector(
-                                      onTap: () => LanguageController.instance.changeLanguage('tr'),
+                                      onTap: () => LanguageController.instance
+                                          .changeLanguage('tr'),
                                       child: Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: isTr ? AppColors.surfaceElevated : Colors.transparent,
-                                          borderRadius: BorderRadius.circular(10),
+                                          color: isTr
+                                              ? AppColors.surfaceElevated
+                                              : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Text(
                                           'TR',
                                           style: TextStyle(
-                                            color: isTr ? AppColors.accent : AppColors.textSecondary,
+                                            color: isTr
+                                                ? AppColors.accent
+                                                : AppColors.textSecondary,
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -273,17 +298,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       ),
                                     ),
                                     GestureDetector(
-                                      onTap: () => LanguageController.instance.changeLanguage('en'),
+                                      onTap: () => LanguageController.instance
+                                          .changeLanguage('en'),
                                       child: Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
                                         decoration: BoxDecoration(
-                                          color: !isTr ? AppColors.surfaceElevated : Colors.transparent,
-                                          borderRadius: BorderRadius.circular(10),
+                                          color: !isTr
+                                              ? AppColors.surfaceElevated
+                                              : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         child: Text(
                                           'EN',
                                           style: TextStyle(
-                                            color: !isTr ? AppColors.accent : AppColors.textSecondary,
+                                            color: !isTr
+                                                ? AppColors.accent
+                                                : AppColors.textSecondary,
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -329,11 +364,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   AnimatedAlign(
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeInOut,
-                                    alignment: ThemeController.instance.isDarkMode
+                                    alignment:
+                                        ThemeController.instance.isDarkMode
                                         ? Alignment.centerLeft
                                         : Alignment.centerRight,
                                     child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 300),
+                                      duration: const Duration(
+                                        milliseconds: 300,
+                                      ),
                                       width: 36,
                                       decoration: BoxDecoration(
                                         color: AppColors.surfaceElevated,
@@ -347,7 +385,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         child: Center(
                                           child: Icon(
                                             Icons.dark_mode,
-                                            color: ThemeController.instance.isDarkMode
+                                            color:
+                                                ThemeController
+                                                    .instance
+                                                    .isDarkMode
                                                 ? AppColors.accent
                                                 : AppColors.textSecondary,
                                             size: 16,
@@ -358,7 +399,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         child: Center(
                                           child: Icon(
                                             Icons.light_mode,
-                                            color: !ThemeController.instance.isDarkMode
+                                            color:
+                                                !ThemeController
+                                                    .instance
+                                                    .isDarkMode
                                                 ? AppColors.accent
                                                 : AppColors.textSecondary,
                                             size: 16,
@@ -376,7 +420,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ],
                   ),
                 ),
-                
+
                 // Scrollable Content
                 Expanded(
                   child: SingleChildScrollView(
@@ -389,63 +433,93 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           child: Column(
                             children: [
                               _DrawerItem(
-                                icon: Icons.person, 
-                                title: 'Profilim'.tr(), 
+                                icon: Icons.person,
+                                title: 'Profilim'.tr(),
                                 onTap: () {
-                                  Navigator.pop(context);
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProfileScreen(),
+                                    ),
                                   );
-                                }
-                              ),
-                              _DrawerItem(
-                                icon: Icons.volunteer_activism, 
-                                title: 'Bağış Yap'.tr(), 
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DonateScreen()));
                                 },
                               ),
                               _DrawerItem(
-                                icon: Icons.history, 
-                                title: 'Bağış Geçmişi'.tr(), 
+                                icon: Icons.volunteer_activism,
+                                title: 'Bağış Yap'.tr(),
                                 onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DonationHistoryScreen()));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DonateScreen(),
+                                    ),
+                                  );
                                 },
                               ),
                               _DrawerItem(
-                                icon: Icons.settings, 
-                                title: 'Ayarlar'.tr(), 
+                                icon: Icons.history,
+                                title: 'Bağış Geçmişi'.tr(),
                                 onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DonationHistoryScreen(),
+                                    ),
+                                  );
                                 },
                               ),
                               _DrawerItem(
-                                icon: Icons.info, 
-                                title: 'Dernek Hakkında'.tr(), 
+                                icon: Icons.settings,
+                                title: 'Ayarlar'.tr(),
                                 onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const AboutUsScreen()));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SettingsScreen(),
+                                    ),
+                                  );
                                 },
                               ),
                               _DrawerItem(
-                                icon: Icons.help_center, 
-                                title: 'Yardım Merkezi'.tr(), 
+                                icon: Icons.info,
+                                title: 'Dernek Hakkında'.tr(),
                                 onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpCenterScreen()));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AboutUsScreen(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              _DrawerItem(
+                                icon: Icons.help_center,
+                                title: 'Yardım Merkezi'.tr(),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HelpCenterScreen(),
+                                    ),
+                                  );
                                 },
                               ),
                             ],
                           ),
                         ),
-                        
+
                         // Social Media
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 28,
+                            vertical: 16,
+                          ),
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(color: AppColors.border),
@@ -453,7 +527,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           ),
                           child: const SocialLinksRow(),
                         ),
-                        
+
                         // Activity Stats
                         Padding(
                           padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
@@ -473,28 +547,70 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               Row(
                                 children: [
                                   Expanded(
-                                    child: ValueListenableBuilder<int>(
-                                      valueListenable: ActivityState.instance.likedCount,
-                                      builder: (context, count, _) {
-                                        return _StatCard(icon: Icons.favorite, count: count.toString(), label: 'Beğenilenler'.tr());
+                                    child: ValueListenableBuilder<List<String>>(
+                                      valueListenable:
+                                          ActivityState.instance.likedIds,
+                                      builder: (context, ids, _) {
+                                        return _StatCard(
+                                          icon: Icons.favorite,
+                                          count: ids.length.toString(),
+                                          label: 'Beğenilenler'.tr(),
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LikedContentScreen(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: ValueListenableBuilder<List<String>>(
+                                      valueListenable:
+                                          ActivityState.instance.savedIds,
+                                      builder: (context, ids, _) {
+                                        return _StatCard(
+                                          icon: Icons.bookmark,
+                                          count: ids.length.toString(),
+                                          label: 'Kaydedilenler'.tr(),
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const SavedContentScreen(),
+                                              ),
+                                            );
+                                          },
+                                        );
                                       },
                                     ),
                                   ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: ValueListenableBuilder<int>(
-                                      valueListenable: ActivityState.instance.savedCount,
+                                      valueListenable:
+                                          ActivityState.instance.eventsCount,
                                       builder: (context, count, _) {
-                                        return _StatCard(icon: Icons.bookmark, count: count.toString(), label: 'Kaydedilenler'.tr());
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: ValueListenableBuilder<int>(
-                                      valueListenable: ActivityState.instance.eventsCount,
-                                      builder: (context, count, _) {
-                                        return _StatCard(icon: Icons.event_available, count: count.toString(), label: 'Etkinlikler'.tr());
+                                        return _StatCard(
+                                          icon: Icons.event_available,
+                                          count: count.toString(),
+                                          label: 'Etkinlikler'.tr(),
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MyEventsScreen(),
+                                              ),
+                                            );
+                                          },
+                                        );
                                       },
                                     ),
                                   ),
@@ -503,7 +619,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             ],
                           ),
                         ),
-                        
+
                         // Saved Items
                         Padding(
                           padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
@@ -521,25 +637,35 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               const SizedBox(height: 8),
                               _MiniListItem(
-                                icon: Icons.bookmark, 
+                                icon: Icons.bookmark,
                                 title: 'Kaydedilen Haberler'.tr(),
                                 onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SavedContentScreen()));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SavedContentScreen(),
+                                    ),
+                                  );
                                 },
                               ),
                               _MiniListItem(
-                                icon: Icons.favorite, 
+                                icon: Icons.favorite,
                                 title: 'Favori Etkinlikler'.tr(),
                                 onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SavedContentScreen()));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SavedContentScreen(),
+                                    ),
+                                  );
                                 },
                               ),
                             ],
                           ),
                         ),
-                        
+
                         // Support Summary
                         Padding(
                           padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
@@ -556,7 +682,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              _MiniListItem(icon: Icons.volunteer_activism, title: 'Bağış Geçmişim'.tr()),
+                              _MiniListItem(
+                                icon: Icons.volunteer_activism,
+                                title: 'Bağış Geçmişim'.tr(),
+                              ),
                             ],
                           ),
                         ),
@@ -564,21 +693,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                   ),
                 ),
-                
+
                 // Footer / Logout
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: AppColors.border),
-                    ),
+                    border: Border(top: BorderSide(color: AppColors.border)),
                   ),
                   child: Column(
                     children: [
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => const LoginScreen()),
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
                             (route) => false,
                           );
                         },
@@ -593,7 +722,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.logout, color: AppColors.accent, size: 20),
+                              Icon(
+                                Icons.logout,
+                                color: AppColors.accent,
+                                size: 20,
+                              ),
                               const SizedBox(width: 8),
                               Text(
                                 'Çıkış Yap'.tr(),
@@ -609,7 +742,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'v1.0.4',
+                        'v1.0.0 - İzge App'.tr(),
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 10,
@@ -680,44 +813,53 @@ class _StatCard extends StatelessWidget {
   final IconData icon;
   final String count;
   final String label;
+  final VoidCallback? onTap;
 
   const _StatCard({
     required this.icon,
     required this.count,
     required this.label,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: AppColors.accent, size: 20),
-          const SizedBox(height: 4),
-          Text(
-            count,
-            style: TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppColors.border),
           ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 9,
-              fontWeight: FontWeight.bold,
-            ),
+          child: Column(
+            children: [
+              Icon(icon, color: AppColors.accent, size: 20),
+              const SizedBox(height: 4),
+              Text(
+                count,
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

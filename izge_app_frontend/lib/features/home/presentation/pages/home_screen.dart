@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/create_request_screen.dart';
-import 'package:izge_app_frontend/features/events/presentation/pages/events_screen.dart';
-import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
-import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
-import 'package:izge_app_frontend/features/events/presentation/pages/event_detail_screen.dart';
-import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
+import 'package:izge_app_frontend/features/events/presentation/pages/event_detail_screen.dart';
+import 'package:izge_app_frontend/features/events/presentation/pages/events_screen.dart';
+import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
+import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
+import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/create_request_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
 import 'package:izge_app_frontend/features/requests/data/requests_repository.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:izge_app_frontend/features/events/presentation/bloc/event_bloc.dart';
+import 'package:izge_app_frontend/features/events/presentation/bloc/event_state.dart';
+import 'package:izge_app_frontend/features/events/presentation/bloc/event_event.dart';
+import 'package:izge_app_frontend/features/news/presentation/bloc/news_bloc.dart';
+import 'package:izge_app_frontend/features/news/presentation/bloc/news_state.dart';
+import 'package:izge_app_frontend/features/news/presentation/bloc/news_event.dart';
+import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_bloc.dart';
+import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_state.dart';
+import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_event.dart';
+import 'package:izge_app_frontend/features/surveys/presentation/pages/survey_detail_screen.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -41,6 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (mounted) setState(() {});
   }
 
+  void _refreshAllData() {
+    context.read<NewsBloc>().add(NewsFetchRequested());
+    context.read<EventBloc>().add(EventFetchRequested());
+    context.read<SurveyBloc>().add(SurveyFetchRequested());
+  }
+
   void _refreshUserData() {
     if (mounted) {
       setState(() {
@@ -59,13 +75,25 @@ class _HomeScreenState extends State<HomeScreen> {
           .select()
           .eq('id', user.id)
           .single();
-          
+
+      try {
+        final requests = await Supabase.instance.client
+            .from('requests')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('status', 'pending');
+        response['pending_count'] = (requests as List).length;
+      } catch (e) {
+        response['pending_count'] = 0;
+      }
+
       return response;
     } catch (e) {
       debugPrint("Home Veri Çekme Hatası: ${e.toString()}");
       return {
         'full_name': user.userMetadata?['name'] ?? 'Kullanıcı',
         'avatar_url': user.userMetadata?['avatar_url'] ?? '',
+        'pending_count': 0,
       };
     }
   }
@@ -81,13 +109,13 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.menu),
               onPressed: () => Scaffold.of(context).openDrawer(),
             );
-          }
+          },
         ),
         title: Row(
           children: [
             Container(
-              width: 36,
-              height: 36,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
@@ -123,7 +151,12 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationsScreen(),
+                ),
+              );
             },
             icon: Icon(Icons.notifications_none, color: AppColors.textPrimary),
           ),
@@ -137,7 +170,8 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           final userData = snapshot.data ?? {};
-          final fullName = userData['full_name'] ?? userData['name'] ?? 'Kullanıcı';
+          final fullName =
+              userData['full_name'] ?? userData['name'] ?? 'Kullanıcı';
           final avatarUrl = userData['avatar_url'] ?? '';
 
           // KESİN ÇÖZÜM: İsim soyisimi boşluklardan ayırıp sadece ilk kelimeyi (yani ilk ismi) alıyoruz
@@ -148,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: AppColors.surfaceElevated,
             onRefresh: () async {
               _refreshUserData();
+              _refreshAllData();
               await Future.delayed(const Duration(milliseconds: 500));
             },
             child: SingleChildScrollView(
@@ -165,26 +200,41 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           // KESİN ÇÖZÜM: Artık burada sadece 'firstName' basılıyor
                           Text(
-                            LanguageController.instance.isTurkish ? 'Merhaba $firstName 👋' : 'Hello $firstName 👋', 
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                            LanguageController.instance.isTurkish
+                                ? 'Merhaba $firstName 👋'
+                                : 'Hello $firstName 👋',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
+                            ),
                           ),
                           const SizedBox(height: 4),
                           Builder(
                             builder: (context) {
-                              // Canlı veri olarak RequestsRepository'den çekiyoruz
-                              final pendingCount = const RequestsRepository().items.where((req) => req.status == 'İşlemde' || req.status == 'Bekliyor').length;
+                              final pendingCount = userData['pending_count'] ?? 0;
                               if (pendingCount > 0) {
                                 return Text(
-                                  LanguageController.instance.isTurkish ? 'Bekleyen $pendingCount talebiniz var.' : 'You have $pendingCount pending requests.', 
-                                  style: TextStyle(fontSize: 14, color: AppColors.accent)
+                                  LanguageController.instance.isTurkish
+                                      ? 'Bekleyen $pendingCount talebiniz var.'
+                                      : 'You have $pendingCount pending requests.',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.accent,
+                                  ),
                                 );
                               } else {
                                 return Text(
-                                  LanguageController.instance.isTurkish ? 'Bekleyen talebiniz yok.' : 'No pending requests.', 
-                                  style: TextStyle(fontSize: 14, color: AppColors.textSecondary)
+                                  LanguageController.instance.isTurkish
+                                      ? 'Bekleyen talebiniz yok.'
+                                      : 'No pending requests.',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.textSecondary,
+                                  ),
                                 );
                               }
-                            }
+                            },
                           ),
                         ],
                       ),
@@ -200,11 +250,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               ? Image.network(
                                   avatarUrl,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) => Icon(
-                                    Icons.person,
-                                    size: 24,
-                                    color: AppColors.textSecondary,
-                                  ),
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Icon(
+                                        Icons.person,
+                                        size: 24,
+                                        color: AppColors.textSecondary,
+                                      ),
                                 )
                               : Icon(
                                   Icons.person,
@@ -221,86 +272,237 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _QuickActionBtn(icon: Icons.volunteer_activism, label: 'Bağış Yap'.tr(), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const DonateScreen()));
-                      }),
-                      _QuickActionBtn(icon: Icons.add_circle_outline, label: 'Talep Aç'.tr(), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateRequestScreen()));
-                      }),
-                      _QuickActionBtn(icon: Icons.event, label: 'Etkinlikler'.tr(), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
-                      }),
-                      _QuickActionBtn(icon: Icons.support_agent, label: 'Destek'.tr(), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const LiveSupportScreen()));
-                      }),
+                      _QuickActionBtn(
+                        icon: Icons.volunteer_activism,
+                        label: 'Bağış Yap'.tr(),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const DonateScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      _QuickActionBtn(
+                        icon: Icons.add_circle_outline,
+                        label: 'Talep Aç'.tr(),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CreateRequestScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      _QuickActionBtn(
+                        icon: Icons.event,
+                        label: 'Etkinlikler'.tr(),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EventsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      _QuickActionBtn(
+                        icon: Icons.support_agent,
+                        label: 'Destek'.tr(),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LiveSupportScreen(),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(height: 32),
 
                   // Öne Çıkanlar Section
-                  _SectionHeader(title: 'Öne Çıkanlar'.tr(), actionLabel: 'Hepsini Gör'.tr(), onActionTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsScreen()));
-                  }),
+                  _SectionHeader(
+                    title: 'Öne Çıkanlar'.tr(),
+                    actionLabel: 'Hepsini Gör'.tr(),
+                    onActionTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NewsScreen(),
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(height: 16),
                   SizedBox(
                     height: 180,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        _FeaturedCard(
-                          tag: 'ETKİNLİK'.tr(),
-                          title: 'Engelsiz Yaşam Buluşması'.tr(),
-                          imageUrl: 'assets/images/images/featured_card.png',
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const EventDetailScreen()));
-                          },
-                        ),
-                        const SizedBox(width: 16),
-                        _FeaturedCard(
-                          tag: 'DUYURU'.tr(),
-                          title: 'Yeni Rehabilitasyon Merkezi'.tr(),
-                          imageUrl: 'assets/images/images/news_main.png',
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsDetailScreen()));
-                          },
-                        ),
-                      ],
+                    child: BlocBuilder<NewsBloc, NewsState>(
+                      builder: (context, state) {
+                        if (state is NewsLoading) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (state is NewsLoaded) {
+                          final pinnedNews = state.news.where((a) => a.isPinned).toList();
+                          final displayNews = pinnedNews.isNotEmpty ? pinnedNews : state.news;
+                          
+                          if (displayNews.isEmpty) {
+                            return Center(child: Text('Öne çıkan içerik yok', style: TextStyle(color: AppColors.textSecondary)));
+                          }
+
+                          return ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: displayNews.length,
+                            separatorBuilder: (context, index) => const SizedBox(width: 16),
+                            itemBuilder: (context, index) {
+                              final news = displayNews[index];
+                              return _FeaturedCard(
+                                tag: 'DUYURU'.tr(),
+                                title: news.title.tr(),
+                                imageUrl: news.imageUrl, // We assume it's a URL or null
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => NewsDetailScreen(news: news),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        }
+                        return const SizedBox();
+                      },
                     ),
                   ),
                   const SizedBox(height: 32),
 
                   // Canlı Destek Section
-                  _LiveSupportCard(onActionTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LiveSupportScreen()));
-                  }),
+                  _LiveSupportCard(
+                    onActionTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LiveSupportScreen(),
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(height: 32),
 
                   // Talepler Section
-                  _SectionHeader(title: 'Talepler'.tr(), actionLabel: LanguageController.instance.isTurkish ? '+ Yeni Talep' : '+ New Request', onActionTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const CreateRequestScreen()),
-                    );
-                  }),
+                  _SectionHeader(
+                    title: 'Talepler'.tr(),
+                    actionLabel: LanguageController.instance.isTurkish
+                        ? '+ Yeni Talep'
+                        : '+ New Request',
+                    onActionTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateRequestScreen(),
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(height: 16),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Henüz talep bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
+                      child: Text(
+                        'Henüz talep bulunmuyor'.tr(),
+                        style: TextStyle(color: AppColors.textSecondary),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),
 
                   // Yaklaşan Etkinlikler Section
-                  _SectionHeader(title: 'Yaklaşan Etkinlikler'.tr(), actionLabel: 'Tümünü Gör'.tr(), onActionTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
-                  }),
+                  _SectionHeader(
+                    title: 'Yaklaşan Etkinlikler'.tr(),
+                    actionLabel: 'Tümünü Gör'.tr(),
+                    onActionTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EventsScreen(),
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(height: 16),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Yaklaşan etkinlik bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
-                    ),
+                  BlocBuilder<EventBloc, EventState>(
+                    builder: (context, state) {
+                      if (state is EventLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state is EventLoaded) {
+                        final upcomingEvents = state.events.where((e) => e.eventDate.isAfter(DateTime.now())).toList();
+                        
+                        if (upcomingEvents.isEmpty) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Text(
+                                'Yaklaşan etkinlik bulunmuyor'.tr(),
+                                style: TextStyle(color: AppColors.textSecondary),
+                              ),
+                            ),
+                          );
+                        }
+
+                        // Just display the first upcoming event as a card for now
+                        final firstEvent = upcomingEvents.first;
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EventDetailScreen(event: firstEvent),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.surfaceElevated,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: AppColors.border),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.accent.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Center(
+                                    child: Icon(Icons.event, color: AppColors.accent),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(firstEvent.title, style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16)),
+                                      const SizedBox(height: 4),
+                                      Text(firstEvent.location ?? 'Bilinmeyen Konum', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+                                    ],
+                                  ),
+                                ),
+                                Icon(Icons.arrow_forward_ios, color: AppColors.textSecondary, size: 16),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    },
                   ),
                   const SizedBox(height: 32),
 
@@ -314,14 +516,58 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text('Aktif anket bulunmuyor'.tr(), style: TextStyle(color: AppColors.textSecondary)),
-                    ),
+                  BlocBuilder<SurveyBloc, SurveyState>(
+                    builder: (context, state) {
+                      if (state is SurveyLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state is SurveyLoaded) {
+                        final activeSurveys = state.surveys.where((s) => s.status == 'active').toList();
+                        
+                        if (activeSurveys.isEmpty) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Text(
+                                'Aktif anket bulunmuyor'.tr(),
+                                style: TextStyle(color: AppColors.textSecondary),
+                              ),
+                            ),
+                          );
+                        }
+
+                        final survey = activeSurveys.first;
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SurveyDetailScreen(survey: survey),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.surface,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: AppColors.border),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(survey.title, style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16)),
+                                const SizedBox(height: 8),
+                                Text(survey.description ?? '', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    },
                   ),
                   const SizedBox(height: 48),
-                  
+
                   // Social Links Section
                   Center(
                     child: Text(
@@ -425,16 +671,27 @@ class _FeaturedCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
                 color: AppColors.background,
-                image: imageUrl != null 
+                image: (imageUrl != null && imageUrl!.startsWith('http'))
                     ? DecorationImage(
-                        image: AssetImage(imageUrl!),
+                        image: NetworkImage(imageUrl!),
                         fit: BoxFit.cover,
                       )
-                    : null,
+                    : (imageUrl != null
+                        ? DecorationImage(
+                            image: AssetImage(imageUrl!),
+                            fit: BoxFit.cover,
+                          )
+                        : null),
               ),
-              child: imageUrl == null ? Center(
-                child: Icon(Icons.image, size: 64, color: Colors.white.withOpacity(0.05)),
-              ) : null,
+              child: imageUrl == null
+                  ? Center(
+                      child: Icon(
+                        Icons.image,
+                        size: 64,
+                        color: Colors.white.withOpacity(0.05),
+                      ),
+                    )
+                  : null,
             ),
             Container(
               decoration: BoxDecoration(
@@ -453,7 +710,10 @@ class _FeaturedCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.accent,
                       borderRadius: BorderRadius.circular(6),
@@ -533,7 +793,8 @@ class _LiveSupportCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Size yardımcı olmak için buradayız. Hemen sohbete başlayın.'.tr(),
+                      'Size yardımcı olmak için buradayız. Hemen sohbete başlayın.'
+                          .tr(),
                       style: TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,
@@ -545,7 +806,10 @@ class _LiveSupportCard extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accent,
                         foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
                         shape: const StadiumBorder(),
                         elevation: 4,
                       ),
@@ -581,7 +845,11 @@ class _QuickActionBtn extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _QuickActionBtn({required this.icon, required this.label, required this.onTap});
+  const _QuickActionBtn({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -594,7 +862,10 @@ class _QuickActionBtn extends StatelessWidget {
             height: 64,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppColors.accent.withOpacity(0.2), AppColors.accent.withOpacity(0.05)],
+                colors: [
+                  AppColors.accent.withOpacity(0.2),
+                  AppColors.accent.withOpacity(0.05),
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -604,7 +875,14 @@ class _QuickActionBtn extends StatelessWidget {
             child: Icon(icon, color: AppColors.accent, size: 28),
           ),
           const SizedBox(height: 8),
-          Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+          ),
         ],
       ),
     );

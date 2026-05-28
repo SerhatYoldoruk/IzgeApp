@@ -39,6 +39,10 @@ android {
         versionName = flutter.versionName
     }
 
+    lint {
+        checkReleaseBuilds = false
+    }
+
     buildTypes {
         release {
             // Use release signing config if `key.properties` exists, otherwise fall back to debug.

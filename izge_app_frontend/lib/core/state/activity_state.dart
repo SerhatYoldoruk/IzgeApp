@@ -1,34 +1,60 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivityState {
   ActivityState._();
   static final ActivityState instance = ActivityState._();
 
-  final ValueNotifier<int> likedCount = ValueNotifier<int>(12);
-  final ValueNotifier<int> savedCount = ValueNotifier<int>(8);
-  final ValueNotifier<int> eventsCount = ValueNotifier<int>(3);
+  final ValueNotifier<List<String>> likedIds = ValueNotifier<List<String>>([]);
+  final ValueNotifier<List<String>> savedIds = ValueNotifier<List<String>>([]);
+  final ValueNotifier<int> eventsCount = ValueNotifier<int>(0);
+  final ValueNotifier<int> requestCount = ValueNotifier<int>(0);
 
-  void toggleLike(bool isLiked) {
+  Future<void> init() async {
+    final prefs = await SharedPreferences.getInstance();
+    likedIds.value = prefs.getStringList('likedIds') ?? [];
+    savedIds.value = prefs.getStringList('savedIds') ?? [];
+    eventsCount.value = prefs.getInt('eventsCount') ?? 0;
+    requestCount.value = prefs.getInt('requestCount') ?? 0;
+  }
+
+  Future<void> incrementRequestCount() async {
+    requestCount.value++;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('requestCount', requestCount.value);
+  }
+
+  Future<void> toggleLike(String id, bool isLiked) async {
+    final list = List<String>.from(likedIds.value);
     if (isLiked) {
-      likedCount.value++;
+      if (!list.contains(id)) list.add(id);
     } else {
-      if (likedCount.value > 0) likedCount.value--;
+      list.remove(id);
     }
+    likedIds.value = list;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('likedIds', list);
   }
 
-  void toggleSave(bool isSaved) {
+  Future<void> toggleSave(String id, bool isSaved) async {
+    final list = List<String>.from(savedIds.value);
     if (isSaved) {
-      savedCount.value++;
+      if (!list.contains(id)) list.add(id);
     } else {
-      if (savedCount.value > 0) savedCount.value--;
+      list.remove(id);
     }
+    savedIds.value = list;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('savedIds', list);
   }
 
-  void toggleEvent(bool isRegistered) {
+  Future<void> toggleEvent(bool isRegistered) async {
     if (isRegistered) {
       eventsCount.value++;
     } else {
       if (eventsCount.value > 0) eventsCount.value--;
     }
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('eventsCount', eventsCount.value);
   }
 }

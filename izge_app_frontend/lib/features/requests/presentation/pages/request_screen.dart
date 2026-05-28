@@ -5,10 +5,18 @@ import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/request_detail_screen.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
+import 'package:izge_app_frontend/core/state/activity_state.dart';
+import 'package:izge_app_frontend/core/models/request_model.dart';
+import 'package:izge_app_frontend/core/services/supabase_service.dart';
 
-class RequestsScreen extends StatelessWidget {
+class RequestsScreen extends StatefulWidget {
   const RequestsScreen({super.key});
 
+  @override
+  State<RequestsScreen> createState() => _RequestsScreenState();
+}
+
+class _RequestsScreenState extends State<RequestsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,16 +33,27 @@ class RequestsScreen extends StatelessWidget {
         title: Row(
           children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               padding: const EdgeInsets.all(4),
-              child: Image.asset(
-                'assets/images/images/logo.jpeg',
-                fit: BoxFit.contain,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.asset(
+                  'assets/images/images/logo.jpeg',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             SizedBox(width: 12),
@@ -61,7 +80,7 @@ class RequestsScreen extends StatelessWidget {
         color: AppColors.accent,
         backgroundColor: AppColors.surfaceElevated,
         onRefresh: () async {
-          // Future functionality to reload requests will go here
+          setState(() {});
           await Future.delayed(const Duration(milliseconds: 500));
         },
         child: SingleChildScrollView(
@@ -100,53 +119,107 @@ class RequestsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 64),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 128,
-                    height: 128,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.surfaceElevated,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primary.withOpacity(0.15),
-                          blurRadius: 24,
-                          offset: const Offset(0, 4),
+            FutureBuilder<List<RequestModel>>(
+              future: SupabaseService.instance.getRequests(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: CircularProgressIndicator(),
+                  ));
+                }
+                
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Talepler yüklenirken hata oluştu: ${snapshot.error}', style: const TextStyle(color: Colors.red)),
+                  );
+                }
+
+                final requests = snapshot.data ?? [];
+
+                if (requests.isNotEmpty) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: requests.length,
+                    itemBuilder: (context, index) {
+                      final req = requests[index];
+                      // Varsayılan ikon
+                      IconData reqIcon = Icons.list_alt;
+                      if (req.requestType == 'tekerlekli-sandalye') reqIcon = Icons.wheelchair_pickup;
+                      if (req.requestType == 'ilac-yardimi') reqIcon = Icons.medical_services;
+                      if (req.requestType == 'egitim-destegi') reqIcon = Icons.school;
+                      if (req.requestType == 'psikolojik-destek') reqIcon = Icons.psychology;
+
+                      // Status renkleri
+                      Color statColor = Colors.orange;
+                      String statText = 'İnceleniyor';
+                      if (req.status == 'approved') { statColor = Colors.green; statText = 'Onaylandı'; }
+                      if (req.status == 'rejected') { statColor = Colors.red; statText = 'Reddedildi'; }
+                      if (req.status == 'completed') { statColor = Colors.blue; statText = 'Tamamlandı'; }
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: _RequestCard(
+                          title: req.title,
+                          statusText: statText.tr(),
+                          statusColor: statColor,
+                          icon: reqIcon,
                         ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.list_alt,
-                        size: 60,
-                        color: AppColors.primary,
+                      );
+                    },
+                  );
+                }
+
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 128,
+                        height: 128,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.surfaceElevated,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withOpacity(0.15),
+                              blurRadius: 24,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.list_alt,
+                            size: 60,
+                            color: AppColors.primary,
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 32),
+                      Text(
+                        'Henüz Bir Talep Oluşturmadınız'.tr(),
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'İhtiyaç duyduğunuz konularda talep oluşturarak\nbizden destek alabilirsiniz.'.tr(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 32),
-                  Text(
-                    'Henüz Bir Talep Oluşturmadınız'.tr(),
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'İhtiyaç duyduğunuz konularda talep oluşturarak\nbizden destek alabilirsiniz.'.tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ],
         ),
@@ -183,9 +256,16 @@ class _RequestCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          border: Border.all(color: AppColors.border),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -193,7 +273,7 @@ class _RequestCard extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: AppColors.surfaceElevated,
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: AppColors.accent, size: 24),

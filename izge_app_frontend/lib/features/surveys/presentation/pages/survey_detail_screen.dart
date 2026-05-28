@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:izge_app_frontend/core/models/poll_model.dart';
 
 class SurveyDetailScreen extends StatefulWidget {
-  const SurveyDetailScreen({super.key});
+  final PollModel survey;
+  const SurveyDetailScreen({super.key, required this.survey});
 
   @override
   State<SurveyDetailScreen> createState() => _SurveyDetailScreenState();
@@ -24,7 +26,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
 
   Future<void> _checkSubmissionStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    final String? submittedOption = prefs.getString('submitted_survey_1');
+    final String? submittedOption = prefs.getString('submitted_survey_${widget.survey.id}');
     if (submittedOption != null && mounted) {
       setState(() {
         _hasSubmittedBefore = true;
@@ -43,9 +45,8 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
 
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 1500));
-
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('submitted_survey_1', _selectedOption!);
+    await prefs.setString('submitted_survey_${widget.survey.id}', _selectedOption!);
 
     if (mounted) {
       setState(() {
@@ -169,7 +170,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          'Yeni Dönem Eğitim Atölyesi Tercihleri'.tr(),
+                          widget.survey.title,
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -179,7 +180,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                         ),
                         SizedBox(height: 12),
                         Text(
-                          'Değerli üyemiz, önümüzdeki çeyrekte açılacak olan ücretsiz eğitim atölyelerimizin odak noktasını belirlemek için görüşünüze ihtiyacımız var. Lütfen size en faydalı olacak alanı seçiniz.'.tr(),
+                          widget.survey.description ?? '',
                           style: TextStyle(
                             fontSize: 16,
                             color: AppColors.textSecondary,
@@ -217,35 +218,18 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                     style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
                   ),
                   SizedBox(height: 16),
-                  
                   // Options
-                  _buildOption(
-                    value: 'tech',
-                    title: 'Yazılım & Teknoloji'.tr(),
-                    subtitle: 'Kodlama, Veri Analizi, Yapay Zeka'.tr(),
-                    icon: Icons.code,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildOption(
-                    value: 'sustainability',
-                    title: 'Sürdürülebilirlik & Çevre'.tr(),
-                    subtitle: 'İklim Krizi, İleri Dönüşüm, Ekoloji'.tr(),
-                    icon: Icons.eco,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildOption(
-                    value: 'arts',
-                    title: 'Sanat & Tasarım'.tr(),
-                    subtitle: 'Grafik Tasarım, Seramik, Fotoğrafçılık'.tr(),
-                    icon: Icons.palette,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildOption(
-                    value: 'entrepreneurship',
-                    title: 'Girişimcilik & Liderlik'.tr(),
-                    subtitle: 'Proje Yönetimi, İletişim Becerileri'.tr(),
-                    icon: Icons.lightbulb_outline,
-                  ),
+                  ...widget.survey.options.map((option) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: _buildOption(
+                        value: option,
+                        title: option,
+                        subtitle: '',
+                        icon: Icons.label_outline,
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),

@@ -11,9 +11,9 @@ class AppColors {
   static Color textPrimary = const Color(0xFFE5E2E1);
   static Color textSecondary = const Color(0xFFBECAB8);
   static Color border = const Color(0xFF3F4A3C);
-  static Color fieldBackground = const Color(0xFFD9D9D9);
-  static Color fieldText = const Color(0xFF2F2F2F);
-  static Color fieldHint = const Color(0xFF4A4A4A);
+  static Color fieldBackground = const Color(0xFF2A2A2A);
+  static Color fieldText = const Color(0xFFE5E2E1);
+  static Color fieldHint = const Color(0xFF8A8A8A);
   static Color positive = const Color(0xFF43A047);
   static Color error = const Color(0xFFE57373);
 
@@ -45,9 +45,9 @@ class AppColors {
     textPrimary = const Color(0xFFE5E2E1);
     textSecondary = const Color(0xFFBECAB8);
     border = const Color(0xFF3F4A3C);
-    fieldBackground = const Color(0xFFD9D9D9);
-    fieldText = const Color(0xFF2F2F2F);
-    fieldHint = const Color(0xFF4A4A4A);
+    fieldBackground = const Color(0xFF2A2A2A);
+    fieldText = const Color(0xFFE5E2E1);
+    fieldHint = const Color(0xFF8A8A8A);
     positive = const Color(0xFF43A047);
     error = const Color(0xFFE57373);
     primary = const Color(0xFF1A8025);

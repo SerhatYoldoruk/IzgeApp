@@ -29,16 +29,27 @@ class SurveysScreen extends StatelessWidget {
         title: Row(
           children: [
             Container(
-              width: 32,
-              height: 32,
+              width: 44,
+              height: 44,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               padding: const EdgeInsets.all(4),
-              child: Image.asset(
-                'assets/images/images/logo.jpeg',
-                fit: BoxFit.contain,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.asset(
+                  'assets/images/images/logo.jpeg',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
             SizedBox(width: 12),
@@ -91,7 +102,25 @@ class SurveysScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   ));
                 } else if (state is SurveyError) {
-                  return Center(child: Text('${LanguageController.instance.isTurkish ? 'Hata' : 'Error'}: ${state.message}', style: const TextStyle(color: Colors.red)));
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.wifi_off, size: 48, color: AppColors.textSecondary),
+                          const SizedBox(height: 16),
+                          Text(
+                            LanguageController.instance.isTurkish 
+                              ? 'Bağlantı hatası. Lütfen internetinizi kontrol edin.'
+                              : 'Connection error. Please check your internet.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 } else if (state is SurveyLoaded) {
                   final activeSurveys = state.surveys.where((s) => s.status == 'active').toList();
                   final pastSurveys = state.surveys.where((s) => s.status != 'active').toList();
@@ -131,7 +160,7 @@ class SurveysScreen extends StatelessWidget {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const SurveyDetailScreen()),
+                                MaterialPageRoute(builder: (context) => SurveyDetailScreen(survey: survey)),
                               );
                             },
                           ),
