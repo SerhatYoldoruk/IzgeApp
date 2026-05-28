@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class NotificationSettingsScreen extends StatefulWidget {
   const NotificationSettingsScreen({super.key});
@@ -29,7 +28,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Bildirim Ayarları'.tr(),
+          'Bildirim Ayarları',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -44,7 +43,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Uygulama içi ve anlık bildirim tercihlerinizi buradan yönetebilirsiniz.'.tr(),
+              'Uygulama içi ve anlık bildirim tercihlerinizi buradan yönetebilirsiniz.',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -77,7 +76,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Genel Bildirimler'.tr(),
+                          'Genel Bildirimler',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -86,7 +85,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Tüm anlık bildirimleri açıp kapatın.'.tr(),
+                          'Tüm anlık bildirimleri açıp kapatın.',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -103,7 +102,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                         _masterSwitch = val;
                       });
                     },
-                    activeThumbColor: const Color(0xFF003908), // on-primary
+                    activeColor: const Color(0xFF003908), // on-primary
                     activeTrackColor: AppColors.accent,
                     inactiveThumbColor: AppColors.textSecondary,
                     inactiveTrackColor: AppColors.surfaceElevated, // surface-container-high
@@ -122,32 +121,32 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 child: Column(
                   children: [
                     _buildSubSwitch(
-                      title: 'Haberler ve Duyurular'.tr(),
-                      subtitle: 'Önemli güncellemeler ve haberler'.tr(),
+                      title: 'Haberler ve Duyurular',
+                      subtitle: 'Önemli güncellemeler ve haberler',
                       icon: Icons.newspaper,
                       value: _newsSwitch,
                       onChanged: (val) => setState(() => _newsSwitch = val),
                     ),
                     const SizedBox(height: 12),
                     _buildSubSwitch(
-                      title: 'Yeni Etkinlikler'.tr(),
-                      subtitle: 'Yaklaşan etkinlikler ve davetler'.tr(),
+                      title: 'Yeni Etkinlikler',
+                      subtitle: 'Yaklaşan etkinlikler ve davetler',
                       icon: Icons.event,
                       value: _eventsSwitch,
                       onChanged: (val) => setState(() => _eventsSwitch = val),
                     ),
                     const SizedBox(height: 12),
                     _buildSubSwitch(
-                      title: 'Talep Güncellemeleri'.tr(),
-                      subtitle: 'Taleplerinizin durum değişiklikleri'.tr(),
+                      title: 'Talep Güncellemeleri',
+                      subtitle: 'Taleplerinizin durum değişiklikleri',
                       icon: Icons.description,
                       value: _requestsSwitch,
                       onChanged: (val) => setState(() => _requestsSwitch = val),
                     ),
                     const SizedBox(height: 12),
                     _buildSubSwitch(
-                      title: 'Bağış Hatırlatıcıları'.tr(),
-                      subtitle: 'Düzenli bağış bildirimleri'.tr(),
+                      title: 'Bağış Hatırlatıcıları',
+                      subtitle: 'Düzenli bağış bildirimleri',
                       icon: Icons.volunteer_activism,
                       value: _donationsSwitch,
                       onChanged: (val) => setState(() => _donationsSwitch = val),
@@ -214,7 +213,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: const Color(0xFF003908),
+            activeColor: const Color(0xFF003908),
             activeTrackColor: AppColors.accent,
             inactiveThumbColor: AppColors.textSecondary,
             inactiveTrackColor: AppColors.surfaceElevated,

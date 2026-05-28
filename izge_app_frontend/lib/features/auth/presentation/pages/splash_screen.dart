@@ -195,7 +195,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                               builder: (context, val, child) {
                                 return Transform.scale(
                                   scale: 0.6 + (val * 0.4),
-                                  child: Opacity(opacity: (val.toDouble()).clamp(0.0, 1.0), child: child),
+                                  child: Opacity(opacity: val, child: child),
                                 );
                               },
                               child: Container(
@@ -241,11 +241,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       duration: const Duration(milliseconds: 1400),
                       curve: Curves.easeOut,
                       builder: (context, val, child) {
-                        final safeVal = val.clamp(0.0, 1.0);
                         return Opacity(
-                          opacity: safeVal,
+                          opacity: val,
                           child: Transform.translate(
-                            offset: Offset(0, 12 * (1 - safeVal)),
+                            offset: Offset(0, 12 * (1 - val)),
                             child: child,
                           ),
                         );
@@ -285,7 +284,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   tween: Tween<double>(begin: 0.0, end: 1.0),
                   duration: const Duration(milliseconds: 1800),
                   builder: (context, val, child) {
-                    return Opacity(opacity: val.clamp(0.0, 1.0), child: child);
+                    return Opacity(opacity: val, child: child);
                   },
                   child: AnimatedBuilder(
                     animation: _pulseAnimation,

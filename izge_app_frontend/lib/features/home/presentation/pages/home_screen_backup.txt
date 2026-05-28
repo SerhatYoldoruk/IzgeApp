@@ -1,12 +1,13 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/models/announcement_model.dart';
-import 'package:izge_app_frontend/features/events/presentation/pages/events_screen.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
-import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
-import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
+import 'package:izge_app_frontend/features/events/presentation/pages/events_screen.dart';
+import 'package:izge_app_frontend/features/surveys/presentation/pages/surveys_screen.dart';
+import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
+import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
 import 'package:izge_app_frontend/features/support/presentation/pages/live_support_screen.dart';
+import 'package:izge_app_frontend/features/events/presentation/pages/events_screen.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/pages/surveys_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -14,15 +15,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final featuredAnnouncement = AnnouncementModel(
-      id: 'featured-1',
-      title: 'Yeni Rehabilitasyon Merkezi',
-      content: 'Yeni Rehabilitasyon Merkezi duyurusu.',
-      imageUrl: null,
-      isPinned: true,
-      createdAt: DateTime.now(),
-    );
-
     return Scaffold(
       drawer: const CustomDrawer(),
       appBar: AppBar(
@@ -32,7 +24,7 @@ class HomeScreen extends StatelessWidget {
               icon: const Icon(Icons.menu),
               onPressed: () => Scaffold.of(context).openDrawer(),
             );
-          },
+          }
         ),
         title: Row(
           children: [
@@ -84,16 +76,9 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Öne Çıkanlar Section
-            _SectionHeader(
-              title: 'Öne Çıkanlar',
-              actionLabel: 'Hepsini Gör',
-              onActionTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NewsScreen()),
-                );
-              },
-            ),
+            _SectionHeader(title: 'Öne Çıkanlar', actionLabel: 'Hepsini Gör', onActionTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsScreen()));
+            }),
             const SizedBox(height: 16),
             SizedBox(
               height: 180,
@@ -105,12 +90,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Engelsiz Yaşam Buluşması',
                     imageUrl: 'assets/images/images/featured_card.png',
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const EventsScreen(),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
                     },
                   ),
                   const SizedBox(width: 16),
@@ -119,13 +99,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Yeni Rehabilitasyon Merkezi',
                     imageUrl: 'assets/images/images/news_main.png',
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              NewsDetailScreen(news: featuredAnnouncement),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const NewsDetailScreen()));
                     },
                   ),
                 ],
@@ -134,31 +108,18 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Canlı Destek Section
-            _LiveSupportCard(
-              onActionTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LiveSupportScreen(),
-                  ),
-                );
-              },
-            ),
+            _LiveSupportCard(onActionTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const LiveSupportScreen()));
+            }),
             const SizedBox(height: 32),
 
             // Talepler Section
-            _SectionHeader(
-              title: 'Talepler',
-              actionLabel: '+ Yeni Talep',
-              onActionTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NewRequestScreen(),
-                  ),
-                );
-              },
-            ),
+            _SectionHeader(title: 'Talepler', actionLabel: '+ Yeni Talep', onActionTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const NewRequestScreen()),
+              );
+            }),
             const SizedBox(height: 16),
             _RequestListCard(
               title: 'Tekerlekli Sandalye Bakımı',
@@ -176,16 +137,9 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Yaklaşan Etkinlikler Section
-            _SectionHeader(
-              title: 'Yaklaşan Etkinlikler',
-              actionLabel: 'Tümünü Gör',
-              onActionTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const EventsScreen()),
-                );
-              },
-            ),
+            _SectionHeader(title: 'Yaklaşan Etkinlikler', actionLabel: 'Tümünü Gör', onActionTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
+            }),
             const SizedBox(height: 16),
             _EventListCard(
               month: 'HAZ',
@@ -193,10 +147,7 @@ class HomeScreen extends StatelessWidget {
               title: 'Fizik Tedavi Semineri',
               details: 'Kültür Merkezi • 14:00',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const EventsScreen()),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const EventsScreen()));
               },
             ),
             SizedBox(height: 32),
@@ -215,12 +166,7 @@ class HomeScreen extends StatelessWidget {
               title: 'Haftalık Memnuniyet Anketi',
               description: 'Hizmet kalitemizi artırmamıza yardımcı olun.',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SurveysScreen(),
-                  ),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const SurveysScreen()));
               },
             ),
           ],
@@ -309,22 +255,16 @@ class _FeaturedCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
                 color: AppColors.background,
-                image: imageUrl != null
+                image: imageUrl != null 
                     ? DecorationImage(
                         image: AssetImage(imageUrl!),
                         fit: BoxFit.cover,
                       )
                     : null,
               ),
-              child: imageUrl == null
-                  ? Center(
-                      child: Icon(
-                        Icons.image,
-                        size: 64,
-                        color: Colors.white.withOpacity(0.05),
-                      ),
-                    )
-                  : null,
+              child: imageUrl == null ? Center(
+                child: Icon(Icons.image, size: 64, color: Colors.white.withOpacity(0.05)),
+              ) : null,
             ),
             Container(
               decoration: BoxDecoration(
@@ -343,10 +283,7 @@ class _FeaturedCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: AppColors.accent,
                       borderRadius: BorderRadius.circular(6),
@@ -426,10 +363,7 @@ class _LiveSupportCard extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.accent,
                         foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                         shape: const StadiumBorder(),
                         elevation: 4,
                       ),

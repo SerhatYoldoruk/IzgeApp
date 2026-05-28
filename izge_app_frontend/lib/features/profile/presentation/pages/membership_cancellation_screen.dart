@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 
 class MembershipCancellationScreen extends StatelessWidget {
@@ -19,7 +18,7 @@ class MembershipCancellationScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Üyelik İptali'.tr(),
+          'Üyelik İptali',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -62,7 +61,7 @@ class MembershipCancellationScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Ayrılmak istediğinize emin misiniz?'.tr(),
+                          'Ayrılmak istediğinize emin misiniz?',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -71,7 +70,7 @@ class MembershipCancellationScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Üyeliğinizi iptal etmek yerine dondurmayı tercih edebilirsiniz. İptal işlemi kalıcıdır ve önceki bağış geçmişinize veya etkinlik katılımlarınıza erişimi sonlandırır.'.tr(),
+                          'Üyeliğinizi iptal etmek yerine dondurmayı tercih edebilirsiniz. İptal işlemi kalıcıdır ve önceki bağış geçmişinize veya etkinlik katılımlarınıza erişimi sonlandırır.',
                           style: TextStyle(
                             fontSize: 16,
                             color: AppColors.textSecondary,
@@ -91,30 +90,30 @@ class MembershipCancellationScreen extends StatelessWidget {
             LayoutBuilder(
               builder: (context, constraints) {
                 final isWide = constraints.maxWidth > 600;
-                void freezeOnTap() {
+                final freezeOnTap = () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Üyeliğiniz donduruldu. İstediğiniz zaman tekrar aktif edebilirsiniz.'.tr()),
+                    const SnackBar(
+                      content: Text('Üyeliğiniz donduruldu. İstediğiniz zaman tekrar aktif edebilirsiniz.'),
                       backgroundColor: Color(0xFF1A8025),
                     ),
                   );
                   Navigator.pop(context);
-                }
-                void cancelOnTap() => _showCancelDialog(context);
+                };
+                final cancelOnTap = () => _showCancelDialog(context);
                 return Column(
                   children: [
                     if (isWide)
                       Row(
                         children: [
-                          Expanded(child: _buildOptionCard(Icons.ac_unit, 'Üyeliği Dondur'.tr(), 'Hesabınızı geçici olarak askıya alın. İstediğiniz zaman tekrar aktif edebilirsiniz. Verileriniz güvende kalır.'.tr(), false, onTap: freezeOnTap)),
+                          Expanded(child: _buildOptionCard(Icons.ac_unit, 'Üyeliği Dondur', 'Hesabınızı geçici olarak askıya alın. İstediğiniz zaman tekrar aktif edebilirsiniz. Verileriniz güvende kalır.', false, onTap: freezeOnTap)),
                           const SizedBox(width: 16),
-                          Expanded(child: _buildOptionCard(Icons.delete_forever, 'Kalıcı İptal'.tr(), 'Hesabınızı ve tüm verilerinizi kalıcı olarak silin. Bekleyen ödemeleriniz varsa iptal öncesi tamamlanmalıdır.'.tr(), true, onTap: cancelOnTap)),
+                          Expanded(child: _buildOptionCard(Icons.delete_forever, 'Kalıcı İptal', 'Hesabınızı ve tüm verilerinizi kalıcı olarak silin. Bekleyen ödemeleriniz varsa iptal öncesi tamamlanmalıdır.', true, onTap: cancelOnTap)),
                         ],
                       )
                     else ...[
-                      _buildOptionCard(Icons.ac_unit, 'Üyeliği Dondur'.tr(), 'Hesabınızı geçici olarak askiya alın. İstediğiniz zaman tekrar aktif edebilirsiniz. Verileriniz güvende kalır.'.tr(), false, onTap: freezeOnTap),
+                      _buildOptionCard(Icons.ac_unit, 'Üyeliği Dondur', 'Hesabınızı geçici olarak askıya alın. İstediğiniz zaman tekrar aktif edebilirsiniz. Verileriniz güvende kalır.', false, onTap: freezeOnTap),
                       const SizedBox(height: 16),
-                      _buildOptionCard(Icons.delete_forever, 'Kalıcı İptal'.tr(), 'Hesabınızı ve tüm verilerinizi kalıcı olarak silin. Bekleyen ödemeleriniz varsa iptal öncesi tamamlanmalıdır.'.tr(), true, onTap: cancelOnTap),
+                      _buildOptionCard(Icons.delete_forever, 'Kalıcı İptal', 'Hesabınızı ve tüm verilerinizi kalıcı olarak silin. Bekleyen ödemeleriniz varsa iptal öncesi tamamlanmalıdır.', true, onTap: cancelOnTap),
                     ],
                   ],
                 );
@@ -149,7 +148,7 @@ class MembershipCancellationScreen extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Önemli Bilgilendirme'.tr(),
+                      'Önemli Bilgilendirme',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -158,11 +157,11 @@ class MembershipCancellationScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildInfoRow(Icons.check_circle, 'İptal talebiniz 3 iş günü içerisinde işleme alınacaktır.'.tr()),
+                  _buildInfoRow(Icons.check_circle, 'İptal talebiniz 3 iş günü içerisinde işleme alınacaktır.'),
                   const SizedBox(height: 16),
-                  _buildInfoRow(Icons.payments, 'Varsa bekleyen son aidat borcunuz tahsil edildikten sonra iptal gerçekleşir.'.tr()),
+                  _buildInfoRow(Icons.payments, 'Varsa bekleyen son aidat borcunuz tahsil edildikten sonra iptal gerçekleşir.'),
                   const SizedBox(height: 16),
-                  _buildInfoRow(Icons.contact_mail, 'Detaylı bilgi ve haklarınız için gizlilik sözleşmemizi inceleyebilirsiniz.'.tr()),
+                  _buildInfoRow(Icons.contact_mail, 'Detaylı bilgi ve haklarınız için gizlilik sözleşmemizi inceleyebilirsiniz.'),
                 ],
               ),
             ),
@@ -184,7 +183,7 @@ class MembershipCancellationScreen extends StatelessWidget {
                     },
                     icon: Icon(Icons.headset_mic, color: AppColors.textPrimary),
                     label: Text(
-                      'Bize Ulaşın'.tr(),
+                      'Bize Ulaşın',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -212,8 +211,8 @@ class MembershipCancellationScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(
-                      'İptal İşlemini Başlat'.tr(),
+                    child: const Text(
+                      'İptal İşlemini Başlat',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -235,19 +234,19 @@ class MembershipCancellationScreen extends StatelessWidget {
       context: context,
       builder: (dialogContext) => AlertDialog(
         backgroundColor: AppColors.surfaceElevated,
-        title: Text('śu an kalıcı İptal'.tr(), style: TextStyle(color: Color(0xFFFFB4AB), fontWeight: FontWeight.bold)),
-        content: Text('Bu işlem geri alınamaz. Üyliğinizi kalıcı olarak iptal etmek istediğinize emin misiniz?'.tr(), style: TextStyle(color: AppColors.textPrimary)),
+        title: const Text('Kalıcı İptal', style: TextStyle(color: Color(0xFFFFB4AB), fontWeight: FontWeight.bold)),
+        content: Text('Bu işlem geri alınamaz. Üyeliğinizi kalıcı olarak iptal etmek istediğinize emin misiniz?', style: TextStyle(color: AppColors.textPrimary)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text('Vazgeç'.tr(), style: TextStyle(color: AppColors.textSecondary))),
+          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text('Vazgeç', style: TextStyle(color: AppColors.textSecondary))),
           TextButton(
             onPressed: () {
               Navigator.pop(dialogContext);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('İptal talebiniz alınmıştır. 3 iş günü içerisinde işleme alınacaktır.'.tr()), backgroundColor: Color(0xFF93000A)),
+                const SnackBar(content: Text('İptal talebiniz alınmıştır. 3 iş günü içerisinde işleme alınacaktır.'), backgroundColor: Color(0xFF93000A)),
               );
               Navigator.pop(context);
             },
-            child: Text('İptal Et'.tr(), style: TextStyle(color: Color(0xFFFFB4AB), fontWeight: FontWeight.bold)),
+            child: const Text('İptal Et', style: TextStyle(color: Color(0xFFFFB4AB), fontWeight: FontWeight.bold)),
           ),
         ],
       ),

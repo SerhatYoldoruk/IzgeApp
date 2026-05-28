@@ -1,6 +1,6 @@
+﻿import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/request_status_screen.dart';
 
 class CreateRequestScreen extends StatefulWidget {
@@ -34,7 +34,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
           
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Talebiniz başarıyla oluşturuldu! (TLP-10492)'.tr()),
+              content: const Text('Talebiniz başarıyla oluşturuldu! (TLP-10492)'),
               backgroundColor: const Color(0xFF1A8025), // primary-container
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -51,7 +51,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
     } else if (_selectedCategory == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Lütfen bir talep kategorisi seçiniz.'.tr()),
+          content: Text('Lütfen bir talep kategorisi seçiniz.'),
           backgroundColor: AppColors.error,
         ),
       );
@@ -70,9 +70,9 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Yeni Talep Oluştur'.tr(),
-          style: const TextStyle(
+        title: const Text(
+          'Yeni Talep Oluştur',
+          style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75),
@@ -88,7 +88,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Talep Detayları'.tr(),
+                'Talep Detayları',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -97,7 +97,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
               ),
               SizedBox(height: 8),
               Text(
-                'Lütfen ihtiyacınız olan destek türünü ve detaylarını eksiksiz doldurunuz.'.tr(),
+                'Lütfen ihtiyacınız olan destek türünü ve detaylarını eksiksiz doldurunuz.',
                 style: TextStyle(
                   fontSize: 16,
                   color: AppColors.textSecondary,
@@ -108,7 +108,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
               
               // Category Selection
               Text(
-                'Kategori Seçimi'.tr(),
+                'Kategori Seçimi',
                 style: TextStyle(fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
@@ -122,7 +122,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: _selectedCategory,
-                    hint: Text('Kategori seçiniz'.tr(), style: TextStyle(color: AppColors.textSecondary)),
+                    hint: Text('Kategori seçiniz', style: TextStyle(color: AppColors.textSecondary)),
                     isExpanded: true,
                     dropdownColor: AppColors.surfaceElevated,
                     icon: Icon(Icons.arrow_drop_down, color: Color(0xFF7ADC75)),
@@ -130,7 +130,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
                     items: _categories.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value.tr()),
+                        child: Text(value),
                       );
                     }).toList(),
                     onChanged: (newValue) {
@@ -145,14 +145,14 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
               
               // Title Input
               Text(
-                'Talep Başlığı'.tr(),
+                'Talep Başlığı',
                 style: TextStyle(fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
               TextFormField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Örn: Tekerlekli Sandalye İhtiyacı'.tr(),
+                  hintText: 'Örn: Tekerlekli Sandalye İhtiyacı',
                   hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.5)),
                   filled: true,
                   fillColor: AppColors.surface,
@@ -161,13 +161,13 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                validator: (value) => value == null || value.isEmpty ? 'Başlık zorunludur'.tr() : null,
+                validator: (value) => value == null || value.isEmpty ? 'Başlık zorunludur' : null,
               ),
               SizedBox(height: 24),
               
               // Description Input
               Text(
-                'Detaylı Açıklama'.tr(),
+                'Detaylı Açıklama',
                 style: TextStyle(fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
@@ -175,7 +175,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
                 style: TextStyle(color: AppColors.textPrimary),
                 maxLines: 5,
                 decoration: InputDecoration(
-                  hintText: 'Durumunuzu ve ihtiyacınızı detaylı bir şekilde açıklayınız...'.tr(),
+                  hintText: 'Durumunuzu ve ihtiyacınızı detaylı bir şekilde açıklayınız...',
                   hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.5)),
                   filled: true,
                   fillColor: AppColors.surface,
@@ -184,13 +184,13 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                validator: (value) => value == null || value.isEmpty ? 'Açıklama zorunludur'.tr() : null,
+                validator: (value) => value == null || value.isEmpty ? 'Açıklama zorunludur' : null,
               ),
               SizedBox(height: 24),
               
               // Attachment Area (Premium Glassmorphism feel)
               Text(
-                'Gerekli Belgeler (İsteğe Bağlı)'.tr(),
+                'Gerekli Belgeler (İsteğe Bağlı)',
                 style: TextStyle(fontSize: 14, color: AppColors.textSecondary, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
@@ -216,16 +216,16 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
                         child: Icon(Icons.cloud_upload, color: Color(0xFF7ADC75)),
                       ),
                       SizedBox(height: 16),
-                      Text(
-                        'Belge Yüklemek İçin Tıklayın'.tr(),
-                        style: const TextStyle(
+                      const Text(
+                        'Belge Yüklemek İçin Tıklayın',
+                        style: TextStyle(
                           color: Color(0xFF7ADC75),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Öğrenci belgesi, doktor raporu vb. (Max 5MB)'.tr(),
+                        'Öğrenci belgesi, doktor raporu vb. (Max 5MB)',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary.withOpacity(0.8),
@@ -257,9 +257,9 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
                           width: 24,
                           child: CircularProgressIndicator(color: Color(0xFF003908), strokeWidth: 2),
                         )
-                      : Text(
-                          'Talebi Gönder'.tr(),
-                          style: const TextStyle(
+                      : const Text(
+                          'Talebi Gönder',
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF003908), // on-primary

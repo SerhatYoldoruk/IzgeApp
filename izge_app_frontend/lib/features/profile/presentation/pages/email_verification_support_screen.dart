@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'dart:async';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/email_verification_failed_screen.dart';
 
 class EmailVerificationSupportScreen extends StatefulWidget {
@@ -87,7 +86,7 @@ class _EmailVerificationSupportScreenState extends State<EmailVerificationSuppor
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Teknik Destek'.tr(),
+          'Teknik Destek',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -121,7 +120,7 @@ class _EmailVerificationSupportScreenState extends State<EmailVerificationSuppor
             
             // Text Content
             Text(
-              'E-posta Doğrulama'.tr(),
+              'E-posta Doğrulama',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -131,7 +130,7 @@ class _EmailVerificationSupportScreenState extends State<EmailVerificationSuppor
             ),
             SizedBox(height: 8),
             Text(
-              'E-posta adresinize gönderilen 6 haneli doğrulama kodunu giriniz.'.tr(),
+              'E-posta adresinize gönderilen 6 haneli doğrulama kodunu giriniz.',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -219,7 +218,7 @@ class _EmailVerificationSupportScreenState extends State<EmailVerificationSuppor
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
-                    'Kodu Tekrar Gönder'.tr(),
+                    'Kodu Tekrar Gönder',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -251,18 +250,18 @@ class _EmailVerificationSupportScreenState extends State<EmailVerificationSuppor
                   ),
                   elevation: 4,
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Doğrula'.tr(),
-                      style: const TextStyle(
+                      'Doğrula',
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.arrow_forward),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward),
                   ],
                 ),
               ),

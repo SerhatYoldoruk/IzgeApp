@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/change_password_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/active_devices_screen.dart';
 
@@ -28,7 +27,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Hesap Güvenliği'.tr(),
+          'Hesap Güvenliği',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -43,7 +42,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Section 1: ŞİFRE İŞLEMLERİ
-            _buildSectionHeader('ŞİFRE İŞLEMLERİ'.tr()),
+            _buildSectionHeader('ŞİFRE İŞLEMLERİ'),
             const SizedBox(height: 8),
             Container(
               decoration: _cardDecoration(),
@@ -51,7 +50,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                 icon: Icons.lock,
                 iconColor: const Color(0xFF1A8025), // primary-container
                 iconBgColor: const Color(0xFF1A8025).withOpacity(0.2),
-                title: 'Şifre Değiştir'.tr(),
+                title: 'Şifre Değiştir',
                 onTap: () {
                   Navigator.push(
                     context,
@@ -64,7 +63,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
             const SizedBox(height: 32),
             
             // Section 2: GÜVENLİK KATMANLARI
-            _buildSectionHeader('GÜVENLİK KATMANLARI'.tr()),
+            _buildSectionHeader('GÜVENLİK KATMANLARI'),
             const SizedBox(height: 8),
             Container(
               decoration: _cardDecoration(),
@@ -72,8 +71,8 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                 children: [
                   _buildToggleItem(
                     icon: Icons.verified_user,
-                    title: 'İki Faktörlü Doğrulama'.tr(),
-                    subtitle: 'Ekstra güvenlik şartları'.tr(),
+                    title: 'İki Faktörlü Doğrulama',
+                    subtitle: 'Ekstra güvenlik şartları',
                     value: _twoFactorEnabled,
                     onChanged: (val) {
                       setState(() {
@@ -84,7 +83,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                   Divider(height: 1, color: AppColors.border.withOpacity(0.5)),
                   _buildToggleItem(
                     icon: Icons.fingerprint,
-                    title: 'Biyometrik Giriş\n(FaceID/Parmak İzi)'.tr(),
+                    title: 'Biyometrik Giriş\n(FaceID/Parmak İzi)',
                     value: _biometricsEnabled,
                     onChanged: (val) {
                       setState(() {
@@ -99,7 +98,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
             SizedBox(height: 32),
             
             // Section 3: OTURUM YÖNETİMİ
-            _buildSectionHeader('OTURUM YÖNETİMİ'.tr()),
+            _buildSectionHeader('OTURUM YÖNETİMİ'),
             const SizedBox(height: 8),
             Container(
               decoration: _cardDecoration(),
@@ -107,8 +106,8 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                 icon: Icons.devices,
                 iconColor: AppColors.textPrimary,
                 iconBgColor: AppColors.border, // surface-variant
-                title: 'Aktif Cihazlar'.tr(),
-                subtitle: 'Bu Cihaz: iPhone 14 Pro'.tr(),
+                title: 'Aktif Cihazlar',
+                subtitle: 'Bu Cihaz: iPhone 14 Pro',
                 subtitleColor: const Color(0xFF7ADC75), // primary
                 onTap: () {
                   Navigator.push(
@@ -122,7 +121,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
             const SizedBox(height: 32),
             
             // Section 4: HESAP İŞLEMLERİ
-            _buildSectionHeader('HESAP İŞLEMLERİ'.tr()),
+            _buildSectionHeader('HESAP İŞLEMLERİ'),
             const SizedBox(height: 8),
             Container(
               decoration: _cardDecoration(),
@@ -130,8 +129,8 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                 icon: Icons.delete_forever,
                 iconColor: const Color(0xFFE57373),
                 iconBgColor: const Color(0xFFE57373).withOpacity(0.2),
-                title: 'Hesabımı Sil'.tr(),
-                subtitle: 'Bu işlem kalıcıdır'.tr(),
+                title: 'Hesabımı Sil',
+                subtitle: 'Bu işlem kalıcıdır',
                 subtitleColor: const Color(0xFFE57373),
                 titleColor: const Color(0xFFE57373),
                 onTap: () {
@@ -289,7 +288,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: const Color(0xFFD3FFC8), // on-primary-container
+            activeColor: const Color(0xFFD3FFC8), // on-primary-container
             activeTrackColor: const Color(0xFF1A8025), // primary-container
             inactiveThumbColor: AppColors.textSecondary, // on-surface-variant
             inactiveTrackColor: AppColors.border, // surface-variant
@@ -304,19 +303,19 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: Text(
-            'Emin misiniz?'.tr(),
-            style: const TextStyle(color: Color(0xFFE57373)),
+          title: const Text(
+            'Emin misiniz?',
+            style: TextStyle(color: Color(0xFFE57373)),
           ),
           content: Text(
-            'Hesabınızı silmek istediğinizden emin misiniz? Bu işlem kalıcıdır ve geri alınamaz.'.tr(),
+            'Hesabınızı silmek istediğinizden emin misiniz? Bu işlem kalıcıdır ve geri alınamaz.',
             style: TextStyle(color: AppColors.textPrimary),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
               child: Text(
-                'İptal'.tr(),
+                'İptal',
                 style: TextStyle(color: AppColors.textSecondary),
               ),
             ),
@@ -325,17 +324,17 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> {
                 Navigator.pop(dialogContext); // Close dialog
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Hesap silme talebiniz alınmıştır.'.tr()),
-                      duration: const Duration(seconds: 3),
+                    const SnackBar(
+                      content: Text('Hesap silme talebiniz alınmıştır.'),
+                      duration: Duration(seconds: 3),
                     ),
                   );
                   Navigator.pop(context); // Pop screen
                 }
               },
-              child: Text(
-                'Hesabımı Sil'.tr(),
-                style: const TextStyle(color: Color(0xFFE57373), fontWeight: FontWeight.bold),
+              child: const Text(
+                'Hesabımı Sil',
+                style: TextStyle(color: Color(0xFFE57373), fontWeight: FontWeight.bold),
               ),
             ),
           ],

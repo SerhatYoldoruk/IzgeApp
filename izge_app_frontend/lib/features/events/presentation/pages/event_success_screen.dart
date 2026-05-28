@@ -1,31 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/my_events_screen.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
-class EventSuccessScreen extends StatefulWidget {
+class EventSuccessScreen extends StatelessWidget {
   const EventSuccessScreen({super.key});
-
-  @override
-  State<EventSuccessScreen> createState() => _EventSuccessScreenState();
-}
-
-class _EventSuccessScreenState extends State<EventSuccessScreen> {
-  @override
-  void initState() {
-    super.initState();
-    LanguageController.instance.addListener(_onLanguageChanged);
-  }
-
-  @override
-  void dispose() {
-    LanguageController.instance.removeListener(_onLanguageChanged);
-    super.dispose();
-  }
-
-  void _onLanguageChanged() {
-    if (mounted) setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +79,7 @@ class _EventSuccessScreenState extends State<EventSuccessScreen> {
                   ),
                   SizedBox(height: 24),
                   Text(
-                    'Katılım Onayı'.tr(),
+                    'Katılım Onayı',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -111,7 +89,7 @@ class _EventSuccessScreenState extends State<EventSuccessScreen> {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Kaydınız başarıyla oluşturulmuştur. Etkinlik detayları ve güncellemeler için takipte kalın.'.tr(),
+                    'Kaydınız başarıyla oluşturulmuştur. Etkinlik detayları ve güncellemeler için takipte kalın.',
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.textSecondary,
@@ -139,20 +117,20 @@ class _EventSuccessScreenState extends State<EventSuccessScreen> {
                       children: [
                         _buildSummaryRow(
                           icon: Icons.event,
-                          label: 'Etkinlik'.tr(),
-                          value: 'Engelsiz Yaşam Buluşması'.tr(),
+                          label: 'Etkinlik',
+                          value: 'Engelsiz Yaşam Buluşması',
                         ),
                         Divider(color: AppColors.border, height: 32),
                         _buildSummaryRow(
                           icon: Icons.calendar_today,
-                          label: 'Tarih'.tr(),
-                          value: '12 Haziran 2024'.tr(),
+                          label: 'Tarih',
+                          value: '12 Haziran 2024',
                         ),
                         Divider(color: AppColors.border, height: 32),
                         _buildSummaryRow(
                           icon: Icons.location_on,
-                          label: 'Konum'.tr(),
-                          value: 'Kültür Merkezi'.tr(),
+                          label: 'Konum',
+                          value: 'Kültür Merkezi',
                         ),
                       ],
                     ),
@@ -173,9 +151,9 @@ class _EventSuccessScreenState extends State<EventSuccessScreen> {
                       elevation: 4,
                       shadowColor: AppColors.accent.withOpacity(0.3),
                     ),
-                    child: Text(
-                      'Etkinliklerime Git'.tr(),
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    child: const Text(
+                      'Etkinliklerime Git',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -188,9 +166,9 @@ class _EventSuccessScreenState extends State<EventSuccessScreen> {
                       minimumSize: const Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
-                    child: Text(
-                      'Anasayfaya Dön'.tr(),
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    child: const Text(
+                      'Anasayfaya Dön',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],

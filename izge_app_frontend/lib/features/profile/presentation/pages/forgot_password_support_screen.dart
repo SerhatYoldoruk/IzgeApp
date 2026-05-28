@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/forgot_password_failed_screen.dart';
 
 class ForgotPasswordSupportScreen extends StatelessWidget {
@@ -19,7 +18,7 @@ class ForgotPasswordSupportScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Teknik Destek'.tr(),
+          'Teknik Destek',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -51,7 +50,7 @@ class ForgotPasswordSupportScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Text(
-              'Şifre Sıfırlama'.tr(),
+              'Şifre Sıfırlama',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -61,7 +60,7 @@ class ForgotPasswordSupportScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Lütfen hesabınıza kayıtlı e-posta adresinizi girin. Size bir şifre sıfırlama bağlantısı göndereceğiz.'.tr(),
+              'Lütfen hesabınıza kayıtlı e-posta adresinizi girin. Size bir şifre sıfırlama bağlantısı göndereceğiz.',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -88,7 +87,7 @@ class ForgotPasswordSupportScreen extends StatelessWidget {
                 style: TextStyle(color: AppColors.textPrimary),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: 'E-posta adresiniz'.tr(),
+                  hintText: 'E-posta adresiniz',
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.mail, color: AppColors.textSecondary),
                   border: InputBorder.none,
@@ -111,7 +110,7 @@ class ForgotPasswordSupportScreen extends StatelessWidget {
                 },
                 icon: Icon(Icons.send, color: AppColors.background),
                 label: Text(
-                  'Bağlantı Gönder'.tr(),
+                  'Bağlantı Gönder',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -134,9 +133,9 @@ class ForgotPasswordSupportScreen extends StatelessWidget {
             TextButton.icon(
               onPressed: () => Navigator.pop(context), // Typically would pop back to login
               icon: const Icon(Icons.keyboard_backspace, color: Color(0xFF7ADC75), size: 16),
-              label: Text(
-                'Giriş Ekranına Dön'.tr(),
-                style: const TextStyle(color: Color(0xFF7ADC75), fontSize: 16), // primary
+              label: const Text(
+                'Giriş Ekranına Dön',
+                style: TextStyle(color: Color(0xFF7ADC75), fontSize: 16), // primary
               ),
             ),
           ],

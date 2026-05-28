@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class MyEventsScreen extends StatefulWidget {
   const MyEventsScreen({super.key});
@@ -22,7 +21,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Etkinlik Katılımlarım'.tr(),
+          'Etkinlik Katılımlarım',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -58,7 +57,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            'Yaklaşan'.tr(),
+                            'Yaklaşan',
                             style: TextStyle(
                               color: _isUpcoming ? AppColors.accent : AppColors.textSecondary,
                               fontWeight: FontWeight.bold,
@@ -80,7 +79,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            'Geçmiş'.tr(),
+                            'Geçmiş',
                             style: TextStyle(
                               color: !_isUpcoming ? AppColors.accent : AppColors.textSecondary,
                               fontWeight: FontWeight.bold,
@@ -214,9 +213,9 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     color: const Color(0xFF1A8025), // primary-container
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Text(
-                    'YAKLAŞAN'.tr(),
-                    style: const TextStyle(
+                  child: const Text(
+                    'YAKLAŞAN',
+                    style: TextStyle(
                       color: Color(0xFFD3FFC8), // on-primary-container
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -235,7 +234,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title.tr(),
+                  title,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -247,7 +246,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   children: [
                     Icon(Icons.calendar_month, size: 20, color: AppColors.textSecondary),
                     SizedBox(width: 8),
-                    Text(date.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+                    Text(date, style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
                   ],
                 ),
                 SizedBox(height: 8),
@@ -255,7 +254,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   children: [
                     Icon(locationIcon, size: 20, color: AppColors.textSecondary),
                     SizedBox(width: 8),
-                    Text(location.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+                    Text(location, style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
                   ],
                 ),
                 SizedBox(height: 12),
@@ -273,7 +272,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          isConfirmed ? 'Katılım Onaylandı'.tr() : 'Onay Bekleniyor'.tr(),
+                          isConfirmed ? 'Katılım Onaylandı' : 'Onay Bekleniyor',
                           style: TextStyle(
                             color: isConfirmed ? AppColors.accent : AppColors.textSecondary,
                             fontSize: 16,
@@ -350,7 +349,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        title.tr(),
+                        title,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -372,7 +371,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                           Icon(Icons.check_circle, color: AppColors.accent, size: 16),
                           SizedBox(width: 4),
                           Text(
-                            status.tr(),
+                            status,
                             style: TextStyle(
                               color: AppColors.accent,
                               fontSize: 12,
@@ -389,7 +388,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   children: [
                     Icon(Icons.calendar_month, size: 18, color: AppColors.textSecondary),
                     SizedBox(width: 8),
-                    Text(date.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+                    Text(date, style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
                   ],
                 ),
                 SizedBox(height: 8),
@@ -397,7 +396,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   children: [
                     Icon(locationIcon, size: 18, color: AppColors.textSecondary),
                     SizedBox(width: 8),
-                    Text(location.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+                    Text(location, style: TextStyle(color: AppColors.textSecondary, fontSize: 16)),
                   ],
                 ),
               ],

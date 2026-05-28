@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class DonationTransparencyScreen extends StatelessWidget {
   const DonationTransparencyScreen({super.key});
@@ -33,7 +32,7 @@ class DonationTransparencyScreen extends StatelessWidget {
           children: [
             // Page Header
             Text(
-              'Bağışlar Nereye Gidiyor?'.tr(),
+              'Bağışlar Nereye Gidiyor?',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -43,7 +42,7 @@ class DonationTransparencyScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Şeffaflık ilkemiz gereği, desteklerinizin her bir kuruşunun nasıl değere dönüştüğünü sizlerle paylaşıyoruz.'.tr(),
+              'Şeffaflık ilkemiz gereği, desteklerinizin her bir kuruşunun nasıl değere dönüştüğünü sizlerle paylaşıyoruz.',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -57,8 +56,8 @@ class DonationTransparencyScreen extends StatelessWidget {
             // Bento Grid Infographic
             _buildLargeCard(
               icon: Icons.medical_services,
-              title: 'Tıbbi Cihazlar'.tr(),
-              subtitle: 'Hayati ekipman alımları'.tr(),
+              title: 'Tıbbi Cihazlar',
+              subtitle: 'Hayati ekipman alımları',
               percentage: 40,
             ),
             const SizedBox(height: 16),
@@ -70,8 +69,8 @@ class DonationTransparencyScreen extends StatelessWidget {
                     Expanded(
                       child: _buildSmallCard(
                         icon: Icons.school,
-                        title: 'Eğitim'.tr(),
-                        subtitle: 'Burslar ve eğitim materyalleri'.tr(),
+                        title: 'Eğitim',
+                        subtitle: 'Burslar ve eğitim materyalleri',
                         percentage: 30,
                       ),
                     ),
@@ -79,8 +78,8 @@ class DonationTransparencyScreen extends StatelessWidget {
                     Expanded(
                       child: _buildSmallCard(
                         icon: Icons.psychology,
-                        title: 'Danışmanlık'.tr(),
-                        subtitle: 'Psikolojik ve hukuki destek'.tr(),
+                        title: 'Danışmanlık',
+                        subtitle: 'Psikolojik ve hukuki destek',
                         percentage: 20,
                       ),
                     ),
@@ -114,7 +113,7 @@ class DonationTransparencyScreen extends StatelessWidget {
                       SizedBox(width: 16),
                       Expanded(
                         child: Text(
-                          'Yönetim & Operasyon'.tr(),
+                          'Yönetim & Operasyon',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -153,7 +152,7 @@ class DonationTransparencyScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Kurumsal sürdürülebilirlik için minimum seviyede tutulmaktadır.'.tr(),
+                    'Kurumsal sürdürülebilirlik için minimum seviyede tutulmaktadır.',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -194,7 +193,7 @@ class DonationTransparencyScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Detaylı Şeffaflık Raporu'.tr(),
+                              'Detaylı Şeffaflık Raporu',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -203,7 +202,7 @@ class DonationTransparencyScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Bağımsız denetim kuruluşları tarafından hazırlanan yıllık faaliyet raporlarımızı inceleyebilirsiniz.'.tr(),
+                              'Bağımsız denetim kuruluşları tarafından hazırlanan yıllık faaliyet raporlarımızı inceleyebilirsiniz.',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.textSecondary,
@@ -215,8 +214,8 @@ class DonationTransparencyScreen extends StatelessWidget {
                         final button = ElevatedButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.download, color: Color(0xFF003908), size: 20), // on-primary
-                          label: Text(
-                            'Raporu İndir'.tr(),
+                          label: const Text(
+                            'Raporu İndir',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,

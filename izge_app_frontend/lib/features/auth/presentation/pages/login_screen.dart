@@ -1,6 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/services/supabase_service.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
 import 'package:izge_app_frontend/core/widgets/loading_overlay.dart';
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_bloc.dart';
@@ -20,7 +24,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  @override
   void initState() {
     super.initState();
     // Sık kullanılan resimleri (logo, google) önceden yükle
@@ -37,7 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
   /// Kullanıcı tarafından girilen şifre
   String password = '';
   
-
+  /// Giriş işlemi devam ediyor mu (yükleniyor göstergesi için)
+  bool _isLoading = false;
 
   /// E-posta veya telefon numarası ile giriş işlemini başlat
   void _handleLogin() {
@@ -85,6 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Ekran genişliğini al ve buton genişliğini dinamik olarak hesapla
+    // Ekran dar ise 72%, geniş ise max 420 px genişlik
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double buttonWidth = math.min(screenWidth * 0.72, 420.0);
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -360,7 +368,7 @@ class _GoogleSignInCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              Container(
                 width: 24,
                 height: 24,
                 child: Image.asset(

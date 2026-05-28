@@ -1,17 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
-class LinkedAccountsScreen extends StatefulWidget {
+class LinkedAccountsScreen extends StatelessWidget {
   const LinkedAccountsScreen({super.key});
-
-  @override
-  State<LinkedAccountsScreen> createState() => _LinkedAccountsScreenState();
-}
-
-class _LinkedAccountsScreenState extends State<LinkedAccountsScreen> {
-  bool _isTwitterLinked = false;
-  bool _isFacebookLinked = false;
-  bool _isInstagramLinked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +48,11 @@ class _LinkedAccountsScreenState extends State<LinkedAccountsScreen> {
             _buildLinkedAccount(
               icon: Icons.close,
               title: 'X (Twitter)',
-              subtitle: _isTwitterLinked ? '@kullaniciadi' : 'Bağlı değil',
-              isLinked: _isTwitterLinked,
-              subtitleColor: _isTwitterLinked ? AppColors.accent : null,
+              subtitle: '@izge_official',
+              isLinked: true,
+              subtitleColor: AppColors.accent,
               onTap: () {
-                setState(() {
-                  _isTwitterLinked = !_isTwitterLinked;
-                });
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_isTwitterLinked ? 'X (Twitter) hesabı bağlandı' : 'X (Twitter) bağlantısı kesildi')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Bağlantı kesildi')));
               },
             ),
             const SizedBox(height: 16),
@@ -72,14 +60,10 @@ class _LinkedAccountsScreenState extends State<LinkedAccountsScreen> {
             _buildLinkedAccount(
               icon: Icons.facebook,
               title: 'Facebook',
-              subtitle: _isFacebookLinked ? 'Kullanıcı Adı' : 'Bağlı değil',
-              isLinked: _isFacebookLinked,
-              subtitleColor: _isFacebookLinked ? AppColors.accent : null,
+              subtitle: 'Bağlı değil',
+              isLinked: false,
               onTap: () {
-                setState(() {
-                  _isFacebookLinked = !_isFacebookLinked;
-                });
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_isFacebookLinked ? 'Facebook hesabı bağlandı' : 'Facebook bağlantısı kesildi')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Hesap bağlandı')));
               },
             ),
             const SizedBox(height: 16),
@@ -87,14 +71,10 @@ class _LinkedAccountsScreenState extends State<LinkedAccountsScreen> {
             _buildLinkedAccount(
               icon: Icons.camera_alt,
               title: 'Instagram',
-              subtitle: _isInstagramLinked ? '@kullaniciadi' : 'Bağlı değil',
-              isLinked: _isInstagramLinked,
-              subtitleColor: _isInstagramLinked ? AppColors.accent : null,
+              subtitle: 'Bağlı değil',
+              isLinked: false,
               onTap: () {
-                setState(() {
-                  _isInstagramLinked = !_isInstagramLinked;
-                });
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_isInstagramLinked ? 'Instagram hesabı bağlandı' : 'Instagram bağlantısı kesildi')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Hesap bağlandı')));
               },
             ),
             

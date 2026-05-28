@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 
 class TroubleshootingScreen extends StatefulWidget {
@@ -66,9 +65,9 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Sorun Giderme'.tr(),
-          style: const TextStyle(
+        title: const Text(
+          'Sorun Giderme',
+          style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF7ADC75), // primary
@@ -83,7 +82,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
           children: [
             // Hero Section
             Text(
-              'Nasıl yardımcı olabiliriz?'.tr(),
+              'Nasıl yardımcı olabiliriz?',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -93,7 +92,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
             ),
             SizedBox(height: 8),
             Text(
-              'Sık karşılaşılan sorunlar için aşağıdaki çözüm adımlarını inceleyin.'.tr(),
+              'Sık karşılaşılan sorunlar için aşağıdaki çözüm adımlarını inceleyin.',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.textSecondary,
@@ -117,7 +116,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
               child: TextField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Sorununuzu arayın...'.tr(),
+                  hintText: 'Sorununuzu arayın...',
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   filled: true,
@@ -162,7 +161,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
                         SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            (issue['title'] as String).tr(),
+                            issue['title'],
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -202,7 +201,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      (issue['steps'][stepIndex] as String).tr(),
+                                      issue['steps'][stepIndex],
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: AppColors.textSecondary,
@@ -288,7 +287,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Hala sorun mu yaşıyorsunuz?'.tr(),
+                        'Hala sorun mu yaşıyorsunuz?',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -298,7 +297,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Destek ekibimiz size yardımcı olmak için burada.'.tr(),
+                        'Destek ekibimiz size yardımcı olmak için burada.',
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.textSecondary,
@@ -317,9 +316,9 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
                             );
                           },
                           icon: const Icon(Icons.chat_bubble, color: Color(0xFF003908)),
-                          label: Text(
-                            'Canlı Destek Başlat'.tr(),
-                            style: const TextStyle(
+                          label: const Text(
+                            'Canlı Destek Başlat',
+                            style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF003908), // on-primary

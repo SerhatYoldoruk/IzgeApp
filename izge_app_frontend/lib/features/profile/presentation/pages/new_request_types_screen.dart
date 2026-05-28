@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/create_request_screen.dart';
 
 class NewRequestTypesScreen extends StatelessWidget {
@@ -18,8 +17,8 @@ class NewRequestTypesScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Yeni Talep Türleri'.tr(),
+        title: const Text(
+          'Yeni Talep Türleri',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -39,53 +38,29 @@ class NewRequestTypesScreen extends StatelessWidget {
                     if (isWide) {
                       return Row(
                         children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                _buildCard(
-                                  Icons.medical_services,
-                                  'Tıbbi Cihaz Desteği'.tr(),
-                                  'Tekerlekli sandalye, işitme cihazı ve diğer medikal ihtiyaçlar.'.tr(),
-                                ),
-                                const SizedBox(height: 16),
-                                _buildCard(
-                                  Icons.psychology,
-                                  'Psikolojik Danışmanlık'.tr(),
-                                  'Uzman psikologlardan ücretsiz terapi ve destek seansları.'.tr(),
-                                ),
-                              ],
-                            ),
-                          ),
+                          Expanded(child: Column(children: [
+                            _buildCard(Icons.medical_services, 'Tıbbi Cihaz Desteği', 'Tekerlekli sandalye, işitme cihazı ve diğer medikal ihtiyaçlar.'),
+                            const SizedBox(height: 16),
+                            _buildCard(Icons.psychology, 'Psikolojik Danışmanlık', 'Uzman psikologlardan ücretsiz terapi ve destek seansları.'),
+                          ])),
                           const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                _buildCard(
-                                  Icons.school,
-                                  'Eğitim Bursu'.tr(),
-                                  'Öğrenciler için aylık burs veya kırtasiye/materyal yardımı.'.tr(),
-                                ),
-                                const SizedBox(height: 16),
-                                _buildCard(
-                                  Icons.gavel,
-                                  'Hukuki Yardım'.tr(),
-                                  'Pro bono avukatlarımızdan hukuki danışmanlık hizmeti.'.tr(),
-                                ),
-                              ],
-                            ),
-                          ),
+                          Expanded(child: Column(children: [
+                            _buildCard(Icons.school, 'Eğitim Bursu', 'Öğrenciler için aylık burs veya kırtasiye/materyal yardımı.'),
+                            const SizedBox(height: 16),
+                            _buildCard(Icons.gavel, 'Hukuki Yardım', 'Pro bono avukatlarımızdan hukuki danışmanlık hizmeti.'),
+                          ])),
                         ],
                       );
                     } else {
                       return Column(
                         children: [
-                          _buildCard(Icons.medical_services, 'Tıbbi Cihaz Desteği'.tr(), 'Tekerlekli sandalye, işitme cihazı ve diğer medikal ihtiyaçlar.'.tr()),
+                          _buildCard(Icons.medical_services, 'Tıbbi Cihaz Desteği', 'Tekerlekli sandalye, işitme cihazı ve diğer medikal ihtiyaçlar.'),
                           const SizedBox(height: 16),
-                          _buildCard(Icons.school, 'Eğitim Bursu'.tr(), 'Öğrenciler için aylık burs veya kırtasiye/materyal yardımı.'.tr()),
+                          _buildCard(Icons.school, 'Eğitim Bursu', 'Öğrenciler için aylık burs veya kırtasiye/materyal yardımı.'),
                           const SizedBox(height: 16),
-                          _buildCard(Icons.psychology, 'Psikolojik Danışmanlık'.tr(), 'Uzman psikologlardan ücretsiz terapi ve destek seansları.'.tr()),
+                          _buildCard(Icons.psychology, 'Psikolojik Danışmanlık', 'Uzman psikologlardan ücretsiz terapi ve destek seansları.'),
                           const SizedBox(height: 16),
-                          _buildCard(Icons.gavel, 'Hukuki Yardım'.tr(), 'Pro bono avukatlarımızdan hukuki danışmanlık hizmeti.'.tr()),
+                          _buildCard(Icons.gavel, 'Hukuki Yardım', 'Pro bono avukatlarımızdan hukuki danışmanlık hizmeti.'),
                         ],
                       );
                     }
@@ -111,7 +86,7 @@ class NewRequestTypesScreen extends StatelessWidget {
                           SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                  'Gerekli Belgeler Rehberi'.tr(),
+                              'Gerekli Belgeler Rehberi',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -122,11 +97,11 @@ class NewRequestTypesScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 16),
-                      _buildRequirementItem('Tıbbi Cihaz başvuruları için doktor raporu zorunludur.'.tr()),
+                      _buildRequirementItem('Tıbbi Cihaz başvuruları için doktor raporu zorunludur.'),
                       const SizedBox(height: 12),
-                      _buildRequirementItem('Eğitim bursu için güncel öğrenci belgesi ve gelir beyanı eklenmelidir.'.tr()),
+                      _buildRequirementItem('Eğitim bursu için güncel öğrenci belgesi ve gelir beyanı eklenmelidir.'),
                       const SizedBox(height: 12),
-                      _buildRequirementItem('Hukuki yardım taleplerinde vaka özeti PDF veya JPEG formatında yüklenebilir.'.tr()),
+                      _buildRequirementItem('Hukuki yardım taleplerinde vaka özeti PDF veya JPEG formatında yüklenebilir.'),
                     ],
                   ),
                 ),
@@ -152,8 +127,8 @@ class NewRequestTypesScreen extends StatelessWidget {
                 );
               },
               icon: const Icon(Icons.add_circle, color: Color(0xFF003908)), // on-primary
-              label: Text(
-                'Yeni Talep Oluştur'.tr(),
+              label: const Text(
+                'Yeni Talep Oluştur',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
