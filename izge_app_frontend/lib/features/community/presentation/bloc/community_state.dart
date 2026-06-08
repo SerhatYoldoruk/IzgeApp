@@ -25,11 +25,12 @@ class CommunityPostsLoaded extends CommunityState {
 class CommunityPostDetailLoaded extends CommunityState {
   final CommunityPostModel post;
   final List<CommunityReplyModel> replies;
+  final bool isLikedByMe;
 
-  const CommunityPostDetailLoaded(this.post, this.replies);
+  const CommunityPostDetailLoaded(this.post, this.replies, {this.isLikedByMe = false});
 
   @override
-  List<Object?> get props => [post, replies];
+  List<Object?> get props => [post, replies, isLikedByMe];
 }
 
 class CommunityError extends CommunityState {

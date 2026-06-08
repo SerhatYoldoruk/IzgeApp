@@ -57,7 +57,9 @@ class CommunityBloc extends Bloc<CommunityEvent, CommunityState> {
   }
 
   Future<void> _onFetchPostDetail(FetchPostDetail event, Emitter<CommunityState> emit) async {
-    emit(CommunityLoading());
+    if (state is! CommunityPostDetailLoaded) {
+      emit(CommunityLoading());
+    }
     try {
       // Fetch post
       final postResponse = await _supabaseClient
@@ -109,7 +111,24 @@ class CommunityBloc extends Bloc<CommunityEvent, CommunityState> {
           .map((json) => CommunityReplyModel.fromJson(json))
           .toList();
 
-      emit(CommunityPostDetailLoaded(post, replies));
+      // Check if current user liked the post
+      bool isLikedByMe = false;
+      final currentUserId = _supabaseClient.auth.currentUser?.id;
+      if (currentUserId != null) {
+        try {
+          final likeData = await _supabaseClient
+              .from('community_post_likes')
+              .select('post_id')
+              .eq('post_id', event.postId)
+              .eq('user_id', currentUserId)
+              .maybeSingle();
+          isLikedByMe = likeData != null;
+        } catch (_) {
+          // Fallback in case table name is different
+        }
+      }
+
+      emit(CommunityPostDetailLoaded(post, replies, isLikedByMe: isLikedByMe));
     } catch (e) {
       emit(CommunityError(e.toString()));
     }
@@ -180,12 +199,40 @@ class CommunityBloc extends Bloc<CommunityEvent, CommunityState> {
   }
 
   Future<void> _onTogglePostLike(TogglePostLike event, Emitter<CommunityState> emit) async {
+    // 1. Optimistic Update (Anında UI tepkisi)
+    if (state is CommunityPostDetailLoaded) {
+      final currentState = state as CommunityPostDetailLoaded;
+      
+      final newIsLikedByMe = !currentState.isLikedByMe;
+      final currentLikesCount = currentState.post.likesCount;
+      final newLikesCount = newIsLikedByMe 
+          ? currentLikesCount + 1 
+          : (currentLikesCount > 0 ? currentLikesCount - 1 : 0);
+          
+      final updatedPost = CommunityPostModel(
+        id: currentState.post.id,
+        userId: currentState.post.userId,
+        title: currentState.post.title,
+        content: currentState.post.content,
+        likesCount: newLikesCount,
+        repliesCount: currentState.post.repliesCount,
+        createdAt: currentState.post.createdAt,
+        userName: currentState.post.userName,
+        userAvatar: currentState.post.userAvatar,
+        category: currentState.post.category,
+        imageUrl: currentState.post.imageUrl,
+      );
+      
+      emit(CommunityPostDetailLoaded(updatedPost, currentState.replies, isLikedByMe: newIsLikedByMe));
+    }
+
+    // 2. Arka Planda API İsteği
     try {
       await _supabaseClient.rpc('toggle_post_like', params: {'p_post_id': event.postId});
-      // Try fetching detail or just let the UI handle the increment optimistically.
-      // But since BLoC manages state, we can re-fetch detail.
-      add(FetchPostDetail(event.postId));
+      // Veritabanına istek başarıyla gitti. Artık yeniden tüm sayfayı çekmemize gerek yok çünkü UI'ı anında güncelledik.
     } catch (e) {
+      // Hata olursa gerçek durumu tekrar çekerek UI'ı düzelt
+      add(FetchPostDetail(event.postId));
       emit(CommunityError("Beğeni işlemi başarısız: ${e.toString()}"));
     }
   }

@@ -127,9 +127,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
           if (snapshot.hasError) {
             return Center(
-              child: Text(
-                'Bir hata oluştu.',
-                style: TextStyle(color: AppColors.textPrimary),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Bir hata oluştu:\n${snapshot.error}',
+                  style: TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
               ),
             );
           }
