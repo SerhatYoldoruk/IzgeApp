@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/pages/survey_detail_screen.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/pages/survey_results_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
+
+import 'package:izge_app_frontend/core/widgets/notification_badge_icon.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_bloc.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_state.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/bloc/survey_event.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
+import 'package:izge_app_frontend/core/models/poll_model.dart';
 
 class SurveysScreen extends StatelessWidget {
   const SurveysScreen({super.key});
@@ -64,12 +66,7 @@ class SurveysScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
-            },
-            icon: Icon(Icons.notifications_none, color: AppColors.textPrimary),
-          ),
+          const NotificationBadgeIcon(),
         ],
       ),
       body: RefreshIndicator(
@@ -186,6 +183,7 @@ class SurveysScreen extends StatelessWidget {
                         return _PastSurveyCard(
                           title: survey.title.tr(),
                           stats: 'Sonuçlandı'.tr(),
+                          survey: survey,
                         );
                       }),
                     ],
@@ -304,10 +302,12 @@ class _ActiveSurveyCard extends StatelessWidget {
 class _PastSurveyCard extends StatelessWidget {
   final String title;
   final String stats;
+  final PollModel survey;
 
   const _PastSurveyCard({
     required this.title,
     required this.stats,
+    required this.survey,
   });
 
   @override
@@ -326,7 +326,7 @@ class _PastSurveyCard extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SurveyResultsScreen()),
+              MaterialPageRoute(builder: (context) => SurveyResultsScreen(survey: survey)),
             );
           },
           child: Padding(

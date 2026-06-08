@@ -1,9 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/privacy_policy_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/about_us_screen.dart';
-// import 'package:izge_app_frontend/features/profile/presentation/pages/account_security_screen.dart'; // From existing
+import 'package:izge_app_frontend/features/profile/presentation/pages/account_security_screen.dart';
 // import 'package:izge_app_frontend/features/profile/presentation/pages/notification_settings_screen.dart'; // We might create a new one or use existing
 
 class AppSettingsScreen extends StatefulWidget {
@@ -101,14 +101,12 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> with SingleTicker
                 _buildNavigationItem(
                   icon: Icons.lock_outline,
                   title: 'Şifre ve Güvenlik',
-                  onTap: () {},
-                ),
-                _buildDivider(),
-                _buildNavigationItem(
-                  icon: Icons.shield_outlined,
-                  title: 'İki Adımlı Doğrulama (2FA)',
-                  onTap: () {},
-                  trailingText: 'Kapalı',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AccountSecurityScreen()),
+                    );
+                  },
                 ),
               ],
             ),

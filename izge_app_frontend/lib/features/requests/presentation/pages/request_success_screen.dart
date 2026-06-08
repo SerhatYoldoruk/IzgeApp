@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:izge_app_frontend/core/models/request_model.dart';
 
 class RequestSuccessScreen extends StatelessWidget {
-  const RequestSuccessScreen({super.key});
+  final RequestModel request;
+  const RequestSuccessScreen({super.key, required this.request});
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +60,53 @@ class RequestSuccessScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceElevated,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'Talep Numaranız:',
+                      style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+                    ),
+                    SizedBox(height: 4),
+                    Builder(builder: (context) {
+                      final idStr = request.id;
+                      final shortCode = 'TLP-${idStr.substring(0, idStr.length < 8 ? idStr.length : 8).toUpperCase()}';
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            shortCode,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF7ADC75),
+                              letterSpacing: 2,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.copy, color: AppColors.textSecondary, size: 20),
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(text: shortCode));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Talep numarası kopyalandı')),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
               Text(
-                'Talebiniz uzman ekiplerimize iletilmiştir. En kısa sürede sizinle iletişime geçeceğiz. Talebinizin durumunu Taleplerim sayfasından takip edebilirsiniz.'.tr(),
+                'Talebiniz uzman ekiplerimize iletilmiştir. Bu numara ile talebinizin durumunu Taleplerim sayfasından takip edebilirsiniz.'.tr(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,

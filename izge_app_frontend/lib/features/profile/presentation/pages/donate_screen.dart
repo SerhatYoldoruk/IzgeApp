@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donation_success_screen.dart';
 
@@ -10,6 +11,7 @@ class DonateScreen extends StatefulWidget {
 }
 
 class _DonateScreenState extends State<DonateScreen> {
+  final _formKey = GlobalKey<FormState>();
   bool _isMonthly = false;
   String _selectedCategory = 'genel';
   int? _selectedAmount = 100;
@@ -310,41 +312,82 @@ class _DonateScreenState extends State<DonateScreen> {
                   BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4),
                 ],
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildPaymentFieldLabel('Kart Üzerindeki İsim'),
-                  _buildPaymentTextField('Ad Soyad'),
-                  const SizedBox(height: 16),
-                  
-                  _buildPaymentFieldLabel('Kart Numarası'),
-                  _buildPaymentTextField('0000 0000 0000 0000', icon: Icons.credit_card),
-                  const SizedBox(height: 16),
-                  
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildPaymentFieldLabel('Son Kullanma'),
-                            _buildPaymentTextField('AA/YY', isCenter: true),
-                          ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildPaymentFieldLabel('Kart Üzerindeki İsim'),
+                    _buildPaymentTextField(
+                      'Ad Soyad',
+                      validator: (val) => val == null || val.trim().isEmpty ? 'Gerekli' : null,
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    _buildPaymentFieldLabel('Kart Numarası'),
+                    _buildPaymentTextField(
+                      '0000 0000 0000 0000', 
+                      icon: Icons.credit_card,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [CardNumberFormatter()],
+                      validator: (val) {
+                        if (val == null || val.isEmpty) return 'Gerekli';
+                        if (val.length < 19) return 'Geçersiz kart numarası';
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildPaymentFieldLabel('Son Kullanma'),
+                              _buildPaymentTextField(
+                                'AA/YY', 
+                                isCenter: true,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [ExpiryDateFormatter()],
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) return 'Gerekli';
+                                  if (val.length < 5) return 'Geçersiz';
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildPaymentFieldLabel('CVV'),
-                            _buildPaymentTextField('***', isCenter: true, obscureText: true),
-                          ],
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildPaymentFieldLabel('CVV'),
+                              _buildPaymentTextField(
+                                '***', 
+                                isCenter: true, 
+                                obscureText: true,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(3),
+                                ],
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) return 'Gerekli';
+                                  if (val.length < 3) return 'Geçersiz';
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 32),
@@ -355,10 +398,16 @@ class _DonateScreenState extends State<DonateScreen> {
               height: 56,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const DonationSuccessScreen()),
-                  );
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DonationSuccessScreen()),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Lütfen geçerli ödeme bilgileri girin')),
+                    );
+                  }
                 },
                 icon: Icon(Icons.favorite, color: Color(0xFF003908)),
                 label: Text(
@@ -428,25 +477,84 @@ class _DonateScreenState extends State<DonateScreen> {
     );
   }
 
-  Widget _buildPaymentTextField(String hint, {IconData? icon, bool isCenter = false, bool obscureText = false}) {
-    return Container(
-      height: 56,
-      decoration: BoxDecoration(
-        color: AppColors.border, // surface-variant
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TextField(
-        textAlign: isCenter ? TextAlign.center : TextAlign.start,
-        obscureText: obscureText,
-        style: TextStyle(color: AppColors.textPrimary, fontSize: 16, letterSpacing: 1.5),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.6), letterSpacing: 0),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: icon != null ? 18 : 16),
-          suffixIcon: icon != null ? Icon(icon, color: AppColors.textSecondary) : null,
+  Widget _buildPaymentTextField(String hint, {IconData? icon, bool isCenter = false, bool obscureText = false, TextInputType? keyboardType, List<TextInputFormatter>? inputFormatters, String? Function(String?)? validator}) {
+    return TextFormField(
+      textAlign: isCenter ? TextAlign.center : TextAlign.start,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      validator: validator,
+      style: TextStyle(color: AppColors.textPrimary, fontSize: 16, letterSpacing: 1.5),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.6), letterSpacing: 0),
+        filled: true,
+        fillColor: AppColors.border,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: icon != null ? 18 : 16),
+        suffixIcon: icon != null ? Icon(icon, color: AppColors.textSecondary) : null,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red),
         ),
       ),
+    );
+  }
+}
+
+class CardNumberFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String newText = newValue.text;
+    
+    newText = newText.replaceAll(RegExp(r'[^0-9]'), '');
+    
+    if (newText.length > 16) {
+      newText = newText.substring(0, 16);
+    }
+    
+    String formattedText = '';
+    for (int i = 0; i < newText.length; i++) {
+      formattedText += newText[i];
+      if ((i + 1) % 4 == 0 && i != newText.length - 1) {
+        formattedText += ' ';
+      }
+    }
+    
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
+    );
+  }
+}
+
+class ExpiryDateFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String newText = newValue.text;
+    
+    newText = newText.replaceAll(RegExp(r'[^0-9]'), '');
+    
+    if (newText.length > 4) {
+      newText = newText.substring(0, 4);
+    }
+    
+    String formattedText = '';
+    for (int i = 0; i < newText.length; i++) {
+      formattedText += newText[i];
+      if (i == 1 && newText.length > 2) {
+        formattedText += '/';
+      }
+    }
+    
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
     );
   }
 }

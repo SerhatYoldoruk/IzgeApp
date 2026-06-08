@@ -1,7 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
 import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});
@@ -69,7 +69,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Toplum İçin Birlikte Büyüyoruz.',
+                    'Ancak Birlikte Başarabiliriz',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -79,9 +79,9 @@ class AboutUsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             SizedBox(height: 32),
-            
+
             // Our Story
             Container(
               padding: const EdgeInsets.all(24),
@@ -109,7 +109,11 @@ class AboutUsScreen extends StatelessWidget {
                           color: Color(0xFF1A8025), // primary-container
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.history_edu, color: Color(0xFFD3FFC8), size: 20),
+                        child: Icon(
+                          Icons.history_edu,
+                          color: Color(0xFFD3FFC8),
+                          size: 20,
+                        ),
                       ),
                       SizedBox(width: 12),
                       Text(
@@ -135,16 +139,17 @@ class AboutUsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             SizedBox(height: 16),
-            
+
             // Vision & Mission
             Column(
               children: [
                 _buildVisionMissionCard(
                   icon: Icons.visibility,
                   title: 'Vizyonumuz',
-                  content: 'Her bireyin temel haklarına erişebildiği, eşitlikçi ve dayanışma odaklı bir toplum modelini hayata geçirmek.',
+                  content:
+                      'Dernek çalışma konuları ve biçimleri ile faaliyet alanları çerçevesinde üyelerine eğitim başta olmak üzere kültürel, sosyal ve sportif alanlarda destek vermek. Üyelerinin tümünü temsil edebilen, haklarını koruyabilen, gelişmeler karşısında öncü, kapsayıcı toplum uygulamalarında hak temelli çalışan, gündem belirleyici ve söz sahibi olabilen örnek bir sivil toplum kuruluşu olmak.',
                   borderColor: const Color(0xFF7ADC75), // primary
                   iconColor: const Color(0xFF7ADC75),
                 ),
@@ -152,15 +157,16 @@ class AboutUsScreen extends StatelessWidget {
                 _buildVisionMissionCard(
                   icon: Icons.flag,
                   title: 'Misyonumuz',
-                  content: 'İhtiyaç sahipleri ile gönüllüleri güvenli bir platformda buluşturarak, yerel ve ulusal çapta kalıcı çözümler üretmek.',
+                  content:
+                      'Nöroçeşitliliğe sahip bireylerin toplumla bütünleşmesi, hayata katılmaları, iş ve meslek sahibi olmalarına katkıda bulunmak. Derneğimizi kurumlaşmasını sağlamak. Çalışmalarında demokratik, şeffaf ve sürdürülebilir, toplum ile uyum içinde bütünleşik hizmeti sağlamaktır.',
                   borderColor: AppColors.textSecondary,
                   iconColor: AppColors.textSecondary,
                 ),
               ],
             ),
-            
+
             SizedBox(height: 32),
-            
+
             // Our Values
             Text(
               'Değerlerimiz',
@@ -175,7 +181,12 @@ class AboutUsScreen extends StatelessWidget {
               children: [
                 Expanded(child: _buildValueCard(Icons.diversity_1, 'Eşitlik')),
                 const SizedBox(width: 16),
-                Expanded(child: _buildValueCard(Icons.accessibility_new, 'Erişilebilirlik')),
+                Expanded(
+                  child: _buildValueCard(
+                    Icons.accessibility_new,
+                    'Erişilebilirlik',
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -186,9 +197,9 @@ class AboutUsScreen extends StatelessWidget {
                 Expanded(child: _buildValueCard(Icons.verified, 'Şeffaflık')),
               ],
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Contact Info
             Container(
               padding: const EdgeInsets.all(24),
@@ -214,11 +225,17 @@ class AboutUsScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  _buildContactRow(Icons.mail, 'iletisim@izge.org'),
+                  _buildContactRow(Icons.mail, 'izgedernegi@gmail.com'),
                   const SizedBox(height: 12),
-                  _buildContactRow(Icons.call, '+90 555 123 45 67'),
+                  _buildContactRow(
+                    Icons.call,
+                    '+90 506 323 23 31\n+90 536 527 80 74',
+                  ),
                   const SizedBox(height: 12),
-                  _buildContactRow(Icons.location_on, 'Merkez Mah. Güneş Sok. No:1 Ankara'),
+                  _buildContactRow(
+                    Icons.location_on,
+                    'Günaydın Mah. Terziler Cad. No:41/30 Bandırma',
+                  ),
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
@@ -227,7 +244,9 @@ class AboutUsScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const ContactSupportScreen()),
+                          MaterialPageRoute(
+                            builder: (context) => const ContactSupportScreen(),
+                          ),
                         );
                       },
                       icon: Icon(Icons.send, color: AppColors.background),
@@ -262,7 +281,7 @@ class AboutUsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 32),
           ],
         ),
@@ -282,9 +301,7 @@ class AboutUsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border(
-          left: BorderSide(color: borderColor, width: 4),
-        ),
+        border: Border(left: BorderSide(color: borderColor, width: 4)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -329,9 +346,9 @@ class AboutUsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF0E0E0E), // surface-container-lowest
+        color: AppColors.surface, // dynamically adapt to theme
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.surfaceElevated),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         children: [

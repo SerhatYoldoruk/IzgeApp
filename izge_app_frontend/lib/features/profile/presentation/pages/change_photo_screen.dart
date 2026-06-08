@@ -44,9 +44,9 @@ class _ChangePhotoScreenState extends State<ChangePhotoScreen> {
     try {
       final XFile? pickedFile = await _picker.pickImage(
         source: source,
-        imageQuality: 70,
-        maxWidth: 500,
-        maxHeight: 500,
+        imageQuality: 85,
+        maxWidth: 1024,
+        maxHeight: 1024,
       );
 
       if (pickedFile != null) {

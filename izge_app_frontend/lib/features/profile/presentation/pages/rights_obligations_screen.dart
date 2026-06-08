@@ -91,7 +91,7 @@ class RightsObligationsScreen extends StatelessWidget {
             SizedBox(height: 12),
             _buildInfoCard(
               title: 'Aidat Sorumluluğu',
-              description: 'Üyeler, genel kurul tarafından belirlenen yıllık üyelik aidatlarını zamanında ödemekle yükümlüdür. Aksi halde üyelik askıya alınabilir.',
+              description: 'Üyeler, genel kurul tarafından belirlenen üyelik aidatlarını zamanında ödemekle yükümlüdür. Aksi halde üyelik askıya alınabilir.',
               icon: Icons.payments,
               colorScheme: AppColors.surfaceElevated, // secondary-container
               iconColor: AppColors.textSecondary, // secondary-fixed-dim

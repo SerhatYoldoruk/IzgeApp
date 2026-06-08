@@ -4,8 +4,9 @@ import 'package:izge_app_frontend/features/events/presentation/pages/event_succe
 import 'package:izge_app_frontend/core/state/activity_state.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/core/models/event_model.dart';
-import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:izge_app_frontend/core/services/tts_service.dart';
+import 'package:intl/intl.dart';
 
 class EventDetailScreen extends StatefulWidget {
   final EventModel event;
@@ -27,15 +28,38 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     LanguageController.instance.addListener(_onLanguageChanged);
   }
 
-  @override
-  void dispose() {
-    LanguageController.instance.removeListener(_onLanguageChanged);
-    super.dispose();
-  }
-
   void _onLanguageChanged() {
     if (mounted) {
       setState(() {});
+    }
+  }
+
+  bool _isReading = false;
+
+  @override
+  void dispose() {
+    LanguageController.instance.removeListener(_onLanguageChanged);
+    if (_isReading) {
+      TTSService.instance.stop();
+    }
+    super.dispose();
+  }
+
+  void _toggleReading() async {
+    if (_isReading) {
+      await TTSService.instance.stop();
+      if (mounted) setState(() => _isReading = false);
+    } else {
+      if (mounted) setState(() => _isReading = true);
+      final textToRead = "${widget.event.title}. ${widget.event.description}";
+      await TTSService.instance.speak(textToRead);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          setState(() {
+            _isReading = TTSService.instance.isSpeaking;
+          });
+        }
+      });
     }
   }
 
@@ -88,6 +112,14 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
               final formattedDate = DateFormat('dd MMMM yyyy HH:mm').format(widget.event.eventDate);
               Share.share('${widget.event.title}\n\n$formattedDate\n${widget.event.location ?? 'Çevrimiçi'}\n\n${widget.event.description}\n\nİzge App ile detayları incele!');
             },
+          ),
+          TextButton.icon(
+            onPressed: _toggleReading,
+            icon: Icon(_isReading ? Icons.stop : Icons.volume_up, color: AppColors.textPrimary),
+            label: Text(
+              _isReading ? 'Durdur' : 'Sesli Oku',
+              style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),

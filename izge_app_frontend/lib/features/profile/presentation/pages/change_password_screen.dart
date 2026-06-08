@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/services/supabase_service.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -42,28 +43,50 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       return;
     }
 
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 1200));
-    if (!mounted) return;
-    setState(() => _isLoading = false);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Row(
-          children: [
-            Icon(Icons.check_circle, color: Colors.white),
-            SizedBox(width: 12),
-            Text('Şifreniz başarıyla güncellendi!', style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
+    if (!_hasMinLength || !_hasNumber || !_hasSpecialChar) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Lütfen şifre gereksinimlerini karşılayın!'),
+          backgroundColor: const Color(0xFF93000A),
         ),
-        backgroundColor: const Color(0xFF1A8025),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: const EdgeInsets.all(24),
-        elevation: 8,
-      ),
-    );
-    Navigator.pop(context);
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    
+    try {
+      await SupabaseService.instance.updatePassword(_newPasswordController.text);
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 12),
+              Text('Şifreniz başarıyla güncellendi!', style: TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          backgroundColor: const Color(0xFF1A8025),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          margin: const EdgeInsets.all(24),
+          elevation: 8,
+        ),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Hata oluştu: ${e.toString()}'),
+          backgroundColor: const Color(0xFF93000A),
+        ),
+      );
+    }
   }
 
   @override

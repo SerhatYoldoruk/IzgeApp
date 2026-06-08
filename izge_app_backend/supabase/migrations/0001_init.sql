@@ -1,4 +1,3 @@
-begin;
 
 create extension if not exists pgcrypto;
 
@@ -94,4 +93,3 @@ create index if not exists idx_poll_votes_poll_id_option_id
 create index if not exists idx_messages_room_id_created_at
   on public.messages (room_id, created_at asc);
 
-commit;

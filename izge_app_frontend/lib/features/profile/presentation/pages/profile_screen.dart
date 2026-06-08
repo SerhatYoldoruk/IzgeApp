@@ -7,6 +7,7 @@ import 'package:izge_app_frontend/features/profile/presentation/pages/donation_h
 import 'package:izge_app_frontend/features/profile/presentation/pages/past_requests_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/personal_info_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/accessibility_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -51,6 +52,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
         'avatar_url': user.userMetadata?['avatar_url'] ?? '',
       };
     }
+  }
+
+  OverlayEntry? _overlayEntry;
+
+  void _showImageOverlay(String url) {
+    if (url.isEmpty) return;
+
+    // Google resimlerinin kalitesini artırmak için =s96-c kısmını =s1024-c yapıyoruz
+    String highResUrl = url;
+    if (highResUrl.contains('googleusercontent.com') && highResUrl.contains('=s96-c')) {
+      highResUrl = highResUrl.replaceAll('=s96-c', '=s1024-c');
+    }
+
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _hideImageOverlay,
+              child: Container(
+                color: Colors.black.withOpacity(0.85),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: SafeArea(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 30,
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: InteractiveViewer(
+                        panEnabled: true,
+                        minScale: 1.0,
+                        maxScale: 4.0,
+                        child: ClipOval(
+                          child: Image.network(
+                            highResUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _hideImageOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
   }
 
   @override
@@ -135,43 +204,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           children: [
                             const SizedBox(height: 16),
-                            Container(
-                              width: 96,
-                              height: 96,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AppColors.surface,
-                                  width: 4,
-                                ),
-                                color: AppColors.surfaceElevated,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
+                            GestureDetector(
+                              onLongPress: () => _showImageOverlay(avatarUrl),
+                              child: Container(
+                                width: 96,
+                                height: 96,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AppColors.surface,
+                                    width: 4,
                                   ),
-                                ],
-                              ),
-                              child: ClipOval(
-                                child: avatarUrl.isNotEmpty
-                                    ? Image.network(
-                                        avatarUrl,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                              return Icon(
-                                                Icons.person,
-                                                size: 48,
-                                                color: AppColors.textSecondary,
-                                              );
-                                            },
-                                      )
-                                    : Icon(
-                                        Icons.person,
-                                        size: 48,
-                                        color: AppColors.textSecondary,
-                                      ),
+                                  color: AppColors.surfaceElevated,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipOval(
+                                  child: avatarUrl.isNotEmpty
+                                      ? Image.network(
+                                          avatarUrl,
+                                          fit: BoxFit.cover,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                                return Icon(
+                                                  Icons.person,
+                                                  size: 48,
+                                                  color: AppColors.textSecondary,
+                                                );
+                                              },
+                                        )
+                                      : Icon(
+                                          Icons.person,
+                                          size: 48,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -307,19 +379,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                  child: _buildListTile(
-                    icon: Icons.settings,
-                    title: 'Ayarlar'.tr(),
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsScreen(),
-                        ),
-                      );
-                      _refreshProfile();
-                    },
-                    iconColor: AppColors.textSecondary,
+                  child: Column(
+                    children: [
+                      _buildListTile(
+                        icon: Icons.accessibility_new,
+                        title: 'Erişilebilirlik'.tr(),
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AccessibilityScreen(),
+                            ),
+                          );
+                          _refreshProfile();
+                        },
+                      ),
+                      _buildDivider(),
+                      _buildListTile(
+                        icon: Icons.settings,
+                        title: 'Ayarlar'.tr(),
+                        onTap: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SettingsScreen(),
+                            ),
+                          );
+                          _refreshProfile();
+                        },
+                        iconColor: AppColors.textSecondary,
+                      ),
+                    ],
                   ),
                 ),
               ],

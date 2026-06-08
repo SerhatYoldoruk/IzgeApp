@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class HowToBecomeMemberScreen extends StatelessWidget {
@@ -88,7 +88,7 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                 _buildTimelineStep(
                   stepNumber: '4',
                   title: 'Üyelik Aktifleşmesi',
-                  description: 'Onay sonrası giriş aidatınızı uygulama içinden ödeyerek İzge App\'in tüm özelliklerini kullanmaya başlayın.',
+                  description: 'Onay sonrası 100 TL giriş aidatınızı ve aylık 50 TL üyelik aidatınızı uygulama içinden ödeyerek İzge App\'in tüm özelliklerini kullanmaya başlayın.',
                   icon: Icons.check_circle,
                   isLast: true,
                   isActive: true, // The final step is highlighted

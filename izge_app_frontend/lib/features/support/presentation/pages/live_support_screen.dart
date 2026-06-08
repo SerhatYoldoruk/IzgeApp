@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LiveSupportScreen extends StatefulWidget {
   const LiveSupportScreen({super.key});
@@ -9,6 +10,104 @@ class LiveSupportScreen extends StatefulWidget {
 }
 
 class _LiveSupportScreenState extends State<LiveSupportScreen> {
+  // 1. MESAJLARI TUTACAK LİSTEMİZ
+  // Gemini'nin anlayacağı formatta: [{"role": "user", "parts": [{"text": "merhaba"}]}]
+  final List<Map<String, dynamic>> _messages = [];
+  
+  // 2. KULLANICI GİRİŞİNİ OKUYACAK KONTROLCÜ
+  final TextEditingController _messageController = TextEditingController();
+  
+  // 3. EKRANI OTOMATİK AŞAĞI KAYDIRMAK İÇİN KONTROLCÜ
+  final ScrollController _scrollController = ScrollController();
+  
+  // 4. YAPAY ZEKA DÜŞÜNÜYOR MU? (Yazıyor animasyonu için)
+  bool _isTyping = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Ekran açılır açılmaz yapay zekadan gelmiş gibi ilk mesajı listeye ekliyoruz
+    _messages.add({
+      "role": "model",
+      "parts": [{"text": "Merhaba! Ben İzgeBot. Size nasıl yardımcı olabilirim?"}]
+    });
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  // 5. MESAJ GÖNDERME FONKSİYONUMUZ (SİHRİN GERÇEKLEŞTİĞİ YER)
+  Future<void> _sendMessage() async {
+    final text = _messageController.text.trim();
+    if (text.isEmpty) return; // Boş mesaj atılamasın
+
+    // A) Kullanıcının mesajını listeye ekle ve kutuyu temizle
+    setState(() {
+      _messages.add({
+        "role": "user",
+        "parts": [{"text": text}]
+      });
+      _messageController.clear();
+      _isTyping = true; // Bot düşünmeye başladı
+    });
+    
+    _scrollToBottom(); // Mesaj gidince ekranı aşağı kaydır
+
+    try {
+      // B) SUPABASE EDGE FUNCTION'I ÇAĞIR ("izgebot" adını verdiğimiz fonksiyon)
+      // Listemizdeki tüm geçmişi 'messages' adıyla fonksiyona gönderiyoruz
+      final response = await Supabase.instance.client.functions.invoke(
+        'izgebot',
+        body: {'messages': _messages},
+      );
+
+      // C) Fonksiyondan (yani Gemini'den) gelen cevabı al
+      final reply = response.data['reply'] as String;
+      
+      // D) Cevabı listemize ekle
+      setState(() {
+        _messages.add({
+          "role": "model",
+          "parts": [{"text": reply}]
+        });
+      });
+      
+      _scrollToBottom(); // Cevap gelince ekranı tekrar aşağı kaydır
+
+    } catch (e) {
+      // Bir hata olursa arayüzde göster
+      setState(() {
+        _messages.add({
+          "role": "model",
+          "parts": [{"text": "Üzgünüm, şu an bağlantı kuramıyorum. Lütfen daha sonra tekrar deneyin. ⚠️"}]
+        });
+      });
+      debugPrint('İzgeBot Hatası: $e');
+    } finally {
+      // Hata olsa da olmasa da "Yazıyor..." animasyonunu kapat
+      setState(() {
+        _isTyping = false;
+      });
+    }
+  }
+
+  void _scrollToBottom() {
+    // Ekranın en altına yumuşak bir şekilde kayma animasyonu
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
   void _showAttachmentMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -49,24 +148,6 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                 title: Text('Fotoğraf veya Video', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
                 onTap: () => Navigator.pop(context),
               ),
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: AppColors.accent.withOpacity(0.1), shape: BoxShape.circle),
-                  child: Icon(Icons.insert_drive_file, color: AppColors.accent),
-                ),
-                title: Text('Belge', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
-                onTap: () => Navigator.pop(context),
-              ),
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: AppColors.accent.withOpacity(0.1), shape: BoxShape.circle),
-                  child: Icon(Icons.location_on, color: AppColors.accent),
-                ),
-                title: Text('Konum Paylaş', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
-                onTap: () => Navigator.pop(context),
-              ),
               const SizedBox(height: 16),
             ],
           ),
@@ -85,7 +166,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Canlı Destek',
+          'İzgeBot Asistan',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -98,7 +179,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(
-            color: AppColors.border, // surface-container-high
+            color: AppColors.border,
             height: 1.0,
           ),
         ),
@@ -110,11 +191,11 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
-              color: AppColors.surfaceElevated, // surface-dim
+              color: AppColors.surfaceElevated,
               border: Border(bottom: BorderSide(color: AppColors.border)),
             ),
             child: Text(
-              'Size nasıl yardımcı olabiliriz?',
+              'Yapay Zeka destekli İzgeBot ile görüşüyorsunuz.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -123,167 +204,25 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
             ),
           ),
           
-          // Chat Messages Area
+          // 6. MESAJLARIN LİSTELENDİĞİ YER
           Expanded(
-            child: ListView(
+            child: ListView.builder(
+              controller: _scrollController,
               padding: const EdgeInsets.all(24),
-              children: [
-                // Date Divider
-                Center(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.border, // surface-container-high
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      'Bugün',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ),
-                ),
-                
-                // Support Message (Incoming)
-                SizedBox(height: 8),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1A8025),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.support_agent, color: Color(0xFFD3FFC8), size: 20),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: AppColors.surfaceElevated, // surface-container-highest
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
-                                bottomLeft: Radius.circular(16),
-                              ),
-                            ),
-                            child: Text(
-                              'Merhaba! İzge App\'e hoş geldiniz. Size nasıl yardımcı olabiliriz?',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.textPrimary,
-                                height: 1.5,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Text(
-                              '09:41',
-                              style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 48), // Padding on right
-                  ],
-                ),
-                
-                // User Message (Outgoing)
-                const SizedBox(height: 16),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const SizedBox(width: 48), // Padding on left
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF1A8025), // user bubble
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(16),
-                                bottomRight: Radius.circular(16),
-                                bottomLeft: Radius.circular(16),
-                              ),
-                            ),
-                            child: const Text(
-                              'Merhaba, son aidat ödememi sistemde göremiyorum. Kontrol edebilir misiniz?',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFFD3FFC8), // on-primary-container
-                                height: 1.5,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Padding(
-                            padding: EdgeInsets.only(right: 4),
-                            child: Text(
-                              '09:42',
-                              style: TextStyle(fontSize: 10, color: AppColors.textSecondary),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                
-                // Support Typing Indicator
-                SizedBox(height: 16),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1A8025),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.support_agent, color: Color(0xFFD3FFC8), size: 20),
-                    ),
-                    const SizedBox(width: 12),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                      decoration: BoxDecoration(
-                        color: AppColors.surfaceElevated,
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(16),
-                          bottomRight: Radius.circular(16),
-                          bottomLeft: Radius.circular(16),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _TypingDot(delay: 0),
-                          SizedBox(width: 4),
-                          _TypingDot(delay: 200),
-                          const SizedBox(width: 4),
-                          _TypingDot(delay: 400),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              itemCount: _messages.length + (_isTyping ? 1 : 0),
+              itemBuilder: (context, index) {
+                // Eğer son elemana geldiysek ve yapay zeka yazıyorsa, animasyonu göster
+                if (index == _messages.length && _isTyping) {
+                  return _buildTypingIndicator();
+                }
+
+                // Normal mesajı al ve kimin yazdığına göre (user veya model) baloncuk oluştur
+                final message = _messages[index];
+                final isUser = message["role"] == "user";
+                final text = message["parts"][0]["text"] as String;
+
+                return isUser ? _buildUserMessage(text) : _buildSupportMessage(text);
+              },
             ),
           ),
           
@@ -291,7 +230,7 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: AppColors.surface, // surface-container
+              color: AppColors.surface,
               border: Border(top: BorderSide(color: AppColors.border)),
             ),
             child: SafeArea(
@@ -319,7 +258,9 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: TextField(
+                        controller: _messageController,
                         style: TextStyle(color: AppColors.textPrimary, fontSize: 14),
+                        onSubmitted: (_) => _sendMessage(), // Klavyeden yolla tuşuna basılınca
                         decoration: InputDecoration(
                           hintText: 'Mesajınızı yazın...',
                           hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.5), fontSize: 14),
@@ -347,11 +288,143 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                     child: IconButton(
                       padding: EdgeInsets.zero,
                       icon: const Icon(Icons.send, color: Color(0xFFD3FFC8), size: 20),
-                      onPressed: () {},
+                      onPressed: _sendMessage, // Butona basılınca
                     ),
                   ),
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // BOT MESAJ BALONCUĞU WIDGET'I
+  Widget _buildSupportMessage(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Color(0xFF1A8025),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.smart_toy, color: Color(0xFFD3FFC8), size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceElevated,
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textPrimary,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 48),
+        ],
+      ),
+    );
+  }
+
+  // KULLANICI MESAJ BALONCUĞU WIDGET'I
+  Widget _buildUserMessage(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          const SizedBox(width: 48),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1A8025),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFFD3FFC8),
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // YAZIYOR... ANİMASYON WIDGET'I
+  Widget _buildTypingIndicator() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Color(0xFF1A8025),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.smart_toy, color: Color(0xFFD3FFC8), size: 20),
+          ),
+          const SizedBox(width: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceElevated,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+                bottomLeft: Radius.circular(16),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _TypingDot(delay: 0),
+                SizedBox(width: 4),
+                _TypingDot(delay: 200),
+                const SizedBox(width: 4),
+                _TypingDot(delay: 400),
+              ],
             ),
           ),
         ],

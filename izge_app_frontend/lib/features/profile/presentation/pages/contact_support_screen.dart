@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/support_success_screen.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ContactSupportScreen extends StatefulWidget {
   const ContactSupportScreen({super.key});
@@ -11,6 +12,17 @@ class ContactSupportScreen extends StatefulWidget {
 
 class _ContactSupportScreenState extends State<ContactSupportScreen> {
   String? _selectedTopic;
+  XFile? _selectedFile;
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _selectedFile = image;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +150,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                 ),
                 SizedBox(height: 8),
                 InkWell(
-                  onTap: () {},
+                  onTap: _pickImage,
                   borderRadius: BorderRadius.circular(12),
                   child: Container(
                     height: 56, // input-height
@@ -157,16 +169,30 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                              border: Border.all(color: AppColors.border), // should be dashed
                            ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.attach_file, color: AppColors.textSecondary),
-                            SizedBox(width: 8),
-                            Text(
-                              'Ekran görüntüsü yükle',
-                              style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                _selectedFile != null ? Icons.check_circle : Icons.attach_file, 
+                                color: _selectedFile != null ? Colors.green : AppColors.textSecondary
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  _selectedFile != null ? _selectedFile!.name : 'Ekran görüntüsü yükle',
+                                  style: TextStyle(
+                                    fontSize: 16, 
+                                    color: _selectedFile != null ? AppColors.textPrimary : AppColors.textSecondary
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

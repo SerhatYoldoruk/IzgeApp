@@ -1,95 +1,86 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/models/request_model.dart';
 import 'package:izge_app_frontend/features/support/presentation/pages/live_support_screen.dart';
+import 'package:intl/intl.dart';
 
 class RequestDetailScreen extends StatelessWidget {
-  const RequestDetailScreen({super.key});
+  final RequestModel request;
+  const RequestDetailScreen({super.key, required this.request});
 
   @override
   Widget build(BuildContext context) {
+    // Status bilgileri
+    final statusInfo = _getStatusInfo(request.status);
+    final formattedDate = DateFormat('d MMM yyyy, HH:mm', 'tr_TR').format(request.createdAt);
+    final idStr = request.id;
+    final shortId = 'TLP-${idStr.substring(0, idStr.length < 8 ? idStr.length : 8).toUpperCase()}';
+
+    // Kategori label
+    final categoryLabel = _getCategoryLabel(request.requestType);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back, color: AppColors.accent),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.all(4),
-              child: Image.asset(
-                'assets/images/images/logo.jpeg',
-                fit: BoxFit.contain,
-              ),
-            ),
-            SizedBox(width: 8),
-            Text(
-              'İzge App',
-              style: TextStyle(
-                color: AppColors.accent,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-          ],
+        title: Text(
+          'Talep Detayı',
+          style: TextStyle(
+            color: AppColors.accent,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.notifications_none, color: AppColors.textPrimary),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Section
+            // Header: Başlık + Durum
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Talep Detayı',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
+                Expanded(
+                  child: Text(
+                    request.title,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ),
+                const SizedBox(width: 12),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceElevated,
+                    color: statusInfo.color.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: AppColors.border),
+                    border: Border.all(color: statusInfo.color.withOpacity(0.3)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: 10,
-                        height: 10,
+                        width: 8,
+                        height: 8,
                         decoration: BoxDecoration(
-                          color: Colors.amber,
+                          color: statusInfo.color,
                           shape: BoxShape.circle,
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
-                        'İşlemde',
+                        statusInfo.label,
                         style: TextStyle(
-                          color: AppColors.textPrimary,
+                          color: statusInfo.color,
                           fontWeight: FontWeight.bold,
-                          fontSize: 14,
+                          fontSize: 13,
                         ),
                       ),
                     ],
@@ -97,9 +88,9 @@ class RequestDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-            // Info Card
+            // Bilgi Kartı
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -108,54 +99,60 @@ class RequestDetailScreen extends StatelessWidget {
                 border: Border.all(color: AppColors.border),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Tekerlekli Sandalye Bakımı',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  SizedBox(height: 12),
+                  // Kategori + Tarih + ID
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Icon(Icons.calendar_today, size: 18, color: AppColors.textSecondary),
-                          SizedBox(width: 8),
-                          Text(
-                            '12 Haz 2024',
-                            style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         decoration: BoxDecoration(
-                          color: AppColors.border,
-                          borderRadius: BorderRadius.circular(6),
+                          color: AppColors.accent.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          '#TR-8542',
+                          categoryLabel,
                           style: TextStyle(
-                            color: AppColors.textPrimary,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                            color: AppColors.accent,
                           ),
                         ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: AppColors.surfaceElevated,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          shortId,
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Tarih
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today, size: 16, color: AppColors.textSecondary),
+                      const SizedBox(width: 8),
+                      Text(
+                        formattedDate,
+                        style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                       ),
                     ],
                   ),
@@ -163,6 +160,7 @@ class RequestDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Divider(color: AppColors.border),
                   ),
+                  // Talep Mesajı
                   Text(
                     'TALEP MESAJI',
                     style: TextStyle(
@@ -172,21 +170,21 @@ class RequestDetailScreen extends StatelessWidget {
                       letterSpacing: 1.2,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Text(
-                    'Merhaba, yaklaşık 6 aydır kullandığım tekerlekli sandalyemin sağ tekerleğinde bir sürtünme sesi var ve dönüşlerde zorlanıyorum. Bakımının yapılması veya gerekirse parça değişimi için destek rica ediyorum.',
+                    request.description,
                     style: TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 16,
-                      height: 1.5,
+                      fontSize: 15,
+                      height: 1.6,
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
 
-            // Timeline
+            // Süreç Takibi
             Text(
               'Süreç Takibi',
               style: TextStyle(
@@ -195,7 +193,7 @@ class RequestDetailScreen extends StatelessWidget {
                 color: AppColors.textPrimary,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -204,78 +202,10 @@ class RequestDetailScreen extends StatelessWidget {
                 border: Border.all(color: AppColors.border),
               ),
               child: Column(
-                children: const [
-                  _TimelineStep(
-                    title: 'Talep Alındı',
-                    time: '12 Haz 2024, 10:30',
-                    isCompleted: true,
-                    isLast: false,
-                  ),
-                  _TimelineStep(
-                    title: 'İncelemede',
-                    time: '13 Haz 2024, 14:15',
-                    isCompleted: true,
-                    isLast: false,
-                  ),
-                  _TimelineStep(
-                    title: 'Teknisyen Atandı',
-                    time: 'Sıradaki işlem bekleniyor',
-                    isCompleted: false,
-                    isLast: true,
-                    isCurrent: true,
-                  ),
-                ],
+                children: _buildTimelineSteps(),
               ),
             ),
-            SizedBox(height: 32),
-
-            // Attached Files
-            Text(
-              'Ekli Dosyalar',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            SizedBox(height: 16),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Container(
-                    width: 128,
-                    height: 128,
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceElevated,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.border),
-                      image: DecorationImage(
-                        image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuCBXh6gBc_iu5Q4v2pANAkf-J7-_OQi7OTEbNe0nIAwVQtiKjQ9Kl7kngd2llHmegN9OlnyGw7z1Bl3QFJtp72TbJyojBfGmnDnSsUY1nCO4YcgS8-DaKUWIATrcpXSmqSnx-87Mm6fJfsKP5TOGxK2ZysRaw4pR3FwsMIE-XYhVDIN2wHK88LEhwSzysyNlCRVbpx2LPMpA4qgg3pHYhpmSqVrsR5l5QEOnkMZ5NvKTTdwPkSLLZWo4vDPPFRU3RZ3AvOJcXzCr7xa'),
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.image, color: AppColors.textSecondary, size: 32),
-                        SizedBox(height: 8),
-                        Text(
-                          'foto1.jpg',
-                          style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 80), // Space for floating button
+            const SizedBox(height: 80),
           ],
         ),
       ),
@@ -309,6 +239,126 @@ class RequestDetailScreen extends StatelessWidget {
       ),
     );
   }
+
+  List<Widget> _buildTimelineSteps() {
+    final steps = <_TimelineStepData>[];
+    final formattedDate = DateFormat('d MMM yyyy, HH:mm', 'tr_TR').format(request.createdAt);
+
+    // Adım 1 — Talep Alındı (her zaman tamamlanmış)
+    steps.add(_TimelineStepData(
+      title: 'Talep Alındı',
+      time: formattedDate,
+      isCompleted: true,
+    ));
+
+    // Adım 2 — İnceleniyor
+    if (request.status == 'pending') {
+      steps.add(_TimelineStepData(
+        title: 'İnceleniyor',
+        time: 'Ekibimiz talebinizi inceliyor',
+        isCompleted: false,
+        isCurrent: true,
+      ));
+    } else {
+      steps.add(_TimelineStepData(
+        title: 'İncelendi',
+        time: 'Talep incelendi',
+        isCompleted: true,
+      ));
+    }
+
+    // Adım 3 — Durum
+    if (request.status == 'approved') {
+      steps.add(_TimelineStepData(
+        title: 'Onaylandı',
+        time: 'Talebiniz onaylandı',
+        isCompleted: true,
+      ));
+      steps.add(_TimelineStepData(
+        title: 'Tamamlanıyor',
+        time: 'İşlem sürecinde',
+        isCompleted: false,
+        isCurrent: true,
+      ));
+    } else if (request.status == 'rejected') {
+      steps.add(_TimelineStepData(
+        title: 'Reddedildi',
+        time: 'Talebiniz değerlendirme sonucu reddedildi',
+        isCompleted: true,
+        isRejected: true,
+      ));
+    } else if (request.status == 'completed') {
+      steps.add(_TimelineStepData(
+        title: 'Onaylandı',
+        time: 'Talep onaylandı',
+        isCompleted: true,
+      ));
+      steps.add(_TimelineStepData(
+        title: 'Tamamlandı',
+        time: 'Talebiniz başarıyla tamamlandı',
+        isCompleted: true,
+      ));
+    }
+
+    return List.generate(steps.length, (i) {
+      final step = steps[i];
+      return _TimelineStep(
+        title: step.title,
+        time: step.time,
+        isCompleted: step.isCompleted,
+        isLast: i == steps.length - 1,
+        isCurrent: step.isCurrent,
+        isRejected: step.isRejected,
+      );
+    });
+  }
+
+  _StatusInfo _getStatusInfo(String status) {
+    switch (status) {
+      case 'approved':
+        return _StatusInfo('Onaylandı', Colors.green);
+      case 'rejected':
+        return _StatusInfo('Reddedildi', Colors.red);
+      case 'completed':
+        return _StatusInfo('Tamamlandı', Colors.blue);
+      case 'pending':
+      default:
+        return _StatusInfo('İnceleniyor', Colors.orange);
+    }
+  }
+
+  String _getCategoryLabel(String type) {
+    switch (type) {
+      case 'items': return 'Eşya / Malzeme';
+      case 'health': return 'Sağlık';
+      case 'education': return 'Eğitim';
+      case 'food': return 'Erzak';
+      case 'other': return 'Diğer';
+      default: return type;
+    }
+  }
+}
+
+class _StatusInfo {
+  final String label;
+  final Color color;
+  _StatusInfo(this.label, this.color);
+}
+
+class _TimelineStepData {
+  final String title;
+  final String time;
+  final bool isCompleted;
+  final bool isCurrent;
+  final bool isRejected;
+
+  _TimelineStepData({
+    required this.title,
+    required this.time,
+    required this.isCompleted,
+    this.isCurrent = false,
+    this.isRejected = false,
+  });
 }
 
 class _TimelineStep extends StatelessWidget {
@@ -317,6 +367,7 @@ class _TimelineStep extends StatelessWidget {
   final bool isCompleted;
   final bool isLast;
   final bool isCurrent;
+  final bool isRejected;
 
   const _TimelineStep({
     required this.title,
@@ -324,60 +375,47 @@ class _TimelineStep extends StatelessWidget {
     required this.isCompleted,
     required this.isLast,
     this.isCurrent = false,
+    this.isRejected = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final dotColor = isRejected
+        ? Colors.red
+        : (isCompleted ? AppColors.accent : (isCurrent ? AppColors.accent : AppColors.border));
+
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Timeline Line and Dot
           Column(
             children: [
               Container(
                 width: 24,
                 height: 24,
                 decoration: BoxDecoration(
-                  color: isCompleted
-                      ? AppColors.accent
-                      : (isCurrent ? AppColors.accent : Colors.transparent),
+                  color: dotColor,
                   shape: BoxShape.circle,
-                  border: isCurrent
-                      ? Border.all(color: AppColors.surface, width: 4)
+                  border: isCurrent ? Border.all(color: AppColors.surface, width: 4) : null,
+                  boxShadow: (isCompleted || isCurrent)
+                      ? [BoxShadow(color: dotColor.withOpacity(0.5), blurRadius: 10)]
                       : null,
-                  boxShadow: isCurrent
-                      ? [BoxShadow(color: AppColors.accent.withOpacity(0.5), blurRadius: 10)]
-                      : (isCompleted
-                          ? [BoxShadow(color: AppColors.accent.withOpacity(0.5), blurRadius: 10)]
-                          : null),
                 ),
                 child: isCompleted
-                    ? Icon(Icons.check, color: AppColors.background, size: 16)
-                    : (isCurrent
-                        ? Center(
-                            child: Container(
-                              width: 8,
-                              height: 8,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF0E0E0E),
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          )
-                        : null),
+                    ? Icon(
+                        isRejected ? Icons.close : Icons.check,
+                        color: Colors.white,
+                        size: 14,
+                      )
+                    : null,
               ),
               if (!isLast)
                 Expanded(
-                  child: Container(
-                    width: 2,
-                    color: AppColors.border,
-                  ),
+                  child: Container(width: 2, color: AppColors.border),
                 ),
             ],
           ),
-          SizedBox(width: 16),
-          // Content
+          const SizedBox(width: 16),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 24),
@@ -389,15 +427,14 @@ class _TimelineStep extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      color: isRejected ? Colors.red : AppColors.textPrimary,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     time,
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.bold,
                       color: isCurrent ? Colors.amber : AppColors.textSecondary,
                     ),
                   ),

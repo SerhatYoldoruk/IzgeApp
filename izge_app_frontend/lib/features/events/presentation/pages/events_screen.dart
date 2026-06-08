@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/new_event_screen.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/event_detail_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
+
+import 'package:izge_app_frontend/core/widgets/notification_badge_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/events/presentation/bloc/event_bloc.dart';
 import 'package:izge_app_frontend/features/events/presentation/bloc/event_state.dart';
@@ -93,12 +94,7 @@ class _EventsScreenState extends State<EventsScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
-            },
-            icon: Icon(Icons.notifications_none, color: AppColors.textPrimary),
-          ),
+          const NotificationBadgeIcon(),
         ],
       ),
       body: SingleChildScrollView(

@@ -10,10 +10,14 @@ export 'app/app.dart';
 import 'core/theme/theme_controller.dart';
 import 'core/localization/language_controller.dart';
 import 'core/state/activity_state.dart';
+import 'package:izge_app_frontend/core/accessibility/accessibility_controller.dart';
+import 'package:izge_app_frontend/core/services/tts_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ThemeController.instance.init();
+  await AccessibilityController.instance.init();
+  await TTSService.instance.init();
   await LanguageController.instance.init();
   await ActivityState.instance.init();
   // Start Supabase initialization but don't await here so app can render

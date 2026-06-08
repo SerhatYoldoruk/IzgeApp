@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/change_photo_screen.dart';
@@ -20,6 +21,16 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   bool _isLoading = false;
   bool _isFetching = true;
   String _avatarUrl = '';
+
+  String _originalName = '';
+  String _originalPhone = '';
+  String _originalAddress = '';
+
+  bool get _hasUnsavedChanges {
+    return _nameController.text.trim() != _originalName.trim() ||
+           _phoneController.text.trim() != _originalPhone.trim() ||
+           _addressController.text.trim() != _originalAddress.trim();
+  }
 
   @override
   void initState() {
@@ -45,8 +56,13 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       _phoneController.text = response['phone'] ?? '';
       _addressController.text = response['address'] ?? '';
       _avatarUrl = response['avatar_url'] ?? '';
+      
+      _originalName = _nameController.text;
+      _originalPhone = _phoneController.text;
+      _originalAddress = _addressController.text;
     } catch (e) {
       _nameController.text = user.userMetadata?['name'] ?? '';
+      _originalName = _nameController.text;
       _avatarUrl = user.userMetadata?['avatar_url'] ?? '';
     } finally {
       _emailController.text = user.email ?? '';
@@ -62,10 +78,38 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       _isLoading = true;
     });
 
+    String formattedPhone = '';
+    final phone = _phoneController.text.trim();
+    
+    if (phone.isNotEmpty) {
+      final digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
+      
+      if (digits.length == 10 && digits.startsWith('5')) {
+        formattedPhone = '+90$digits';
+      } else if (digits.length == 11 && digits.startsWith('05')) {
+        formattedPhone = '+9$digits';
+      } else if (digits.length == 12 && digits.startsWith('905')) {
+        formattedPhone = '+$digits';
+      } else {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Lütfen geçerli bir telefon numarası giriniz (örn: 5xx xxx xx xx).'.tr()),
+            backgroundColor: Colors.orange,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        return;
+      }
+      
+      // Görsel olarak da kullanıcının girdiği kutuyu güncelliyoruz
+      _phoneController.text = formattedPhone;
+    }
+
     try {
       final updates = {
         'full_name': _nameController.text.trim(),
-        'phone': _phoneController.text.trim(),
+        'phone': formattedPhone,
       };
 
       // Eğer adres alanı doldurulduysa payload'a ekle
@@ -148,18 +192,127 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     }
   }
 
+  OverlayEntry? _overlayEntry;
+
+  void _showImageOverlay() {
+    if (_avatarUrl.isEmpty) return;
+
+    // Google resimlerinin kalitesini artırmak için =s96-c kısmını =s1024-c yapıyoruz
+    String highResUrl = _avatarUrl;
+    if (highResUrl.contains('googleusercontent.com') && highResUrl.contains('=s96-c')) {
+      highResUrl = highResUrl.replaceAll('=s96-c', '=s1024-c');
+    }
+
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _hideImageOverlay,
+              child: Container(
+                color: Colors.black.withOpacity(0.85),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: SafeArea(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 30,
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                      child: InteractiveViewer(
+                        panEnabled: true,
+                        minScale: 1.0,
+                        maxScale: 4.0,
+                        child: ClipOval(
+                          child: Image.network(
+                            highResUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _hideImageOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
+    _hideImageOverlay();
     super.dispose();
+  }
+
+  Future<bool?> _showUnsavedChangesDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: AppColors.surfaceElevated,
+          title: Text(
+            'Kaydedilmemiş Değişiklikler'.tr(),
+            style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+            'Yaptığınız değişiklikleri kaydetmeden çıkmak istediğinize emin misiniz?'.tr(),
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text('İptal'.tr(), style: TextStyle(color: AppColors.textSecondary)),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF93000A), // error container
+              ),
+              child: Text('Çık'.tr(), style: const TextStyle(color: Color(0xFFFFB4AB))),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        if (_hasUnsavedChanges) {
+          final shouldPop = await _showUnsavedChangesDialog();
+          return shouldPop ?? false;
+        }
+        return true;
+      },
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.surface,
@@ -168,7 +321,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         surfaceTintColor: AppColors.surface,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.maybePop(context),
         ),
         title: Text(
           'Kişisel Bilgiler'.tr(),
@@ -186,7 +339,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               padding: const EdgeInsets.only(left: 24, right: 24, top: 32, bottom: 100),
               child: Column(
                 children: [
-                  InkWell(
+                  GestureDetector(
                     onTap: () async {
                       // DÜZELTİLDİ: Kullanıcının fotoğraf değiştirme ekranından geri çıkmasını bekliyoruz
                       await Navigator.push(
@@ -196,7 +349,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       // DÜZELTİLDİ: Geri döndüğü an (hiçbir şeye basmasa bile) verileri veritabanından tekrar çekip sayfayı yeniliyoruz
                       _loadUserData();
                     },
-                    borderRadius: BorderRadius.circular(16),
+                    onLongPress: _showImageOverlay,
                     child: Center(
                       child: Column(
                         children: [
@@ -289,8 +442,11 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     label: 'Telefon'.tr(),
                     icon: Icons.call,
                     controller: _phoneController,
-                    hintText: 'Telefon numaranız'.tr(),
+                    hintText: '05xx xxx xx xx'.tr(),
                     keyboardType: TextInputType.phone,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9+\s-]')),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   _buildInputField(
@@ -338,7 +494,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 ],
               ),
             ),
-    );
+    ));     
   }
 
   Widget _buildInputField({
@@ -349,6 +505,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     TextInputType keyboardType = TextInputType.text,
     int maxLines = 1,
     bool readOnly = false,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -370,6 +527,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           keyboardType: keyboardType,
           maxLines: maxLines,
           readOnly: readOnly,
+          inputFormatters: inputFormatters,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,

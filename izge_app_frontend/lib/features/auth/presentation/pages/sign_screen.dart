@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// ignore: unused_import
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/services/supabase_service.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_event.dart';
@@ -10,7 +11,6 @@ import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_state.dar
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/login_screen.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/registration_success_screen.dart';
-import 'package:izge_app_frontend/features/navigation/presentation/pages/main_navigation_page.dart';
 
 /// Kayıt Ekranı - yeni kullanıcıların hesap oluşturması için
 class SignPage extends StatefulWidget {
@@ -56,6 +56,8 @@ class _SignPageState extends State<SignPage> {
       _showMessage('Lütfen KVKK ve Kullanım Şartlarını kabul ediniz.');
       return;
     }
+
+    TextInput.finishAutofillContext();
 
     context.read<AuthBloc>().add(AuthSignUpRequested(
       fullName: name.trim(),
@@ -104,9 +106,10 @@ class _SignPageState extends State<SignPage> {
           );
         } else if (state is AuthAuthenticated) {
           _showMessage('Kayıt başarılı!');
+          final navigator = Navigator.of(context); // async gap öncesi yakala
           Future.delayed(const Duration(seconds: 1), () {
             if (mounted) {
-              Navigator.of(context).pushAndRemoveUntil(
+              navigator.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const LoginScreen()),
                 (route) => false,
               );
@@ -213,66 +216,76 @@ class _SignPageState extends State<SignPage> {
                         ),
                       ],
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomTextField(
-                          hintText: 'İsminizi giriniz',
-                          prefixIcon: Icons.person_outline,
-                          onChanged: (value) => setState(() => name = value),
-                        ),
-                        const SizedBox(height: 16),
-                        CustomTextField(
-                          hintText: 'E-posta adresinizi giriniz',
-                          prefixIcon: Icons.email_outlined,
-                          onChanged: (value) => setState(() => email = value),
-                        ),
-                        const SizedBox(height: 16),
-                        CustomTextField(
-                          hintText: 'Telefon numaranızı giriniz',
-                          prefixIcon: Icons.phone_outlined,
-                          onChanged: (value) => setState(() => phone = value),
-                        ),
-                        const SizedBox(height: 16),
-                        CustomTextField(
-                          hintText: 'Şifrenizi giriniz',
-                          prefixIcon: Icons.lock_outline,
-                          onChanged: (value) => setState(() => password = value),
-                          obscureText: true,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 6, left: 4, bottom: 16),
-                          child: Text(
-                            '* Şifreniz en az 6 karakter uzunluğunda olmalıdır.',
-                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                    child: AutofillGroup(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomTextField(
+                            hintText: 'İsminizi giriniz',
+                            prefixIcon: Icons.person_outline,
+                            onChanged: (value) => setState(() => name = value),
+                            autofillHints: const [AutofillHints.name],
+                            keyboardType: TextInputType.name,
                           ),
-                        ),
-                        CustomTextField(
-                          hintText: 'Şifrenizi tekrar giriniz',
-                          prefixIcon: Icons.lock_outline,
-                          onChanged: (value) => setState(() => confirmPassword = value),
-                          obscureText: true,
-                        ),
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            hintText: 'E-posta adresinizi giriniz',
+                            prefixIcon: Icons.email_outlined,
+                            onChanged: (value) => setState(() => email = value),
+                            autofillHints: const [AutofillHints.email],
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            hintText: '05xx xxx xx xx',
+                            prefixIcon: Icons.phone_outlined,
+                            onChanged: (value) => setState(() => phone = value),
+                            autofillHints: const [AutofillHints.telephoneNumber],
+                            keyboardType: TextInputType.phone,
+                          ),
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            hintText: 'Şifrenizi giriniz',
+                            prefixIcon: Icons.lock_outline,
+                            onChanged: (value) => setState(() => password = value),
+                            obscureText: true,
+                            autofillHints: const [AutofillHints.newPassword],
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 6, left: 4, bottom: 16),
+                            child: Text(
+                              '* Şifreniz en az 6 karakter uzunluğunda olmalıdır.',
+                              style: TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                          ),
+                          CustomTextField(
+                            hintText: 'Şifrenizi tekrar giriniz',
+                            prefixIcon: Icons.lock_outline,
+                            onChanged: (value) => setState(() => confirmPassword = value),
+                            obscureText: true,
+                            autofillHints: const [AutofillHints.newPassword],
+                          ),
                         
                         const SizedBox(height: 24),
                         
                         _ConsentRow(
                           value: kvkkKabul,
-                          title: 'KVKK Onayını kabul ediyorum',
-                          dialogTitle: 'Kişisel Verilerin Korunması',
-                          dialogBody: 'Kişisel verileriniz KVKK kapsamında korunmaktadır...',
+                          title: 'KVKK Aydınlatma Metni\'ni okudum ve kabul ediyorum',
+                          dialogTitle: 'KVKK Aydınlatma Metni',
+                          dialogBody: '6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, İzge Derneği olarak veri sorumlusu sıfatıyla kişisel verilerinizi güvenle işliyor ve koruyoruz.\n\n1. Verilerin İşlenme Amacı\nAdınız, iletişim bilgileriniz ve sağladığınız diğer veriler, yardım faaliyetlerinin yürütülmesi, dernek etkinlikleri hakkında bilgilendirme yapılması ve yasal yükümlülüklerimizin yerine getirilmesi amacıyla işlenmektedir.\n\n2. Verilerin Aktarımı\nKişisel verileriniz, yasal zorunluluklar haricinde hiçbir üçüncü taraf veya kurumla ticari amaçla paylaşılmamaktadır.\n\n3. Haklarınız\nKVKK\'nın 11. maddesi uyarınca; verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini veya silinmesini talep etme hakkına sahipsiniz.',
                           onChanged: (value) => setState(() => kvkkKabul = value),
                         ),
                         const SizedBox(height: 8),
                         _ConsentRow(
                           value: sartlarKabul,
-                          title: 'Kullanım Şartlarını kabul ediyorum',
+                          title: 'Kullanım Şartları\'nı okudum ve kabul ediyorum',
                           dialogTitle: 'Kullanım Şartları',
-                          dialogBody: 'Hizmetlerimizi kullanarak şartları kabul etmiş sayılırsınız...',
+                          dialogBody: 'İzge Uygulaması\'na hoş geldiniz. Uygulamamızı kullanarak aşağıdaki şartları kabul etmiş sayılırsınız:\n\n1. Hizmet Kullanımı\nKullanıcılar, uygulamayı yasalara ve dernek amaçlarına uygun olarak kullanmayı taahhüt eder. Gerçeğe aykırı yardım talepleri oluşturmak yasaktır.\n\n2. Hesap Güvenliği\nHesap bilgilerinizin ve şifrenizin güvenliğinden tamamen siz sorumlusunuz.\n\n3. Sorumluluk Reddi\nDerneğimiz, uygulama üzerinden yapılan gönüllü yardımlaşmaların koordinasyonunu sağlar. İki taraf arasındaki uyuşmazlıklarda yasal sorumluluk taraflara aittir.\n\n4. Fesih\nKurallara uymayan kullanıcıların hesapları önceden haber verilmeksizin askıya alınabilir veya silinebilir.',
                           onChanged: (value) => setState(() => sartlarKabul = value),
                         ),
                       ],
                     ),
+                  ),
                   ),
                   
                   const SizedBox(height: 32),
@@ -363,31 +376,105 @@ class _ConsentRow extends StatelessWidget {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              showDialog(
+              showModalBottomSheet(
                 context: context,
-                builder: (context) => AlertDialog(
-                  backgroundColor: AppColors.surface,
-                  title: Text(dialogTitle, style: TextStyle(color: AppColors.textPrimary)),
-                  content: SingleChildScrollView(
-                    child: Text(dialogBody, style: TextStyle(color: AppColors.textSecondary)),
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (context) => Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text('Anladım', style: TextStyle(color: AppColors.primary)),
-                    ),
-                  ],
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 12, bottom: 16),
+                        width: 48,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: AppColors.border,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          dialogTitle,
+                          style: TextStyle(
+                            color: AppColors.textPrimary,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                          child: Text(
+                            dialogBody,
+                            style: TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 15,
+                              height: 1.6,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              onChanged(true); // Otomatik kabul ettir
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: Text(
+                              'Okudum, Onaylıyorum',
+                              style: TextStyle(
+                                color: AppColors.accentOnPrimary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
-            child: Text(
-              title,
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                decoration: TextDecoration.underline,
-                decorationColor: AppColors.textSecondary,
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
+                children: [
+                  TextSpan(
+                    text: '${title.split('\'').first}\'',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextSpan(
+                    text: title.split('\'').length > 1 ? title.substring(title.indexOf('\'') + 1) : '',
+                  ),
+                ],
               ),
             ),
           ),

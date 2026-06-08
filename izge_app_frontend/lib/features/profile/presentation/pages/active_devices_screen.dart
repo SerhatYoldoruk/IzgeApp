@@ -1,4 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class ActiveDevicesScreen extends StatefulWidget {
@@ -9,29 +11,55 @@ class ActiveDevicesScreen extends StatefulWidget {
 }
 
 class _ActiveDevicesScreenState extends State<ActiveDevicesScreen> {
-  final List<Map<String, dynamic>> _devices = [
-    {
-      'name': 'iPhone 14 Pro',
-      'icon': Icons.smartphone,
-      'location': 'İstanbul, TR',
-      'status': 'Şu an aktif',
-      'isCurrent': true,
-    },
-    {
-      'name': 'MacBook Pro M2',
-      'icon': Icons.laptop_mac,
-      'location': 'Ankara, TR',
-      'status': 'Son görülme: Dün, 14:30',
-      'isCurrent': false,
-    },
-    {
-      'name': 'Windows PC',
-      'icon': Icons.computer,
-      'location': 'İzmir, TR',
-      'status': 'Son görülme: 3 gün önce',
-      'isCurrent': false,
-    },
-  ];
+  late List<Map<String, dynamic>> _devices = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDeviceName();
+  }
+
+  Future<void> _loadDeviceName() async {
+    final deviceInfo = DeviceInfoPlugin();
+    String name = 'Bilinmeyen Cihaz';
+    try {
+      if (Platform.isAndroid) {
+        final info = await deviceInfo.androidInfo;
+        String manufacturer = info.manufacturer;
+        if (manufacturer.isNotEmpty) manufacturer = manufacturer[0].toUpperCase() + manufacturer.substring(1);
+        name = '$manufacturer ${info.model}';
+      } else if (Platform.isIOS) {
+        final info = await deviceInfo.iosInfo;
+        name = info.name;
+      } else if (Platform.isWindows) {
+        name = 'Windows PC';
+      } else if (Platform.isMacOS) {
+        name = 'Mac';
+      }
+    } catch (e) {
+      name = 'Bilinmeyen Cihaz';
+    }
+
+    if (mounted) {
+      setState(() {
+        _devices = [
+          {
+            'name': name,
+            'icon': _getDeviceIcon(),
+            'location': 'Türkiye',
+            'status': 'Şu an aktif',
+            'isCurrent': true,
+          }
+        ];
+      });
+    }
+  }
+
+  IconData _getDeviceIcon() {
+    if (Platform.isAndroid || Platform.isIOS) return Icons.smartphone;
+    if (Platform.isMacOS) return Icons.laptop_mac;
+    return Icons.computer;
+  }
 
   void _logoutDevice(int index) {
     showDialog(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/home/presentation/pages/home_screen.dart';
@@ -87,6 +88,8 @@ class _MainNavigationState extends State<MainNavigation> {
           unselectedItemColor: AppColors.textSecondary,
           selectedFontSize: 10,
           unselectedFontSize: 10,
+          selectedLabelStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700),
+          unselectedLabelStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500),
           type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(

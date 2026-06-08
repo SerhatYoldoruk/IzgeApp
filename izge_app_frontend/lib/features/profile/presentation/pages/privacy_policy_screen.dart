@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
@@ -17,7 +18,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Gizlilik Politikası',
+          'KVKK ve Gizlilik Politikası',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -33,7 +34,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: [
             // Header Info
             Text(
-              'Son Güncelleme: 24 Ekim 2023',
+              'Son Güncelleme: 6 Haziran 2026',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -42,9 +43,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Text(
-              'İzge App olarak gizliliğinize önem veriyoruz. Bu Gizlilik Politikası, uygulamamızı ("İzge App") kullandığınızda kişisel verilerinizin nasıl toplandığını, kullanıldığını ve korunduğunu açıklamaktadır. Hizmetlerimizi kullanarak, bu politikada belirtilen uygulamaları kabul etmiş olursunuz.',
+              'İzge Derneği (bundan böyle "Veri Sorumlusu" veya "Dernek" olarak anılacaktır) olarak, 6698 Sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") ve ilgili mevzuat uyarınca kişisel verilerinizin güvenliğine ve gizliliğine en yüksek düzeyde önem veriyoruz. Bu metin, İzge mobil uygulaması ("Uygulama") üzerinden toplanan kişisel verilerinizin nasıl işlendiği, saklandığı ve korunduğu hakkında sizi şeffaf bir şekilde bilgilendirmek amacıyla hazırlanmıştır.',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textPrimary,
                 height: 1.5,
@@ -52,97 +53,200 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             SizedBox(height: 32),
 
-            // Section 1: Veri Toplama
+            // Section 1: Veri Sorumlusu
             _buildSection(
-              icon: Icons.storage,
-              title: '1. Veri Toplama',
+              icon: Icons.person_pin_circle_outlined,
+              title: '1. Veri Sorumlusunun Kimliği',
               content: [
                 Text(
-                  'Size daha iyi bir deneyim sunabilmek için çeşitli bilgiler topluyoruz. Bunlar şunları içerebilir:',
+                  'KVKK kapsamında Veri Sorumlusu, faaliyetlerini İzge Derneği tüzel kişiliği altında yürüten derneğimizdir. Kişisel verileriniz, veri sorumlusu sıfatıyla derneğimiz tarafından aşağıda açıklanan kapsamda işlenebilecektir.',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
+                    color: AppColors.textSecondary,
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Section 2: İşlenen Veriler
+            _buildSection(
+              icon: Icons.data_usage,
+              title: '2. İşlenen Kişisel Verileriniz',
+              content: [
+                Text(
+                  'Uygulamayı kullanımınız kapsamında aşağıdaki verileriniz işlenebilmektedir:',
+                  style: TextStyle(
+                    fontSize: 15,
                     color: AppColors.textSecondary,
                     height: 1.5,
                   ),
                 ),
                 SizedBox(height: 12),
-                _buildBulletPoint('Kişisel Bilgiler: ', 'Hesap oluştururken sağladığınız ad, e-posta adresi, telefon numarası gibi bilgiler.'),
+                _buildBulletPoint(
+                  'Kimlik Bilgileri: ',
+                  'Ad, soyad, doğum tarihi (gerektiğinde T.C. Kimlik Numarası; yalnızca yasal işlemler ve bağış makbuzları için).',
+                ),
                 const SizedBox(height: 8),
-                _buildBulletPoint('Kullanım Verileri: ', 'Uygulama içindeki etkileşimleriniz, ziyaret ettiğiniz sayfalar ve tercihlerinize dair anonim veya kişiselleştirilmiş istatistikler.'),
+                _buildBulletPoint(
+                  'İletişim Bilgileri: ',
+                  'E-posta adresi, telefon numarası, ikametgah/adres bilgisi.',
+                ),
                 const SizedBox(height: 8),
-                _buildBulletPoint('Cihaz Bilgileri: ', 'Kullandığınız cihazın modeli, işletim sistemi sürümü ve benzersiz cihaz tanımlayıcıları.'),
+                _buildBulletPoint(
+                  'İşlem Güvenliği Verileri: ',
+                  'IP adresi, uygulama içi erişim logları, hesap şifre bilgileri.',
+                ),
+                const SizedBox(height: 8),
+                _buildBulletPoint(
+                  'Finansal Bilgiler: ',
+                  'Düzenli veya tek seferlik aidat/bağış işlemlerinize ait dekont kayıtları. (ÖNEMLİ: Kredi kartı numaralarınız bizim tarafımızdan SAKLANMAZ; BDDK lisanslı aracı kurumların güvenli altyapılarında şifrelenir).',
+                ),
               ],
             ),
             const SizedBox(height: 16),
 
-            // Section 2: Veri Kullanımı
+            // Section 3: Amaçlar
             _buildSection(
-              icon: Icons.insights,
-              title: '2. Veri Kullanımı',
+              icon: Icons.track_changes,
+              title: '3. İşlenme Amaçları',
               content: [
                 Text(
-                  'Toplanan veriler, İzge App deneyiminizi iyileştirmek temel amacıyla aşağıdaki şekillerde kullanılır:',
+                  'Kişisel verileriniz aşağıdaki amaçlarla işlenmektedir:',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     color: AppColors.textSecondary,
                     height: 1.5,
                   ),
                 ),
                 SizedBox(height: 12),
-                _buildBulletPoint('', 'Hizmetlerimizi sağlamak, sürdürmek ve iyileştirmek.'),
+                _buildBulletPoint(
+                  '',
+                  'Dernek üyelik işlemlerinin, aidat takiplerinin ve bağış süreçlerinin yürütülmesi.',
+                ),
                 const SizedBox(height: 8),
-                _buildBulletPoint('', 'Talep ve anketlerinizi işleme koymak, size özel bildirimler göndermek.'),
+                _buildBulletPoint(
+                  '',
+                  'Kullanıcıların yardım, destek veya etkinlik taleplerinin (Tekerlekli sandalye, eğitim, vb.) kayıt altına alınması ve koordine edilmesi.',
+                ),
                 const SizedBox(height: 8),
-                _buildBulletPoint('', 'Kullanıcı güvenliğini sağlamak ve olası dolandırıcılık veya kötüye kullanımı önlemek.'),
+                _buildBulletPoint(
+                  '',
+                  'Yasal mevzuatlardan doğan bilgi saklama, raporlama ve dernekler masasına beyan yükümlülüklerinin yerine getirilmesi.',
+                ),
                 const SizedBox(height: 8),
-                _buildBulletPoint('', 'Yasal yükümlülüklerimizi yerine getirmek.'),
+                _buildBulletPoint(
+                  '',
+                  'Dernek faaliyetleri hakkında sizlere iletişim kanalları üzerinden bilgilendirme, haber bülteni veya acil çağrı bildirimlerinin gönderilmesi.',
+                ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
-            // Section 3: Çerezler ve İzleme
+            // Section 4: Veri Aktarımı ve Güvenlik
             _buildSection(
-              icon: Icons.cookie,
-              title: '3. Çerezler ve İzleme',
+              icon: Icons.shield_outlined,
+              title: '4. Veri Aktarımı ve Bulut Güvenliği',
               content: [
                 Text(
-                  'Uygulamamız, oturum yönetimi ve performans analizi için çeşitli teknik izleme yöntemleri kullanmaktadır. Bu veriler üçüncü taraf reklam ağlarıyla doğrudan paylaşılmaz. Cihaz ayarlarınızdan veri takibini sınırlandırma hakkına sahipsiniz.',
+                  'Uygulama altyapımız, verilerinizin güvenliği için uluslararası güvenlik sertifikalarına (ISO 27001, SOC 2) sahip Supabase ve AWS bulut sistemlerinde barındırılmaktadır. Tüm veri tabanı işlemleri endüstri standardı olan güçlü şifreleme algoritmalarıyla (Encryption at Rest/in Transit) korunur.',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     color: AppColors.textSecondary,
                     height: 1.5,
+                  ),
+                ),
+                SizedBox(height: 12),
+                Text(
+                  'Kişisel verileriniz, yasal zorunluluklar (yetkili kamu kurum ve kuruluşları) haricinde hiçbir 3. taraf reklam, pazarlama veya ticari şirketle SATILMAZ veya İZİNSİZ PAYLAŞILMAZ.',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: const Color(
+                      0xFF7ADC75,
+                    ), // Primary color to highlight
+                    height: 1.5,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
             SizedBox(height: 16),
 
-            // Section 4: İletişim
+            // Section 5: Haklar
             _buildSection(
-              icon: Icons.mail_outline,
-              title: '4. İletişim',
+              icon: Icons.balance,
+              title: '5. İlgili Kişinin Hakları (KVKK Md. 11)',
               content: [
                 Text(
-                  'Bu Gizlilik Politikası veya verilerinizin işlenmesiyle ilgili sorularınız, endişeleriniz veya talepleriniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin:',
+                  'KVKK\'nın 11. maddesi uyarınca derneğimize başvurarak;',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
+                    color: AppColors.textSecondary,
+                    height: 1.5,
+                  ),
+                ),
+                SizedBox(height: 12),
+                _buildBulletPoint(
+                  '',
+                  'Kişisel verilerinizin işlenip işlenmediğini öğrenme,',
+                ),
+                const SizedBox(height: 4),
+                _buildBulletPoint(
+                  '',
+                  'Kişisel verileriniz işlenmişse buna ilişkin bilgi talep etme,',
+                ),
+                const SizedBox(height: 4),
+                _buildBulletPoint(
+                  '',
+                  'Eksik veya yanlış işlenen verilerin düzeltilmesini isteme,',
+                ),
+                const SizedBox(height: 4),
+                _buildBulletPoint(
+                  '',
+                  'Kişisel verilerinizin silinmesini (Unutulma Hakkı) veya yok edilmesini talep etme haklarına sahipsiniz.',
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+
+            // Section 6: İletişim
+            _buildSection(
+              icon: Icons.mail_outline,
+              title: '6. İletişim',
+              content: [
+                Text(
+                  'Haklarınızı kullanmak ve kişisel verilerinizle ilgili her türlü talebinizi iletmek için bizimle iletişime geçebilirsiniz:',
+                  style: TextStyle(
+                    fontSize: 15,
                     color: AppColors.textSecondary,
                     height: 1.5,
                   ),
                 ),
                 SizedBox(height: 16),
-                _buildContactLink(Icons.alternate_email, 'gizlilik@izgeapp.org'),
+                _buildContactLink(Icons.alternate_email, 'kvkk@izgeapp.org'),
                 const SizedBox(height: 8),
-                _buildContactLink(Icons.help_center_outlined, 'Destek Merkezi'),
+                _buildContactLink(
+                  Icons.help_center_outlined,
+                  'Destek Merkezi (Uygulama İçi)',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HelpCenterScreen(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
 
             const SizedBox(height: 48),
-            
+
             // Footer
             Center(
               child: Text(
-                'İZGE APP © 2023',
+                'İZGE DERNEĞİ © 2026',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -185,10 +289,14 @@ class PrivacyPolicyScreen extends StatelessWidget {
               Container(
                 width: 40,
                 height: 40,
-                decoration: BoxDecoration( color: AppColors.surfaceElevated, // surface-container-high
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceElevated, // surface-container-high
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: const Color(0xFF1A8025)), // primary-container
+                child: Icon(
+                  icon,
+                  color: const Color(0xFF1A8025),
+                ), // primary-container
               ),
               SizedBox(width: 12),
               Expanded(
@@ -222,7 +330,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: RichText(
             text: TextSpan(
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 color: AppColors.textSecondary,
                 height: 1.5,
               ),
@@ -244,9 +352,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildContactLink(IconData icon, String text) {
+  Widget _buildContactLink(IconData icon, String text, {VoidCallback? onTap}) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap ?? () {},
       borderRadius: BorderRadius.circular(8),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),

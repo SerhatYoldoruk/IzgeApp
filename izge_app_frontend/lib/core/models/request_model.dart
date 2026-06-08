@@ -1,5 +1,5 @@
 class RequestModel {
-  final int id;
+  final String id;
   final String userId;
   final String title;
   final String description;
@@ -18,14 +18,25 @@ class RequestModel {
   });
 
   factory RequestModel.fromMap(Map<String, dynamic> map) {
+    // created_at can come as String (ISO) or DateTime depending on client/server
+    final createdAtValue = map['created_at'];
+    DateTime createdAt;
+    if (createdAtValue is DateTime) {
+      createdAt = createdAtValue;
+    } else if (createdAtValue is String) {
+      createdAt = DateTime.tryParse(createdAtValue) ?? DateTime.now();
+    } else {
+      createdAt = DateTime.now();
+    }
+
     return RequestModel(
-      id: map['id'] as int,
+      id: map['id'].toString(),
       userId: map['user_id'] as String,
       title: map['title'] as String,
       description: map['description'] as String,
       requestType: map['request_type'] as String,
       status: map['status'] as String? ?? 'pending',
-      createdAt: DateTime.parse(map['created_at'] as String),
+      createdAt: createdAt,
     );
   }
 

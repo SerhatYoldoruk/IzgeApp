@@ -328,7 +328,7 @@ class LanguageController extends ChangeNotifier {
     'Dayanışma': 'Dayanışma',
     'Şeffaflık': 'Şeffaflık',
     'Bizimle İletişime Geçin': 'Bizimle İletişime Geçin',
-    'Merkez Mah. Güneş Sok. No:1 Ankara': 'Merkez Mah. Güneş Sok. No:1 Ankara',
+    'Günaydın Mah. Terziler Cad. No:41/30 Bandırma': 'Günaydın Mah. Terziler Cad. No:41/30 Bandırma',
 
     // --- My Event Participations (Etkinlik Katılımlarım) ---
     'Yaklaşan': 'Yaklaşan',
@@ -967,7 +967,6 @@ class LanguageController extends ChangeNotifier {
         'Etkinlikler yüklenirken hata oluştu: ',
     'Henüz planlanmış bir etkinlik yok': 'Henüz planlanmış bir etkinlik yok',
 
-    'Bağla': 'Bağla',
   };
 
   static final Map<String, String> _enTranslations = {
@@ -1260,8 +1259,8 @@ class LanguageController extends ChangeNotifier {
     'Dayanışma': 'Solidarity',
     'Şeffaflık': 'Transparency',
     'Bizimle İletişime Geçin': 'Contact Us',
-    'Merkez Mah. Güneş Sok. No:1 Ankara':
-        'Merkez District, Gunes Street No:1 Ankara',
+    'Günaydın Mah. Terziler Cad. No:41/30 Bandırma':
+        'Günaydın District, Terziler Street No:41/30 Bandırma',
 
     // --- My Event Participations (Etkinlik Katılımlarım) ---
     'Yaklaşan': 'Upcoming',
@@ -1898,7 +1897,6 @@ class LanguageController extends ChangeNotifier {
         'An error occurred while loading events: ',
     'Henüz planlanmış bir etkinlik yok': 'No events planned yet',
 
-    'Bağla': 'Link',
   };
 }
 

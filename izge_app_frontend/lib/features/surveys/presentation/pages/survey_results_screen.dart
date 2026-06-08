@@ -1,8 +1,61 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/models/poll_model.dart';
+import 'package:izge_app_frontend/core/services/supabase_service.dart';
 
-class SurveyResultsScreen extends StatelessWidget {
-  const SurveyResultsScreen({super.key});
+class SurveyResultsScreen extends StatefulWidget {
+  final PollModel survey;
+  
+  const SurveyResultsScreen({super.key, required this.survey});
+
+  @override
+  State<SurveyResultsScreen> createState() => _SurveyResultsScreenState();
+}
+
+class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
+  int _totalVotes = 0;
+  List<int> _voteCounts = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchResults();
+  }
+
+  Future<void> _fetchResults() async {
+    try {
+      final results = await SupabaseService.instance.getPollResults(widget.survey.id);
+      
+      if (!mounted) return;
+
+      int total = results.length;
+      List<int> counts = List.filled(widget.survey.options.length, 0);
+
+      for (var result in results) {
+        String? text = result['option_text'] as String?;
+        if (text != null) {
+          int index = widget.survey.options.indexOf(text);
+          if (index >= 0 && index < counts.length) {
+            counts[index]++;
+          }
+        }
+      }
+
+      setState(() {
+        _totalVotes = total;
+        _voteCounts = counts;
+        _isLoading = false;
+      });
+    } catch (e) {
+      debugPrint("Error fetching results: $e");
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +78,16 @@ class SurveyResultsScreen extends StatelessWidget {
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
+      body: _isLoading 
+        ? const Center(child: CircularProgressIndicator()) 
+        : SingleChildScrollView(
         padding: const EdgeInsets.only(left: 24, right: 24, top: 32, bottom: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title & Summary
             Text(
-              'Haftalık Memnuniyet Anketi',
+              widget.survey.title,
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -46,7 +101,7 @@ class SurveyResultsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.surface, // surface-container
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.border.withValues(alpha: 0.3)),
+                border: Border.all(color: AppColors.border.withOpacity(0.3)),
               ),
               child: Row(
                 children: [
@@ -57,7 +112,7 @@ class SurveyResultsScreen extends StatelessWidget {
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1A8025).withValues(alpha: 0.2),
+                            color: const Color(0xFF1A8025).withOpacity(0.2),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(Icons.groups, color: Color(0xFF1A8025), size: 20),
@@ -75,7 +130,7 @@ class SurveyResultsScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '1,240 Kişi',
+                              '$_totalVotes Kişi',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -90,7 +145,7 @@ class SurveyResultsScreen extends StatelessWidget {
                   Container(
                     width: 1,
                     height: 40,
-                    color: AppColors.border.withValues(alpha: 0.5),
+                    color: AppColors.border.withOpacity(0.5),
                   ),
                   Expanded(
                     child: Row(
@@ -108,7 +163,7 @@ class SurveyResultsScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Tamamlandı',
+                              widget.survey.status == 'active' ? 'Devam Ediyor' : 'Tamamlandı',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -122,7 +177,7 @@ class SurveyResultsScreen extends StatelessWidget {
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: AppColors.accent.withValues(alpha: 0.2),
+                            color: AppColors.accent.withOpacity(0.2),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(Icons.check_circle, color: AppColors.accent, size: 20),
@@ -136,26 +191,18 @@ class SurveyResultsScreen extends StatelessWidget {
             
             const SizedBox(height: 32),
             
-            // Question 1
+            // Result Card
             _buildResultCard(
-              question: 'Hizmet kalitemizden memnun musunuz?',
-              options: [
-                _ResultOption(label: 'Çok Memnunum', percentage: 65, color: const Color(0xFF1A8025)),
-                _ResultOption(label: 'Memnunum', percentage: 25, color: const Color(0xFF1A8025).withValues(alpha: 0.6)),
-                _ResultOption(label: 'Kararsızım', percentage: 10, color: const Color(0xFF1A8025).withValues(alpha: 0.3)),
-              ],
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // Question 2
-            _buildResultCard(
-              question: 'Yeni etkinlik önerilerinizi bizimle paylaşır mısınız?',
-              options: [
-                _ResultOption(label: 'Eğitim', percentage: 45, color: const Color(0xFF1A8025)),
-                _ResultOption(label: 'Sosyal Etkinlik', percentage: 35, color: const Color(0xFF1A8025).withValues(alpha: 0.6)),
-                _ResultOption(label: 'Spor', percentage: 20, color: const Color(0xFF1A8025).withValues(alpha: 0.3)),
-              ],
+              question: widget.survey.description ?? 'Sonuçlar',
+              options: List.generate(widget.survey.options.length, (index) {
+                int count = _voteCounts.isEmpty ? 0 : _voteCounts[index];
+                int percentage = _totalVotes > 0 ? ((count / _totalVotes) * 100).round() : 0;
+                return _ResultOption(
+                  label: widget.survey.options[index],
+                  percentage: percentage,
+                  color: const Color(0xFF1A8025),
+                );
+              }),
             ),
             
             const SizedBox(height: 32),
@@ -199,10 +246,10 @@ class SurveyResultsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surfaceElevated, // surface-container-low
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
+        border: Border.all(color: AppColors.border.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -247,9 +294,7 @@ class SurveyResultsScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: option.color.withAlpha(255) == const Color(0xFF1A8025) 
-                      ? AppColors.accent 
-                      : AppColors.textSecondary,
+                  color: AppColors.accent,
                 ),
               ),
             ],

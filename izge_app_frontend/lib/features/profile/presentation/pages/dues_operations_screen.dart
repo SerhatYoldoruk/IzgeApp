@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
 
@@ -84,7 +84,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Yıllık Aidat',
+                    'Üyelik Aidatı',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w800,
@@ -93,7 +93,7 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    '2024 yılı için belirlenen aidat tutarı ve ödeme koşulları aşağıda yer almaktadır. Katkılarınız derneğimizin gücüne güç katmaktadır.',
+                    'Derneğimize giriş aidatı 100 TL, sonrasındaki üyelik aidatı aylık 50 TL olarak belirlenmiştir. Katkılarınız derneğimizin gücüne güç katmaktadır.',
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.textSecondary,
@@ -121,9 +121,9 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                               Icons.calendar_month,
                               'Ödeme Takvimi',
                               [
-                                const TextSpan(text: 'Yıllık aidat ödemelerinizi her yılın '),
-                                const TextSpan(text: 'Mart', style: TextStyle(color: Color(0xFF7ADC75), fontWeight: FontWeight.bold)), // primary
-                                const TextSpan(text: ' ayı sonuna kadar tamamlamanız rica olunur.'),
+                                const TextSpan(text: 'Aylık üyelik aidat ödemelerinizi her ayın '),
+                                const TextSpan(text: 'son gününe', style: TextStyle(color: Color(0xFF7ADC75), fontWeight: FontWeight.bold)), // primary
+                                const TextSpan(text: ' kadar tamamlamanız rica olunur.'),
                               ],
                             ),
                           ),
@@ -154,9 +154,9 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
                         Icons.calendar_month,
                         'Ödeme Takvimi',
                         [
-                          const TextSpan(text: 'Yıllık aidat ödemelerinizi her yılın '),
-                          const TextSpan(text: 'Mart', style: TextStyle(color: Color(0xFF7ADC75), fontWeight: FontWeight.bold)), // primary
-                          const TextSpan(text: ' ayı sonuna kadar tamamlamanız rica olunur.'),
+                          const TextSpan(text: 'Aylık üyelik aidat ödemelerinizi her ayın '),
+                          const TextSpan(text: 'son gününe', style: TextStyle(color: Color(0xFF7ADC75), fontWeight: FontWeight.bold)), // primary
+                          const TextSpan(text: ' kadar tamamlamanız rica olunur.'),
                         ],
                       ),
                       const SizedBox(height: 16),

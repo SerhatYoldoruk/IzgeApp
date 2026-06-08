@@ -7,6 +7,8 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final IconData? prefixIcon;
   final String? errorText;
+  final Iterable<String>? autofillHints;
+  final TextInputType? keyboardType;
 
   const CustomTextField({
     super.key,
@@ -15,6 +17,8 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.prefixIcon,
     this.errorText,
+    this.autofillHints,
+    this.keyboardType,
   });
 
   @override
@@ -70,6 +74,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           child: TextField(
             focusNode: _focusNode,
             obscureText: _obscureText,
+            autofillHints: widget.autofillHints,
+            keyboardType: widget.keyboardType,
             style: TextStyle(
               color: AppColors.fieldText,
               fontSize: 15,

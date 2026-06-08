@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/login_screen.dart';
 import '../core/theme/app_theme.dart';
 import '../core/theme/theme_controller.dart';
+import '../core/accessibility/accessibility_controller.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/auth/presentation/bloc/auth_event.dart';
 import '../features/events/presentation/bloc/event_bloc.dart';
@@ -12,6 +13,7 @@ import '../features/news/presentation/bloc/news_event.dart';
 import '../features/surveys/presentation/bloc/survey_bloc.dart';
 import '../features/surveys/presentation/bloc/survey_event.dart';
 import '../features/auth/presentation/pages/splash_screen.dart';
+import '../features/community/presentation/bloc/community_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dart:async';
@@ -57,7 +59,7 @@ class _IzgeAppState extends State<IzgeApp> {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: ThemeController.instance,
+      animation: Listenable.merge([ThemeController.instance, AccessibilityController.instance]),
       builder: (context, child) {
         return MultiBlocProvider(
           providers: [
@@ -72,6 +74,9 @@ class _IzgeAppState extends State<IzgeApp> {
             ),
             BlocProvider<SurveyBloc>(
               create: (context) => SurveyBloc()..add(SurveyFetchRequested()),
+            ),
+            BlocProvider<CommunityBloc>(
+              create: (context) => CommunityBloc(Supabase.instance.client),
             ),
           ],
           child: MaterialApp(
@@ -90,6 +95,15 @@ class _IzgeAppState extends State<IzgeApp> {
               Locale('tr', 'TR'),
               Locale('en', 'US'),
             ],
+            builder: (context, child) {
+              final scale = AccessibilityController.instance.textScaleFactor;
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaler: TextScaler.linear(scale),
+                ),
+                child: child!,
+              );
+            },
             home: IzgeApp.isTesting
                 ? const LoginScreen()
                 : SplashScreen(initialization: widget.initialization),

@@ -1,6 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/create_request_screen.dart';
+import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
 
 class NewRequestTypesScreen extends StatelessWidget {
   const NewRequestTypesScreen({super.key});
@@ -123,7 +123,7 @@ class NewRequestTypesScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreateRequestScreen()),
+                  MaterialPageRoute(builder: (context) => const NewRequestScreen()),
                 );
               },
               icon: const Icon(Icons.add_circle, color: Color(0xFF003908)), // on-primary

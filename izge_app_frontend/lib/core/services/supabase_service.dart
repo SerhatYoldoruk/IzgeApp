@@ -6,6 +6,7 @@ import 'package:izge_app_frontend/core/models/event_model.dart';
 import 'package:izge_app_frontend/core/models/poll_model.dart';
 import 'package:izge_app_frontend/core/models/profile_model.dart';
 import 'package:izge_app_frontend/core/models/request_model.dart';
+import 'package:izge_app_frontend/features/profile/data/models/notification_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Supabase Kimlik Doğrulama ve Veritabanı Servis Sınıfı
@@ -112,6 +113,14 @@ class SupabaseService {
     await _client.auth.resetPasswordForEmail(email);
   }
 
+  /// Kullanıcının şifresini güncelle
+  Future<void> updatePassword(String newPassword) async {
+    _requireCurrentUser();
+    await _client.auth.updateUser(
+      UserAttributes(password: newPassword),
+    );
+  }
+
   /// Kullanıcının profil bilgilerini getir
   /// Veritabanında profiles tablosundan kullanıcı ID'sine göre çeker
   Future<ProfileModel> getProfile() async {
@@ -174,34 +183,92 @@ class SupabaseService {
   }
 
   /// Yeni talep oluştur
-  Future<void> createRequest({
+  Future<RequestModel> createRequest({
     required String title,
     required String description,
     required String requestType,
   }) async {
     final user = _requireCurrentUser();
-    await _client.from('requests').insert({
+    final data = await _client.from('requests').insert({
       'user_id': user.id,
       'title': title,
       'description': description,
       'request_type': requestType,
-      'status': 'pending',
-    });
+    }).select().single();
+    return RequestModel.fromMap(data);
   }
 
-  Future<void> vote({required String pollId, required int optionIndex}) async {
+  /// Talep No (kısa ID) ile talep getir
+  Future<RequestModel?> getRequestByShortId(String shortId) async {
+    final cleanId = shortId.toUpperCase().replaceAll('TLP-', '').trim().toLowerCase();
+    if (cleanId.isEmpty) return null;
+    
+    try {
+      final user = _requireCurrentUser();
+      final list = await _fetchList(
+        _client
+            .from('requests')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', ascending: false),
+      );
+      final requests = list.map((e) => RequestModel.fromMap(e)).toList();
+      // İlk 8 karakter ile eşleşen talebi bul
+      for (final req in requests) {
+        if (req.id.toLowerCase().startsWith(cleanId)) {
+          return req;
+        }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> vote({required String pollId, required String optionText}) async {
     final user = _requireCurrentUser();
+    
+    final optionData = await _client
+        .from('poll_options')
+        .select('id')
+        .eq('poll_id', pollId)
+        .eq('option_text', optionText)
+        .single();
+
     await _client.from('poll_votes').insert({
       'poll_id': pollId,
-      'option_index': optionIndex,
+      'option_id': optionData['id'],
       'user_id': user.id,
     });
   }
 
-  Future<List<Map<String, dynamic>>> getPollResults(String pollId) {
-    return _fetchList(
-      _client.from('poll_votes').select('option_index').eq('poll_id', pollId),
+  Future<List<Map<String, dynamic>>> getPollResults(String pollId) async {
+    final votes = await _fetchList(
+      _client.from('poll_votes').select('poll_options!inner(option_text)').eq('poll_id', pollId),
     );
+    
+    return votes.map((v) => {
+      'option_text': v['poll_options']['option_text']
+    }).toList();
+  }
+
+  Future<String?> getUserVote(String pollId) async {
+    final user = _requireCurrentUser();
+    try {
+      final data = await _client
+          .from('poll_votes')
+          .select('poll_options!inner(option_text)')
+          .eq('poll_id', pollId)
+          .eq('user_id', user.id)
+          .maybeSingle();
+      
+      if (data != null) {
+        return data['poll_options']['option_text'] as String;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<ChatRoomModel> getChatRoom() async {
@@ -273,6 +340,85 @@ class SupabaseService {
 
   String getAvatarUrl(String path) {
     return _client.storage.from('avatar').getPublicUrl(path);
+  }
+
+  // =========================================
+  // BİLDİRİMLER (NOTIFICATIONS) FONKSİYONLARI
+  // =========================================
+
+  /// Kullanıcının tüm bildirimlerini getir
+  Future<List<NotificationModel>> getNotifications() async {
+    final user = _requireCurrentUser();
+    final list = await _fetchList(
+      _client
+          .from('notifications')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false),
+    );
+    return list.map((e) => NotificationModel.fromJson(e)).toList();
+  }
+
+  /// Okunmamış bildirim sayısını getir
+  Future<int> getUnreadNotificationCount() async {
+    final user = currentUser;
+    if (user == null) return 0;
+    
+    final data = await _client
+        .from('notifications')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('is_read', false);
+    
+    // Supabase returns count in the response object
+    return data.length; // The length of the returned list corresponds to the count
+  }
+
+  /// Tek bir bildirimi okundu olarak işaretle
+  Future<void> markNotificationAsRead(int notificationId) async {
+    final user = _requireCurrentUser();
+    await _client
+        .from('notifications')
+        .update({'is_read': true})
+        .eq('id', notificationId)
+        .eq('user_id', user.id);
+  }
+
+  /// Kullanıcının tüm bildirimlerini okundu olarak işaretle
+  Future<void> markAllNotificationsAsRead() async {
+    final user = _requireCurrentUser();
+    await _client
+        .from('notifications')
+        .update({'is_read': true})
+        .eq('user_id', user.id)
+        .eq('is_read', false);
+  }
+
+  /// Bildirimleri canlı dinle
+  RealtimeChannel subscribeToNotifications({
+    required void Function(NotificationModel newNotification) onNotification,
+  }) {
+    final user = _requireCurrentUser();
+    final channel = _client.channel('notifications-${user.id}');
+
+    channel.onPostgresChanges(
+      event: PostgresChangeEvent.insert,
+      schema: 'public',
+      table: 'notifications',
+      filter: PostgresChangeFilter(
+        type: PostgresChangeFilterType.eq,
+        column: 'user_id',
+        value: user.id,
+      ),
+      callback: (payload) {
+        onNotification(
+          NotificationModel.fromJson(Map<String, dynamic>.from(payload.newRecord)),
+        );
+      },
+    );
+
+    channel.subscribe();
+    return channel;
   }
 
   Future<List<Map<String, dynamic>>> _fetchList(Future<dynamic> query) async {

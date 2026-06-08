@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -178,8 +178,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             
             _buildInputField(
               label: 'Telefon',
-              icon: Icons.phone,
+              icon: Icons.call,
               controller: _phoneController,
+              hintText: '05xx xxx xx xx',
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 16),
@@ -293,6 +294,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     required IconData icon,
     required TextEditingController controller,
     TextInputType keyboardType = TextInputType.text,
+    String? hintText,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,6 +320,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             color: AppColors.textPrimary,
           ),
           decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: TextStyle(
+              color: AppColors.textSecondary.withOpacity(0.5),
+            ),
             prefixIcon: Icon(
               icon,
               color: AppColors.textSecondary,

@@ -5,6 +5,7 @@ import 'package:izge_app_frontend/features/support/presentation/pages/live_suppo
 import 'package:izge_app_frontend/core/models/announcement_model.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:izge_app_frontend/core/services/tts_service.dart';
 
 class NewsDetailScreen extends StatefulWidget {
   final AnnouncementModel news;
@@ -39,9 +40,38 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     ActivityState.instance.toggleSave(widget.news.id, isSaved);
   }
 
+  bool _isReading = false;
+
+  @override
+  void dispose() {
+    if (_isReading) {
+      TTSService.instance.stop();
+    }
+    super.dispose();
+  }
+
+  void _toggleReading() async {
+    if (_isReading) {
+      await TTSService.instance.stop();
+      if (mounted) setState(() => _isReading = false);
+    } else {
+      if (mounted) setState(() => _isReading = true);
+      final textToRead = "${widget.news.title}. ${widget.news.content}";
+      await TTSService.instance.speak(textToRead);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          setState(() {
+            _isReading = TTSService.instance.isSpeaking;
+          });
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.accent),
@@ -86,6 +116,16 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           ],
         ),
         centerTitle: true,
+        actions: [
+          TextButton.icon(
+            onPressed: _toggleReading,
+            icon: Icon(_isReading ? Icons.stop : Icons.volume_up, color: AppColors.accent),
+            label: Text(
+              _isReading ? 'Durdur' : 'Sesli Oku',
+              style: TextStyle(color: AppColors.accent, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

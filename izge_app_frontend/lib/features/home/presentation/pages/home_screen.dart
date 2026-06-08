@@ -7,11 +7,15 @@ import 'package:izge_app_frontend/features/events/presentation/pages/events_scre
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/create_request_screen.dart';
+import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
-import 'package:izge_app_frontend/features/requests/data/requests_repository.dart';
+
+import 'package:izge_app_frontend/features/info_cards/presentation/pages/info_cards_screen.dart';
+import 'package:izge_app_frontend/features/info_cards/presentation/pages/info_card_detail_screen.dart';
+import 'package:izge_app_frontend/core/constants/dummy_info_cards.dart';
+import 'package:izge_app_frontend/features/community/presentation/pages/community_screen.dart';
+import 'package:izge_app_frontend/core/widgets/notification_badge_icon.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/events/presentation/bloc/event_bloc.dart';
@@ -149,17 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NotificationsScreen(),
-                ),
-              );
-            },
-            icon: Icon(Icons.notifications_none, color: AppColors.textPrimary),
-          ),
+          const NotificationBadgeIcon(),
         ],
       ),
       body: FutureBuilder<Map<String, dynamic>>(
@@ -285,18 +279,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                       _QuickActionBtn(
-                        icon: Icons.add_circle_outline,
-                        label: 'Talep Aç'.tr(),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CreateRequestScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      _QuickActionBtn(
                         icon: Icons.event,
                         label: 'Etkinlikler'.tr(),
                         onTap: () {
@@ -309,19 +291,35 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                       _QuickActionBtn(
-                        icon: Icons.support_agent,
-                        label: 'Destek'.tr(),
+                        icon: Icons.lightbulb_outline,
+                        label: 'Bilgiler',
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const LiveSupportScreen(),
+                              builder: (context) => const InfoCardsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      _QuickActionBtn(
+                        icon: Icons.forum,
+                        label: 'Topluluk'.tr(),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CommunityScreen(),
                             ),
                           );
                         },
                       ),
                     ],
                   ),
+                  const SizedBox(height: 24),
+
+                  // Günlük Bilgi Kartı Banneri
+                  _DailyInfoCardBanner(),
                   const SizedBox(height: 32),
 
                   // Öne Çıkanlar Section
@@ -403,7 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const CreateRequestScreen(),
+                          builder: (context) => const NewRequestScreen(),
                         ),
                       );
                     },
@@ -512,7 +510,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
+                      color: AppColors.accent,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -548,16 +546,35 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: AppColors.surface,
+                              color: AppColors.surfaceElevated,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(color: AppColors.border),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Row(
                               children: [
-                                Text(survey.title, style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16)),
-                                const SizedBox(height: 8),
-                                Text(survey.description ?? '', style: TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.accent.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Center(
+                                    child: Icon(Icons.poll, color: AppColors.accent),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(survey.title, style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 16)),
+                                      const SizedBox(height: 4),
+                                      Text(survey.description ?? '', style: TextStyle(color: AppColors.textSecondary, fontSize: 14), maxLines: 2, overflow: TextOverflow.ellipsis),
+                                    ],
+                                  ),
+                                ),
+                                Icon(Icons.arrow_forward_ios, color: AppColors.textSecondary, size: 16),
                               ],
                             ),
                           ),
@@ -884,6 +901,148 @@ class _QuickActionBtn extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _DailyInfoCardBanner extends StatefulWidget {
+  const _DailyInfoCardBanner();
+
+  @override
+  State<_DailyInfoCardBanner> createState() => _DailyInfoCardBannerState();
+}
+
+class _DailyInfoCardBannerState extends State<_DailyInfoCardBanner> {
+  InfoCard? _card;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDailyCard();
+  }
+
+  Future<void> _loadDailyCard() async {
+    try {
+      final response = await Supabase.instance.client
+          .from('info_cards')
+          .select()
+          .eq('is_active', true)
+          .order('sort_order', ascending: true);
+      final dbCards = (response as List).map((e) => InfoCard.fromMap(e)).toList();
+      final cards = [...dbCards, ...DummyInfoCards.cards];
+      if (cards.isNotEmpty) {
+        final dayOfYear = DateTime.now().difference(DateTime(DateTime.now().year, 1, 1)).inDays;
+        final index = dayOfYear % cards.length;
+        setState(() {
+          _card = cards[index];
+          _loading = false;
+        });
+      } else {
+        setState(() => _loading = false);
+      }
+    } catch (_) {
+      setState(() => _loading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) {
+      return Container(
+        height: 120,
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Center(child: CircularProgressIndicator(color: AppColors.accent, strokeWidth: 2)),
+      );
+    }
+    if (_card == null) return const SizedBox.shrink();
+
+    final card = _card!;
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => InfoCardDetailScreen(card: card)),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [card.color, card.color.withOpacity(0.7)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: card.color.withOpacity(0.3),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(card.icon, color: Colors.white, size: 28),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Text(
+                      'Günün Bilgisi',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    card.title,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    card.summary,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white.withOpacity(0.85),
+                      height: 1.3,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(Icons.arrow_forward_ios, color: Colors.white.withOpacity(0.8), size: 16),
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:izge_app_frontend/core/models/poll_model.dart';
+import 'package:izge_app_frontend/core/services/tts_service.dart';
+import 'package:izge_app_frontend/core/services/supabase_service.dart';
 
 class SurveyDetailScreen extends StatefulWidget {
   final PollModel survey;
@@ -17,6 +19,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
   bool _isSubmitting = false;
   bool _isSuccess = false;
   bool _hasSubmittedBefore = false;
+  int _participantCount = 0;
 
   @override
   void initState() {
@@ -24,15 +27,53 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
     _checkSubmissionStatus();
   }
 
-  Future<void> _checkSubmissionStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? submittedOption = prefs.getString('submitted_survey_${widget.survey.id}');
-    if (submittedOption != null && mounted) {
-      setState(() {
-        _hasSubmittedBefore = true;
-        _isSuccess = true;
-        _selectedOption = submittedOption;
+  @override
+  void dispose() {
+    if (_isReading) {
+      TTSService.instance.stop();
+    }
+    super.dispose();
+  }
+
+  bool _isReading = false;
+
+  void _toggleReading() async {
+    if (_isReading) {
+      await TTSService.instance.stop();
+      if (mounted) setState(() => _isReading = false);
+    } else {
+      if (mounted) setState(() => _isReading = true);
+      final textToRead = "${widget.survey.title}. ${widget.survey.description}. Hangi alanda atölye açılmasını istersiniz?. Seçenekler: ${widget.survey.options.join(', ')}";
+      await TTSService.instance.speak(textToRead);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          setState(() {
+            _isReading = TTSService.instance.isSpeaking;
+          });
+        }
       });
+    }
+  }
+
+  Future<void> _checkSubmissionStatus() async {
+    try {
+      final results = await SupabaseService.instance.getPollResults(widget.survey.id);
+      if (mounted) {
+        setState(() {
+          _participantCount = results.length;
+        });
+      }
+
+      final userVoteText = await SupabaseService.instance.getUserVote(widget.survey.id);
+      if (userVoteText != null && mounted) {
+        setState(() {
+          _hasSubmittedBefore = true;
+          _isSuccess = true;
+          _selectedOption = userVoteText;
+        });
+      }
+    } catch (e) {
+      debugPrint("Error checking submission: $e");
     }
   }
 
@@ -43,30 +84,44 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
       _isSubmitting = true;
     });
 
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 1500));
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('submitted_survey_${widget.survey.id}', _selectedOption!);
+    try {
+      await SupabaseService.instance.vote(
+        pollId: widget.survey.id,
+        optionText: _selectedOption!,
+      );
 
-    if (mounted) {
-      setState(() {
-        _isSubmitting = false;
-        _isSuccess = true;
-        _hasSubmittedBefore = true;
-      });
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+          _isSuccess = true;
+          _hasSubmittedBefore = true;
+          _participantCount++;
+        });
 
-      // Optionally navigate back after success
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        if (mounted) {
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Yanıtınız başarıyla kaydedildi.'.tr()),
-              backgroundColor: AppColors.accent,
-            ),
-          );
-        }
-      });
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          if (mounted) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Yanıtınız başarıyla kaydedildi.'.tr()),
+                backgroundColor: AppColors.accent,
+              ),
+            );
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Hata oluştu. Tekrar deneyin.'.tr()),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     }
   }
 
@@ -95,6 +150,10 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
           IconButton(
             icon: Icon(Icons.notifications, color: AppColors.textSecondary),
             onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(_isReading ? Icons.stop : Icons.volume_up, color: AppColors.textSecondary),
+            onPressed: _toggleReading,
           ),
         ],
       ),
@@ -194,11 +253,11 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                           children: [
                             Icon(Icons.group, color: AppColors.textSecondary, size: 18),
                             SizedBox(width: 8),
-                            Text('1,248 Katılım'.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text('$_participantCount ${'Katılım'.tr()}', style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
                             SizedBox(width: 24),
                             Icon(Icons.schedule, color: AppColors.textSecondary, size: 18),
                             SizedBox(width: 8),
-                            Text('Son 2 Gün'.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text(widget.survey.endDate != null ? '${widget.survey.endDate!.difference(DateTime.now()).inDays} ${'Gün Kaldı'.tr()}' : 'Devam Ediyor'.tr(), style: TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ],
@@ -209,7 +268,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                   
                   // Question
                   Text(
-                    'Hangi alanda atölye açılmasını istersiniz?'.tr(),
+                    'Lütfen bir seçenek belirleyin.'.tr(),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                   ),
                   SizedBox(height: 4),

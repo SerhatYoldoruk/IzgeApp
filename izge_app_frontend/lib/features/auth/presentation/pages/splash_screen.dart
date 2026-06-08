@@ -1,8 +1,10 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:app_links/app_links.dart';
-import 'login_screen.dart';
+import 'package:flutter/material.dart';
+
 import 'email_verified_screen.dart';
+import 'login_screen.dart';
 
 /// Uygulamanın ilk açılış ekranı (Splash Screen).
 /// Koyu yeşil gradient arka plan üzerine logo ve animasyonlu parıltı efekti.
@@ -16,7 +18,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   late AnimationController _glowController;
   late Animation<double> _glowAnimation;
   late AnimationController _pulseController;
@@ -62,8 +65,14 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
     await Future.delayed(const Duration(milliseconds: 200));
     if (mounted) {
-      precacheImage(const AssetImage('assets/images/images/logo.jpeg'), context);
-      precacheImage(const AssetImage('assets/images/images/google_logo.png'), context);
+      precacheImage(
+        const AssetImage('assets/images/images/logo.jpeg'),
+        context,
+      );
+      precacheImage(
+        const AssetImage('assets/images/images/google_logo.png'),
+        context,
+      );
     }
 
     if (widget.initialization != null) {
@@ -78,7 +87,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     try {
       final appLinks = AppLinks();
       final initialLink = await appLinks.getInitialLink();
-      if (initialLink != null && initialLink.toString().contains('type=signup')) {
+      if (initialLink != null &&
+          initialLink.toString().contains('type=signup')) {
         isEmailVerification = true;
       }
     } catch (e) {
@@ -95,8 +105,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     if (mounted) {
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => 
-              isEmailVerification ? const EmailVerifiedScreen() : const LoginScreen(),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              isEmailVerification
+              ? const EmailVerifiedScreen()
+              : const LoginScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
@@ -180,7 +192,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFF7ADC75).withOpacity(0.15),
+                                    color: const Color(
+                                      0xFF7ADC75,
+                                    ).withOpacity(0.15),
                                     blurRadius: 50,
                                     spreadRadius: 25 * _glowAnimation.value,
                                   ),
@@ -204,12 +218,16 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: const Color(0xFF7ADC75).withOpacity(0.4),
+                                    color: const Color(
+                                      0xFF7ADC75,
+                                    ).withOpacity(0.4),
                                     width: 2.5,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color(0xFF7ADC75).withOpacity(0.2),
+                                      color: const Color(
+                                        0xFF7ADC75,
+                                      ).withOpacity(0.2),
                                       blurRadius: 20,
                                       spreadRadius: 2,
                                     ),
@@ -262,11 +280,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Sosyal Yardımlaşma Platformu',
+                            'Ancak Birlikte Başarabiliriz.',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF8CC98A), // Açık yeşilimsi gri - her arka planda okunur
+                              color: Color(
+                                0xFF8CC98A,
+                              ), // Açık yeşilimsi gri - her arka planda okunur
                               letterSpacing: 1.5,
                             ),
                           ),
@@ -293,7 +313,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         mainAxisSize: MainAxisSize.min,
                         children: List.generate(3, (index) {
                           final delay = index * 0.15;
-                          final progress = (_pulseAnimation.value - delay).clamp(0.0, 1.0);
+                          final progress = (_pulseAnimation.value - delay)
+                              .clamp(0.0, 1.0);
                           return Container(
                             margin: const EdgeInsets.symmetric(horizontal: 4),
                             width: 8,

@@ -3,7 +3,8 @@ import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
 import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
-import 'package:izge_app_frontend/features/profile/presentation/pages/notifications_screen.dart';
+
+import 'package:izge_app_frontend/core/widgets/notification_badge_icon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/news/presentation/bloc/news_bloc.dart';
 import 'package:izge_app_frontend/features/news/presentation/bloc/news_state.dart';
@@ -155,12 +156,7 @@ class _NewsScreenState extends State<NewsScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
-            },
-            icon: Icon(Icons.notifications_none, color: AppColors.textPrimary),
-          ),
+          const NotificationBadgeIcon(),
         ],
       ),
       body: RefreshIndicator(

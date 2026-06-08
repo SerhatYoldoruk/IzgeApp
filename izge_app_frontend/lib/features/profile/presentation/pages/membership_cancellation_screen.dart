@@ -90,7 +90,7 @@ class MembershipCancellationScreen extends StatelessWidget {
             LayoutBuilder(
               builder: (context, constraints) {
                 final isWide = constraints.maxWidth > 600;
-                final freezeOnTap = () {
+                void freezeOnTap() {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Üyeliğiniz donduruldu. İstediğiniz zaman tekrar aktif edebilirsiniz.'),
@@ -98,8 +98,8 @@ class MembershipCancellationScreen extends StatelessWidget {
                     ),
                   );
                   Navigator.pop(context);
-                };
-                final cancelOnTap = () => _showCancelDialog(context);
+                }
+                void cancelOnTap() => _showCancelDialog(context);
                 return Column(
                   children: [
                     if (isWide)

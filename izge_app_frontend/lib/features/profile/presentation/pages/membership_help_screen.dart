@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/membership_cancellation_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/dues_operations_screen.dart';
@@ -155,7 +155,7 @@ class MembershipHelpScreen extends StatelessWidget {
                             child: _buildHelpCard(
                               Icons.credit_card, 
                               'Aidat İşlemleri', 
-                              'Yıllık üyelik aidat ödemeleri, makbuz talepleri ve geçmiş ödeme geçmişi sorgulama adımları.',
+                              'Üyelik aidat ödemeleri, makbuz talepleri ve geçmiş ödeme geçmişi sorgulama adımları.',
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -182,7 +182,7 @@ class MembershipHelpScreen extends StatelessWidget {
                       _buildHelpCard(
                         Icons.credit_card, 
                         'Aidat İşlemleri', 
-                        'Yıllık üyelik aidat ödemeleri, makbuz talepleri ve geçmiş ödeme geçmişi sorgulama adımları.',
+                        'Üyelik aidat ödemeleri, makbuz talepleri ve geçmiş ödeme geçmişi sorgulama adımları.',
                         onTap: () {
                           Navigator.push(
                             context,
@@ -269,7 +269,7 @@ class MembershipHelpScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                        color: hoverTitleColor,
                       ),
                     ),
                     SizedBox(height: 8),

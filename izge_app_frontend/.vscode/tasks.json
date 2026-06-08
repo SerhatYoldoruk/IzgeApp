@@ -1,0 +1,60 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "📱 Telefona Çalıştır (Debug)",
+      "type": "shell",
+      "command": "flutter run",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔨 APK Derle + Telefona Yükle (Debug)",
+      "type": "shell",
+      "command": "flutter build apk --debug && adb install -r build/app/outputs/flutter-apk/app-debug.apk",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🚀 APK Derle + Telefona Yükle (Release)",
+      "type": "shell",
+      "command": "flutter build apk --release && adb install -r build/app/outputs/flutter-apk/app-release.apk",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📦 Sadece Release APK Derle",
+      "type": "shell",
+      "command": "flutter build apk --release",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📋 Bağlı Cihazları Listele",
+      "type": "shell",
+      "command": "adb devices",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

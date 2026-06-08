@@ -1,16 +1,12 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
-
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/core/services/supabase_service.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
 import 'package:izge_app_frontend/core/widgets/loading_overlay.dart';
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_event.dart';
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_state.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/forgot_password_screen.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/sign_screen.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/pages/main_navigation_page.dart';
@@ -24,24 +20,28 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  @override
   void initState() {
     super.initState();
     // Sık kullanılan resimleri (logo, google) önceden yükle
     // Böylece ilk açılışta görsel gecikmeleri azaltırız
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      precacheImage(const AssetImage('assets/images/images/logo.jpeg'), context);
-      precacheImage(const AssetImage('assets/images/images/google_logo.png'), context);
+      precacheImage(
+        const AssetImage('assets/images/images/logo.jpeg'),
+        context,
+      );
+      precacheImage(
+        const AssetImage('assets/images/images/google_logo.png'),
+        context,
+      );
     });
   }
 
   /// Kullanıcı tarafından girilen e-posta veya telefon numarası
   String emailOrPhone = '';
-  
+
   /// Kullanıcı tarafından girilen şifre
   String password = '';
-  
-  /// Giriş işlemi devam ediyor mu (yükleniyor göstergesi için)
-  bool _isLoading = false;
 
   /// E-posta veya telefon numarası ile giriş işlemini başlat
   void _handleLogin() {
@@ -50,13 +50,17 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
+    TextInput.finishAutofillContext();
+
     final isEmail = emailOrPhone.contains('@');
-    
-    context.read<AuthBloc>().add(AuthLoginRequested(
-      email: isEmail ? emailOrPhone : null,
-      phone: !isEmail ? emailOrPhone : null,
-      password: password,
-    ));
+
+    context.read<AuthBloc>().add(
+      AuthLoginRequested(
+        email: isEmail ? emailOrPhone : null,
+        phone: !isEmail ? emailOrPhone : null,
+        password: password,
+      ),
+    );
   }
 
   /// Google OAuth ile giriş işlemini başlat
@@ -89,11 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Ekran genişliğini al ve buton genişliğini dinamik olarak hesapla
-    // Ekran dar ise 72%, geniş ise max 420 px genişlik
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double buttonWidth = math.min(screenWidth * 0.72, 420.0);
-
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
@@ -112,209 +111,233 @@ class _LoginScreenState extends State<LoginScreen> {
           message: 'Giriş yapılıyor...',
           child: Scaffold(
             backgroundColor: AppColors.background,
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 24),
-                  
-                  // Glowing Logo
-                  Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          width: 140,
-                          height: 140,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primary.withOpacity(0.3),
-                                blurRadius: 40,
-                                spreadRadius: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.border, width: 2),
-                          ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/images/logo.jpeg',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 32),
-                  
-                  // Başlıklar
-                  Text(
-                    'Hoş Geldiniz',
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Devam etmek için giriş yapın',
-                    style: TextStyle(
-                      color: AppColors.textSecondary,
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  
-                  const SizedBox(height: 40),
-                  
-                  // Form Kartı
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: AppColors.border.withOpacity(0.5)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 24,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        CustomTextField(
-                          hintText: 'E-posta veya telefon numaranızı giriniz',
-                          prefixIcon: Icons.person_outline,
-                          onChanged: (value) => setState(() => emailOrPhone = value),
-                        ),
-                        const SizedBox(height: 16),
-                        CustomTextField(
-                          hintText: 'Şifrenizi giriniz',
-                          prefixIcon: Icons.lock_outline,
-                          onChanged: (value) => setState(() => password = value),
-                          obscureText: true,
-                        ),
-                        
-                        const SizedBox(height: 12),
-                        
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const ForgotPasswordScreen(),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 16.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 24),
+
+                    // Glowing Logo
+                    Center(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            width: 140,
+                            height: 140,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withOpacity(0.3),
+                                  blurRadius: 40,
+                                  spreadRadius: 10,
                                 ),
-                              );
-                            },
-                            child: Text(
-                              'Şifremi unuttum',
-                              style: TextStyle(
-                                color: AppColors.textSecondary,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.border,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/images/logo.jpeg',
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Başlıklar
+                    Text(
+                      'Hoş Geldiniz',
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Devam etmek için giriş yapın',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    // Form Kartı
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: AppColors.border.withOpacity(0.5),
                         ),
-                        
-                        const SizedBox(height: 24),
-                        
-                        SizedBox(
-                          height: 52,
-                          child: ElevatedButton(
-                            onPressed: isLoading ? null : _handleLogin,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              elevation: 4,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 24,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: AutofillGroup(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CustomTextField(
+                              hintText: 'Mail adresinizi giriniz',
+                              prefixIcon: Icons.person_outline,
+                              onChanged: (value) =>
+                                  setState(() => emailOrPhone = value),
+                              autofillHints: const [
+                                AutofillHints.username,
+                                AutofillHints.email,
+                              ],
+                              keyboardType: TextInputType.emailAddress,
                             ),
-                            child: isLoading
-                                ? SizedBox(
-                                    height: 24,
-                                    width: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2.5,
-                                      color: AppColors.accentOnPrimary,
+                            const SizedBox(height: 16),
+                            CustomTextField(
+                              hintText: 'Şifrenizi giriniz',
+                              prefixIcon: Icons.lock_outline,
+                              onChanged: (value) =>
+                                  setState(() => password = value),
+                              obscureText: true,
+                              autofillHints: const [AutofillHints.password],
+                            ),
+
+                            const SizedBox(height: 12),
+
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgotPasswordScreen(),
                                     ),
-                                  )
-                                : Text(
-                                    'GİRİŞ YAP',
-                                    style: TextStyle(
-                                      color: AppColors.accentOnPrimary,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1.2,
-                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Şifremi unuttum',
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
                                   ),
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 24),
+
+                            SizedBox(
+                              height: 52,
+                              child: ElevatedButton(
+                                onPressed: isLoading ? null : _handleLogin,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  elevation: 4,
+                                ),
+                                child: isLoading
+                                    ? SizedBox(
+                                        height: 24,
+                                        width: 24,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2.5,
+                                          color: AppColors.accentOnPrimary,
+                                        ),
+                                      )
+                                    : Text(
+                                        'GİRİŞ YAP',
+                                        style: TextStyle(
+                                          color: AppColors.accentOnPrimary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.2,
+                                        ),
+                                      ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 24),
+                            const _DividerLabel(),
+                            const SizedBox(height: 24),
+
+                            _GoogleSignInCard(
+                              onTap: isLoading ? null : _handleGoogleSignIn,
+                              isLoading: isLoading,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // "KAYIT OL" Butonu
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Henüz üye değil misiniz? ',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 14,
                           ),
                         ),
-                        
-                        const SizedBox(height: 24),
-                        const _DividerLabel(),
-                        const SizedBox(height: 24),
-                        
-                        _GoogleSignInCard(
-                          onTap: isLoading ? null : _handleGoogleSignIn,
-                          isLoading: isLoading,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const SignPage(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'KAYIT OL',
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                  
-                  const SizedBox(height: 32),
-                  
-                  // "KAYIT OL" Butonu
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Henüz üye değil misiniz? ',
-                        style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => const SignPage()),
-                          );
-                        },
-                        child: Text(
-                          'KAYIT OL',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 48),
-                ],
+
+                    const SizedBox(height: 48),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
         );
       },
     );
@@ -368,7 +391,7 @@ class _GoogleSignInCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: 24,
                 height: 24,
                 child: Image.asset(

@@ -14,6 +14,7 @@ import 'package:izge_app_frontend/features/profile/presentation/pages/liked_cont
 import 'package:izge_app_frontend/features/profile/presentation/pages/profile_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/saved_content_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/settings_screen.dart';
+import 'package:izge_app_frontend/features/community/presentation/pages/community_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -506,6 +507,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           const HelpCenterScreen(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              _DrawerItem(
+                                icon: Icons.forum,
+                                title: 'Topluluk & Yardım Ağı'.tr(),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CommunityScreen(),
                                     ),
                                   );
                                 },
