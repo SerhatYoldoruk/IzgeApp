@@ -14,6 +14,9 @@ import '../features/surveys/presentation/bloc/survey_bloc.dart';
 import '../features/surveys/presentation/bloc/survey_event.dart';
 import '../features/auth/presentation/pages/splash_screen.dart';
 import '../features/community/presentation/bloc/community_bloc.dart';
+import '../features/development_tracker/presentation/bloc/development_bloc.dart';
+import '../features/development_tracker/presentation/bloc/development_event.dart';
+import '../features/development_tracker/data/repositories/development_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dart:async';
@@ -77,6 +80,11 @@ class _IzgeAppState extends State<IzgeApp> {
             ),
             BlocProvider<CommunityBloc>(
               create: (context) => CommunityBloc(Supabase.instance.client),
+            ),
+            BlocProvider<DevelopmentBloc>(
+              create: (context) => DevelopmentBloc(
+                repository: DevelopmentRepository(),
+              )..add(FetchAssessments()),
             ),
           ],
           child: MaterialApp(

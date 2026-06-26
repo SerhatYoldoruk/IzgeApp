@@ -42,10 +42,20 @@ class _SignPageState extends State<SignPage> {
   /// Kullanım şartları onayı
   bool sartlarKabul = false;
 
+  /// Veli durumu
+  bool isParent = false;
+  String childName = '';
+  String childBirthDate = '';
+  String childDiagnosis = '';
+
   /// Kayıt işlemini gerçekleştir
   void _handleSignUp() {
     if (name.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      _showMessage('Lütfen tüm alanları doldurunuz.');
+      _showMessage('Lütfen temel bilgileri doldurunuz.');
+      return;
+    }
+    if (isParent && (childName.isEmpty || childBirthDate.isEmpty || childDiagnosis.isEmpty)) {
+      _showMessage('Lütfen çocuk bilgilerini eksiksiz doldurunuz.');
       return;
     }
     if (password != confirmPassword) {
@@ -64,6 +74,10 @@ class _SignPageState extends State<SignPage> {
       email: email.trim().contains('@') ? email.trim() : null,
       phone: !email.trim().contains('@') ? email.trim() : null, // If user typed phone in email field
       password: password,
+      isParent: isParent,
+      childName: childName.trim(),
+      childBirthDate: childBirthDate.trim(),
+      childDiagnosis: childDiagnosis.trim(),
     ));
   }
 
@@ -164,12 +178,16 @@ class _SignPageState extends State<SignPage> {
                           height: 120,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
+                            color: Colors.white,
                             border: Border.all(color: AppColors.border, width: 2),
                           ),
                           child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/images/logo.jpeg',
-                              fit: BoxFit.cover,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Image.asset(
+                                'assets/images/images/logo.jpeg',
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
                         ),
@@ -265,6 +283,49 @@ class _SignPageState extends State<SignPage> {
                             obscureText: true,
                             autofillHints: const [AutofillHints.newPassword],
                           ),
+                        
+                        const SizedBox(height: 24),
+
+                        // Veli misiniz? Checkbox
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: isParent,
+                              activeColor: AppColors.accent,
+                              onChanged: (value) => setState(() => isParent = value ?? false),
+                            ),
+                            const Expanded(
+                              child: Text(
+                                'Veli / Ebeveynim, uygulamayı çocuğum için kullanacağım.',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        if (isParent) ...[
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            hintText: 'Çocuğunuzun Adı',
+                            prefixIcon: Icons.child_care,
+                            onChanged: (value) => setState(() => childName = value),
+                            keyboardType: TextInputType.name,
+                          ),
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            hintText: 'Doğum Tarihi (GG.AA.YYYY)',
+                            prefixIcon: Icons.calendar_today,
+                            onChanged: (value) => setState(() => childBirthDate = value),
+                            keyboardType: TextInputType.datetime,
+                          ),
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            hintText: 'Engel/Tanı Durumu (örn: Otizm, Disleksi)',
+                            prefixIcon: Icons.medical_information,
+                            onChanged: (value) => setState(() => childDiagnosis = value),
+                            keyboardType: TextInputType.text,
+                          ),
+                        ],
                         
                         const SizedBox(height: 24),
                         

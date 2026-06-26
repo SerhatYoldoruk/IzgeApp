@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/models/request_model.dart';
-import 'package:izge_app_frontend/features/support/presentation/pages/live_support_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 import 'package:intl/intl.dart';
 
 class RequestDetailScreen extends StatelessWidget {
@@ -216,7 +216,7 @@ class RequestDetailScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LiveSupportScreen()),
+              MaterialPageRoute(builder: (context) => LiveSupportScreen(request: request)),
             );
           },
           icon: const Icon(Icons.support_agent, color: Colors.white),

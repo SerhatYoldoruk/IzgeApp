@@ -7,10 +7,11 @@ import 'package:izge_app_frontend/features/events/presentation/pages/events_scre
 import 'package:izge_app_frontend/features/navigation/presentation/widgets/custom_drawer.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_detail_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
+import 'package:izge_app_frontend/features/requests/presentation/pages/request_detail_screen.dart';
+import 'package:izge_app_frontend/core/models/request_model.dart';
 import 'package:izge_app_frontend/features/requests/presentation/pages/new_request_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
-
 import 'package:izge_app_frontend/features/info_cards/presentation/pages/info_cards_screen.dart';
 import 'package:izge_app_frontend/features/info_cards/presentation/pages/info_card_detail_screen.dart';
 import 'package:izge_app_frontend/core/constants/dummy_info_cards.dart';
@@ -83,11 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
       try {
         final requests = await Supabase.instance.client
             .from('requests')
-            .select('id')
+            .select()
             .eq('user_id', user.id)
-            .eq('status', 'pending');
-        response['pending_count'] = (requests as List).length;
+            .order('created_at', ascending: false);
+        response['requests'] = requests as List;
+        response['pending_count'] = (requests).where((r) => r['status'] == 'pending').length;
       } catch (e) {
+        response['requests'] = [];
         response['pending_count'] = 0;
       }
 
@@ -97,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return {
         'full_name': user.userMetadata?['name'] ?? 'Kullanıcı',
         'avatar_url': user.userMetadata?['avatar_url'] ?? '',
+        'requests': [],
         'pending_count': 0,
       };
     }
@@ -397,24 +401,121 @@ class _HomeScreenState extends State<HomeScreen> {
                     actionLabel: LanguageController.instance.isTurkish
                         ? '+ Yeni Talep'
                         : '+ New Request',
-                    onActionTap: () {
-                      Navigator.push(
+                    onActionTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const NewRequestScreen(),
                         ),
                       );
+                      _refreshUserData();
                     },
                   ),
                   const SizedBox(height: 16),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        'Henüz talep bulunmuyor'.tr(),
-                        style: TextStyle(color: AppColors.textSecondary),
-                      ),
-                    ),
+                  Builder(
+                    builder: (context) {
+                      final requestsRaw = userData['requests'] as List?;
+                      final requestsList = requestsRaw?.map((e) => RequestModel.fromMap(e)).toList() ?? [];
+                      
+                      if (requestsList.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Text(
+                              'Henüz talep bulunmuyor'.tr(),
+                              style: TextStyle(color: AppColors.textSecondary),
+                            ),
+                          ),
+                        );
+                      }
+
+                      // En son eklenen 2 talebi gösterelim
+                      final displayRequests = requestsList.take(2).toList();
+                      return Column(
+                        children: displayRequests.map((req) {
+                          IconData reqIcon = Icons.list_alt;
+                          switch (req.requestType) {
+                            case 'items': reqIcon = Icons.inventory_2; break;
+                            case 'health': reqIcon = Icons.medical_services; break;
+                            case 'education': reqIcon = Icons.school; break;
+                            case 'food': reqIcon = Icons.fastfood; break;
+                          }
+
+                          Color statColor = Colors.orange;
+                          String statText = 'İnceleniyor';
+                          if (req.status == 'approved') { statColor = Colors.green; statText = 'Onaylandı'; }
+                          if (req.status == 'rejected') { statColor = Colors.red; statText = 'Reddedildi'; }
+                          if (req.status == 'completed') { statColor = Colors.blue; statText = 'Tamamlandı'; }
+
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => RequestDetailScreen(request: req)),
+                                );
+                                _refreshUserData();
+                              },
+                              borderRadius: BorderRadius.circular(16),
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: AppColors.surfaceElevated,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: AppColors.border),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.accent.withOpacity(0.1),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(reqIcon, color: AppColors.accent, size: 20),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            req.title,
+                                            style: TextStyle(
+                                              color: AppColors.textPrimary,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 8,
+                                                height: 8,
+                                                decoration: BoxDecoration(color: statColor, shape: BoxShape.circle),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                statText.tr(),
+                                                style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Icon(Icons.arrow_forward_ios, color: AppColors.textSecondary, size: 16),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
                   ),
                   const SizedBox(height: 32),
 

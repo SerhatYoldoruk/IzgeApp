@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class MyEventsScreen extends StatefulWidget {
@@ -98,14 +98,6 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
             // Event List
             if (_isUpcoming) ...[
               _buildEventCard(
-                title: 'Engelsiz Sanat Atölyesi',
-                date: '25 Haziran, 14:00',
-                location: 'Dernek Merkezi',
-                imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGTs43uEzKfQgQaDQCaRtBQu_Oth0Aus6SBD3WB_IeRinE7kd5inHcu7C37POlGSXRA-wlxEqOdzzFcseR8IVUgkBv4ZKZPoh8V-cRqUVn4b712z65k7Jjps9foZlIzOJwddroLVQiFcaKfoszvnWn8cCFzDPDaot50L45ND8Yppji874rEXsIgCbh8FjQ07ho7D882dVMc8hh3WxOZxVl-Avi8b_1WlICdaRaU5necZ1fhIcKzHoFZZvFHmE1Zf19LO_8fM46yO9R',
-                isConfirmed: true,
-              ),
-              const SizedBox(height: 16),
-              _buildEventCard(
                 title: 'Gönüllü Oryantasyonu',
                 date: '30 Haziran, 10:00',
                 location: 'Online (Zoom)',
@@ -114,6 +106,14 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 isConfirmed: false,
               ),
             ] else ...[
+              _buildPastEventCard(
+                title: 'Engelsiz Sanat Atölyesi',
+                date: '25 Haziran, 14:00',
+                location: 'Dernek Merkezi',
+                imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGTs43uEzKfQgQaDQCaRtBQu_Oth0Aus6SBD3WB_IeRinE7kd5inHcu7C37POlGSXRA-wlxEqOdzzFcseR8IVUgkBv4ZKZPoh8V-cRqUVn4b712z65k7Jjps9foZlIzOJwddroLVQiFcaKfoszvnWn8cCFzDPDaot50L45ND8Yppji874rEXsIgCbh8FjQ07ho7D882dVMc8hh3WxOZxVl-Avi8b_1WlICdaRaU5necZ1fhIcKzHoFZZvFHmE1Zf19LO_8fM46yO9R',
+                status: 'Katıldı',
+              ),
+              const SizedBox(height: 16),
               _buildPastEventCard(
                 title: 'Erişilebilirlik Zirvesi 2023',
                 date: '15 Mayıs, 10:00',

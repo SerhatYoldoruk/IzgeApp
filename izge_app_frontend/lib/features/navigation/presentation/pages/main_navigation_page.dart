@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/home/presentation/pages/home_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
-import 'package:izge_app_frontend/features/requests/presentation/pages/request_screen.dart';
+import 'package:izge_app_frontend/features/navigation/presentation/pages/tools_hub_screen.dart';
 import 'package:izge_app_frontend/features/surveys/presentation/pages/surveys_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/profile_screen.dart';
 
@@ -35,7 +35,7 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<Widget> _screens = const [
     HomeScreen(),
     NewsScreen(),
-    RequestsScreen(),
+    ToolsHubScreen(),
     SurveysScreen(),
     ProfileScreen(),
   ];
@@ -103,9 +103,9 @@ class _MainNavigationState extends State<MainNavigation> {
               label: 'Haberler',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.description_outlined),
-              activeIcon: Icon(Icons.description),
-              label: 'Talepler',
+              icon: Icon(Icons.explore_outlined),
+              activeIcon: Icon(Icons.explore),
+              label: 'Keşfet',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.poll_outlined),

@@ -30,7 +30,7 @@ class SocialLinksRow extends StatelessWidget {
         _buildSocialIcon(
           icon: Icons.language, // Website
           color: const Color(0xFF7ADC75),
-          onTap: () => _launchUrl('https://www.izgeengellidernegi.org.tr/'),
+          onTap: () => _launchUrl('https://www.izgedernegi.org.tr/?SyfNmb=2&pt=%C4%B0ZGEDER'),
         ),
       ],
     );

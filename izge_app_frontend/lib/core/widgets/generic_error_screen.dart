@@ -1,6 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
-import 'package:izge_app_frontend/features/support/presentation/pages/live_support_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 
 class GenericErrorScreen extends StatelessWidget {
   final String? title;

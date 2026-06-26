@@ -110,7 +110,13 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
             icon: Icon(Icons.share, color: AppColors.textPrimary),
             onPressed: () {
               final formattedDate = DateFormat('dd MMMM yyyy HH:mm').format(widget.event.eventDate);
-              Share.share('${widget.event.title}\n\n$formattedDate\n${widget.event.location ?? 'Çevrimiçi'}\n\n${widget.event.description}\n\nİzge App ile detayları incele!');
+              final shareText = '${widget.event.title}\n\n'
+                  'Tarih: $formattedDate\n'
+                  'Konum: ${widget.event.location ?? 'Çevrimiçi'}\n\n'
+                  '${widget.event.description.length > 150 ? "${widget.event.description.substring(0, 150)}..." : widget.event.description}\n\n'
+                  'Detaylar için web sitemizi ziyaret edin:\n'
+                  'https://www.izgedernegi.org.tr/?SyfNmb=2&pt=%C4%B0ZGEDER';
+              Share.share(shareText);
             },
           ),
           TextButton.icon(

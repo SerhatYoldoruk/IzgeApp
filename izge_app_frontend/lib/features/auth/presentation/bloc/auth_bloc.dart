@@ -62,6 +62,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
         data: {
           'full_name': event.fullName,
+          'is_parent': event.isParent,
+          if (event.childName != null && event.childName!.isNotEmpty) 'child_name': event.childName,
+          if (event.childBirthDate != null && event.childBirthDate!.isNotEmpty) 'child_birth_date': event.childBirthDate,
+          if (event.childDiagnosis != null && event.childDiagnosis!.isNotEmpty) 'child_diagnosis': event.childDiagnosis,
         },
       );
       

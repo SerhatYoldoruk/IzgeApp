@@ -1,5 +1,6 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/donate_screen.dart';
 
 class DonationHistoryScreen extends StatelessWidget {
   const DonationHistoryScreen({super.key});
@@ -79,7 +80,10 @@ class DonationHistoryScreen extends StatelessWidget {
                 height: 52,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.pop(context); // Go back
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const DonateScreen()),
+                    );
                   },
                   icon: const Icon(Icons.favorite, color: Color(0xFFD3FFC8)),
                   label: const Text(

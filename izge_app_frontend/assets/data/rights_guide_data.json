@@ -1,0 +1,305 @@
+[
+  {
+    "id": "disability_report",
+    "title": "Engelli Sağlık Kurulu Raporu (ÇÖZGER)",
+    "icon": "medical_services",
+    "color": "#E53935",
+    "disabilityTypes": ["all", "autism", "intellectual", "physical", "visual", "hearing", "chronic", "learning", "language"],
+    "steps": [
+      {
+        "title": "Hastaneden Randevu Alınması",
+        "description": "Çocuklar için Özel Gereksinim Raporu (ÇÖZGER) vermeye yetkili devlet veya üniversite hastanelerinden randevu alın.",
+        "documents": ["Nüfus cüzdanı", "Mevcut doktor raporları"],
+        "tip": "MHRS üzerinden 'ÇÖZGER Sağlık Kurulu' araması yaparak randevu bulabilirsiniz."
+      },
+      {
+        "title": "Kurul Muayeneleri",
+        "description": "Çocuğunuz ilgili branş hekimleri tarafından muayene edilir. Her branş kendi bulgularını sisteme girer.",
+        "documents": ["Tüm tıbbi testler ve raporlar"],
+        "tip": "Muayene esnasında çocuğun durumunu anlatan epikriz dosyalarını sunmak süreci hızlandırır."
+      },
+      {
+        "title": "Raporun Düzenlenmesi",
+        "description": "Heyet tarafından oran (erişkinlerde) veya özel gereksinim düzeyi (çocuklarda) belirlenir ve e-Nabız'a işlenir.",
+        "documents": [],
+        "tip": "Rapor çıktıktan sonra itiraz süresi 30 gündür. İl Sağlık Müdürlüğüne yapılabilir."
+      }
+    ],
+    "faq": [
+      {"q": "ÇÖZGER raporu nedir?", "a": "18 yaş altı çocuklar için verilen, yüzde yerine gereksinim düzeyinin ('Hafif', 'Belirgin', 'Özel Koşul' vb.) belirtildiği rapordur."},
+      {"q": "Sürekli mi verilir?", "a": "Çocukların gelişimleri devam ettiği için genellikle 1 veya 2 yıllık süreli verilir."}
+    ]
+  },
+  {
+    "id": "early_intervention_autism",
+    "title": "Otizm Erken Müdahale Eğitimi",
+    "icon": "school",
+    "color": "#1E88E5",
+    "disabilityTypes": ["autism"],
+    "steps": [
+      {
+        "title": "RAM Başvurusu",
+        "description": "ÇÖZGER raporunuz ile birlikte ikamet ettiğiniz ilçedeki Rehberlik ve Araştırma Merkezi'ne (RAM) başvurun.",
+        "documents": ["ÇÖZGER Raporu", "Nüfus cüzdanı"],
+        "tip": "Erken müdahale özellikle 0-3 yaş arası otizmli çocuklar için kritik öneme sahiptir."
+      },
+      {
+        "title": "Özel Eğitim Değerlendirme Kurulu Kararı",
+        "description": "RAM uzmanları çocuğu eğitsel değerlendirmeye alır ve 'Destek Eğitim Raporu' düzenler.",
+        "documents": ["Dilekçe", "RAM başvuru formu"],
+        "tip": "Bu raporla birlikte devlet destekli ücretsiz eğitim alma hakkınız doğar."
+      },
+      {
+        "title": "Rehabilitasyon Merkezi Seçimi",
+        "description": "Otizm alanında uzmanlaşmış, MEB onaylı bir Özel Eğitim ve Rehabilitasyon Merkezine kayıt yaptırabilirsiniz.",
+        "documents": ["Destek Eğitim Raporu"],
+        "tip": "Seçeceğiniz merkezin DIR Floortime, ABA gibi bilimsel yöntemleri kullanıp kullanmadığını sorgulayın."
+      }
+    ],
+    "faq": [
+      {"q": "Aylık kaç saat ücretsiz eğitim hakkı var?", "a": "Devlet, özel eğitim merkezlerinde ayda 8 saat bireysel, 4 saat grup eğitimi (toplam 12 saat) ücretini karşılar."},
+      {"q": "Özel okula giden çocuk bu haktan yararlanabilir mi?", "a": "Evet, okul eğitiminin yanı sıra rehabilitasyon merkezinden de destek alınabilir."}
+    ]
+  },
+  {
+    "id": "shadow_teacher",
+    "title": "Gölge Öğretmen / Kolaylaştırıcı Kişi",
+    "icon": "person_add",
+    "color": "#8E24AA",
+    "disabilityTypes": ["autism", "intellectual", "learning"],
+    "steps": [
+      {
+        "title": "Yasal Düzenlemenin İncelenmesi",
+        "description": "MEB Özel Eğitim Hizmetleri Yönetmeliğine göre 'Kolaylaştırıcı Kişi' uygulaması okullarda veli talebi ve okul yönetimi izniyle yapılabilir.",
+        "documents": [],
+        "tip": "Kolaylaştırıcı kişinin ücreti veli tarafından karşılanır."
+      },
+      {
+        "title": "Okul Müdürlüğüne Başvuru",
+        "description": "Çocuğun okuduğu okul müdürlüğüne dilekçe ile başvurarak kolaylaştırıcı kişi talep edilir.",
+        "documents": ["Veli Dilekçesi", "ÇÖZGER Raporu", "Kolaylaştırıcı kişinin adli sicil kaydı ve eğitim belgeleri"],
+        "tip": "Kolaylaştırıcı kişinin özel eğitim veya çocuk gelişimi alanında mezun/öğrenci olması tercih edilir."
+      },
+      {
+        "title": "BEP Toplantısı ve Entegrasyon",
+        "description": "Okuldaki Bireyselleştirilmiş Eğitim Programı (BEP) geliştirme birimi toplanır ve kolaylaştırıcı kişinin görev sınırlarını belirler.",
+        "documents": [],
+        "tip": "Gölge öğretmen sınıf öğretmeninin rolünü çalmamalı, çocuğun uyumunu desteklemelidir."
+      }
+    ],
+    "faq": [
+      {"q": "Devlet gölge öğretmen atar mı?", "a": "Hayır, mevcut mevzuatta devlet destekli bir 'Gölge Öğretmen' ataması yoktur. İzin verilir ancak masrafı veli karşılar."}
+    ]
+  },
+  {
+    "id": "hearing_aid_support",
+    "title": "İşitme Cihazı ve Pil Desteği",
+    "icon": "hearing",
+    "color": "#FB8C00",
+    "disabilityTypes": ["hearing"],
+    "steps": [
+      {
+        "title": "Sağlık Kurulu Raporu ve Reçete",
+        "description": "Devlet veya üniversite hastanelerinin KBB polikliniğinden 'İşitme cihazı kullanması uygundur' ibareli sağlık kurulu raporu ve reçete alınmalıdır.",
+        "documents": ["Odyometri test sonuçları", "KBB uzman hekim reçetesi"],
+        "tip": "Reçetenin yazıldığı tarihten itibaren 10 iş günü içinde cihazı almalısınız."
+      },
+      {
+        "title": "SGK Anlaşmalı Merkez",
+        "description": "SGK ile sözleşmesi olan bir işitme merkezine giderek çocuğunuza uygun cihazı seçin.",
+        "documents": ["Rapor ve Reçete", "Kimlik fotokopisi"],
+        "tip": "SGK, cihaz bedelinin belirli bir kısmını karşılar. Üst segment cihazlarda fark ücreti veli tarafından ödenir."
+      },
+      {
+        "title": "Pil Ödeneği",
+        "description": "Cihaz kullanmaya başladıktan sonra SGK'ya başvurarak yıllık pil bedeli ödemesi alabilirsiniz.",
+        "documents": ["İşitme cihazı faturası ve garanti belgesi fotokopisi"],
+        "tip": "Pil bedeli 6 ay veya 1 yıllık periyotlar halinde SGK tarafından sigortalının banka hesabına yatırılır."
+      }
+    ],
+    "faq": [
+      {"q": "Cihaz yenileme süresi ne kadardır?", "a": "Çocuklarda gelişim hızlı olduğu için 18 yaş altı için farklı uygulamalar olabilmekle birlikte, standart yenileme süresi 5 yıldır."},
+      {"q": "Koklear implant (Biyonik kulak) devlet karşılıyor mu?", "a": "Gerekli sağlık kurulu kriterleri (çift taraflı ileri-çok ileri derece kayıp) sağlandığında SGK tarafından karşılanmaktadır."}
+    ]
+  },
+  {
+    "id": "white_cane_braille",
+    "title": "Beyaz Baston ve Braille Desteği",
+    "icon": "visibility_off",
+    "color": "#00897B",
+    "disabilityTypes": ["visual"],
+    "steps": [
+      {
+        "title": "Göz Hastalıkları Raporu",
+        "description": "Görme engeli oranını ve beyaz baston/Braille tablet kullanım ihtiyacını belirten rapor alın.",
+        "documents": ["Sağlık raporu"],
+        "tip": "Eğitim gören çocuklar için RAM raporu da gereklidir."
+      },
+      {
+        "title": "MEB Kitap Desteği",
+        "description": "Görme engelli öğrenciler için okullarda kullanılacak ders kitapları MEB tarafından Braille alfabesiyle ücretsiz basılarak okula gönderilir.",
+        "documents": ["Okul idaresine dilekçe"],
+        "tip": "Kitap talebi okul müdürlüğü aracılığıyla eğitim-öğretim yılı başlamadan yapılır."
+      },
+      {
+        "title": "SGK Malzeme Yardımı",
+        "description": "SGK, beyaz baston, Braille tablet/kalem ve büyüteç (teleskopik gözlük) gibi tıbbi sarf malzemelerinin bedelini SUT kapsamında karşılar.",
+        "documents": ["Reçete ve Rapor"],
+        "tip": "Beyaz baston için yenileme süresi genellikle 2 yıldır."
+      }
+    ],
+    "faq": [
+      {"q": "Sesli ekran okuyucu programları devlet karşılıyor mu?", "a": "Şu an için bilgisayar ve ekran okuyucu yazılımlar SGK geri ödeme kapsamında değildir."}
+    ]
+  },
+  {
+    "id": "wheelchair_orthosis",
+    "title": "Tekerlekli Sandalye ve Ortez Yardımı",
+    "icon": "accessible",
+    "color": "#D81B60",
+    "disabilityTypes": ["physical"],
+    "steps": [
+      {
+        "title": "Uzman Hekim Reçetesi",
+        "description": "Fizik Tedavi veya Ortopedi uzmanından gerekli medikal malzemenin (AFO, KAFO, tekerlekli sandalye vb.) reçetesi alınmalıdır.",
+        "documents": ["Sağlık Kurulu Raporu", "Reçete"],
+        "tip": "Akülü sandalye için kuruldaki psikiyatri uzmanının da 'akülü araç kullanabilir' onayı gerekir."
+      },
+      {
+        "title": "Medikal Firmaya Başvuru",
+        "description": "SGK anlaşmalı medikal bir firmadan ilgili ölçüler alınarak cihaz/sandalye sipariş edilir.",
+        "documents": ["Reçete", "Rapor"],
+        "tip": "Çocuklar büyüdüğü için ortez (AFO) gibi malzemeler sık yenilenir, SGK çocuklarda bu süreyi kısa tutar."
+      },
+      {
+        "title": "Fatura ve Geri Ödeme",
+        "description": "Medikal firma fatura keser ve SUT (Sağlık Uygulama Tebliği) bedeli SGK'dan tahsil edilir. Kalan fark veliden alınır.",
+        "documents": [],
+        "tip": "Sosyal Yardımlaşma ve Dayanışma Vakıfları, SGK'nın karşılamadığı veya fark çıkan tutarlar için ekstra yardım yapabilir."
+      }
+    ],
+    "faq": [
+      {"q": "Manuel tekerlekli sandalye yenileme süresi nedir?", "a": "Standart süre 5 yıldır. Ancak büyüme çağındaki çocuklarda hekim raporuyla erken yenileme yapılabilir."}
+    ]
+  },
+  {
+    "id": "diet_support_chronic",
+    "title": "Çölyak ve PKU Diyet Yardımı",
+    "icon": "restaurant",
+    "color": "#43A047",
+    "disabilityTypes": ["chronic"],
+    "steps": [
+      {
+        "title": "Gastroenteroloji Raporu",
+        "description": "Çocuk Gastroenteroloji uzmanından Çölyak (Glutensiz Diyet) veya Fenilketonüri tanısı konulmuş rapor alınır.",
+        "documents": ["Uzman Hekim Raporu"],
+        "tip": "Raporun geçerlilik süresi ve teşhis kodu SUT kurallarına uygun olmalıdır."
+      },
+      {
+        "title": "SGK Başvurusu",
+        "description": "Özel gıda ürünlerinin (glutensiz veya düşük proteinli un vb.) alımı için SGK'ya başvurularak aylık nakdi ödeme bağlanır.",
+        "documents": ["Rapor aslı veya fotokopisi", "Kimlik fotokopisi"],
+        "tip": "Ödeme doğrudan PTT üzerinden hak sahibinin adına yatar."
+      },
+      {
+        "title": "Belediye ve Dernek Destekleri",
+        "description": "Birçok büyükşehir ve ilçe belediyesi, çölyak hastalarına aylık gıda kolisi (glutensiz ürünler) desteği sunmaktadır.",
+        "documents": ["Belediye Sosyal Yardım başvuru formu"],
+        "tip": "İlgili belediyenin Beyaz Masa veya Sosyal Hizmetler birimine başvurabilirsiniz."
+      }
+    ],
+    "faq": [
+      {"q": "Aylık ödeme tutarı ne kadar?", "a": "2024 yılı itibarıyla yaş grubuna göre değişiklik göstermekle birlikte aylık ortalama 300-500 TL civarı nakdi ödeme yapılır."}
+    ]
+  },
+  {
+    "id": "learning_disability_iep",
+    "title": "ÖÖG ve BEP (Bireyselleştirilmiş Eğitim)",
+    "icon": "menu_book",
+    "color": "#3949AB",
+    "disabilityTypes": ["learning"],
+    "steps": [
+      {
+        "title": "Psikiyatri Muayenesi",
+        "description": "Özgül Öğrenme Güçlüğü (Disleksi, Diskalkuli vb.) tanısı için Çocuk ve Ergen Psikiyatrisi bölümüne başvurun.",
+        "documents": ["Öğretmen değerlendirme formu"],
+        "tip": "Sınıf öğretmeninin gözlemleri tanı sürecinde çok önemlidir."
+      },
+      {
+        "title": "RAM Yönlendirmesi ve Rapor",
+        "description": "Hastaneden alınan ÇÖZGER/Sağlık raporuyla RAM'a başvurun. Eğitsel değerlendirme sonucu okul için 'Kaynaştırma' kararı alınır.",
+        "documents": ["Hekim Raporu"],
+        "tip": "ÖÖG olan çocukların zeka düzeyleri normal veya normalin üstündedir, sadece farklı bir öğrenme profiline sahiplerdir."
+      },
+      {
+        "title": "Okulda BEP Toplantısı",
+        "description": "RAM kararının ardından okulda çocuk için bir BEP Komisyonu kurulur. Çocuğun sınav süreleri, sınav şekli (okutman yardımı vb.) belirlenir.",
+        "documents": ["RAM Raporu"],
+        "tip": "Disleksik öğrenciler sınavlarda ek süre (genelde %30) ve okuyucu/kodlayıcı desteği alma hakkına sahiptir."
+      }
+    ],
+    "faq": [
+      {"q": "Sınavlarda nasıl kolaylıklar sağlanır?", "a": "LGS ve YKS gibi sınavlarda ek süre verilir. Sorular özel okuyucular tarafından okunabilir, yazım hatalarından puan kırılmaz."}
+    ]
+  },
+  {
+    "id": "language_therapy_support",
+    "title": "Dil ve Konuşma Terapisi Desteği",
+    "icon": "record_voice_over",
+    "color": "#00ACC1",
+    "disabilityTypes": ["language", "autism", "hearing"],
+    "steps": [
+      {
+        "title": "Uzman Değerlendirmesi",
+        "description": "Çocuk Psikiyatrisi, KBB uzmanı veya Nöroloji tarafından çocuğun dil ve konuşma bozukluğu (Kekemelik, Gecikmiş Dil vb.) değerlendirilir.",
+        "documents": ["Sağlık Raporu"],
+        "tip": "Erken dönemde başlanan terapi, okul çağı akademik başarıyı doğrudan etkiler."
+      },
+      {
+        "title": "RAM ve Dil Terapisi Kararı",
+        "description": "RAM uzmanları eğitsel değerlendirme yapar ve 'Dil ve Konuşma Terapisi' alması gerektiğine dair rapor düzenler.",
+        "documents": ["Sağlık Kurulu Raporu"],
+        "tip": "Her rehabilitasyon merkezinde dil ve konuşma terapisti bulunmayabilir, kayıt öncesi mutlaka sorgulayın."
+      },
+      {
+        "title": "Eğitim Modülü",
+        "description": "RAM raporunda belirtilen modüle uygun olarak, MEB destekli özel eğitim merkezlerinde dil ve konuşma terapistinden seans alınır.",
+        "documents": [],
+        "tip": "Uzmanın diplomasının 'Dil ve Konuşma Terapisti' olduğundan emin olun."
+      }
+    ],
+    "faq": [
+      {"q": "Devlet dil terapisini karşılıyor mu?", "a": "Evet, ÇÖZGER ve RAM raporu olduğu sürece, özel eğitim kurumlarındaki DKT seanslarını devlet karşılar."}
+    ]
+  },
+  {
+    "id": "home_care_salary",
+    "title": "Evde Bakım Maaşı",
+    "icon": "payments",
+    "color": "#7CB342",
+    "disabilityTypes": ["all", "autism", "intellectual", "physical", "visual", "chronic"],
+    "steps": [
+      {
+        "title": "Şartları Kontrol Edin",
+        "description": "Evde bakım maaşı alabilmek için: Engelli bireyin raporda 'Tam Bağımlı' (Çocuklarda 'Çok İleri Düzeyde Özel Gereksinim' vb.) ibaresine sahip olması ve hane gelirinin kişi başına asgari ücretin 2/3'ünden az olması gerekir.",
+        "documents": [],
+        "tip": "2024 yılı için hane geliri sınırı kişi başına net asgari ücretin 2/3'ü kadardır."
+      },
+      {
+        "title": "Sosyal Hizmet Merkezine Başvuru",
+        "description": "İkamet ettiğiniz ildeki Aile ve Sosyal Hizmetler İl Müdürlüğüne başvurun. e-Devlet üzerinden de ön başvuru yapılabilir.",
+        "documents": ["ÇÖZGER (Tam Bağımlı ibareli)", "Gelir belgesi", "İkametgah", "Kimlik fotokopisi"],
+        "tip": "Başvuruyu bakımı fiilen üstlenen kişi (anne, baba veya vasi) yapmalıdır."
+      },
+      {
+        "title": "Sosyal İnceleme ve Ödeme",
+        "description": "Eve gelen uzman heyet bakım ortamını değerlendirir. Uygun bulunursa maaş bağlanır ve PTT / Ziraat Bankası hesabına yatar.",
+        "documents": [],
+        "tip": "Maaş bağlandıktan sonra adres veya gelir değişikliği olursa kuruma 15 gün içinde bildirilmelidir."
+      }
+    ],
+    "faq": [
+      {"q": "Çalışan anne bakım maaşı alabilir mi?", "a": "Çocuğun bakım aksamayacak şekilde (örneğin diğer ebeveyn veya yakının bakması) planlanıyorsa ve gelir kriteri tutuyorsa alınabilir ancak bakıcı olarak çalışmayan bir aile bireyi gösterilmelidir."}
+    ]
+  }
+]

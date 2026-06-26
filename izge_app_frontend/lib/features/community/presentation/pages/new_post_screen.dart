@@ -9,7 +9,8 @@ import 'package:izge_app_frontend/features/community/presentation/bloc/community
 import 'package:izge_app_frontend/features/community/presentation/bloc/community_state.dart';
 
 class NewPostScreen extends StatefulWidget {
-  const NewPostScreen({super.key});
+  final String? initialImagePath;
+  const NewPostScreen({super.key, this.initialImagePath});
 
   @override
   State<NewPostScreen> createState() => _NewPostScreenState();
@@ -20,8 +21,16 @@ class _NewPostScreenState extends State<NewPostScreen> {
   final _contentController = TextEditingController();
   
   String _selectedCategory = 'Genel';
-  final List<String> _categories = ['Genel', 'Otizm', 'Görme Engeli', 'İşitme Engeli', 'Fiziksel Engel', 'Hukuk', 'Erişilebilirlik'];
+  final List<String> _categories = ['Genel', 'Otizm', 'Görme Engeli', 'İşitme Engeli', 'Fiziksel Engel', 'Hukuk', 'Erişilebilirlik', 'Etkinlikler'];
   File? _selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialImagePath != null) {
+      _selectedImage = File(widget.initialImagePath!);
+    }
+  }
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();

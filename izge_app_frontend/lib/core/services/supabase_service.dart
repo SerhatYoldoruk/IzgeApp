@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:izge_app_frontend/core/models/announcement_model.dart';
 import 'package:izge_app_frontend/core/models/chat_model.dart';
 import 'package:izge_app_frontend/core/models/event_model.dart';
@@ -150,11 +151,80 @@ class SupabaseService {
 
   /// Tüm etkinlikleri getir (etkinlik tarihine göre sıralı)
   Future<List<EventModel>> getEvents() async {
-    final list = await _fetchList(
-      _client.from('events').select('*').order('event_date'),
-    );
-    return list.map((e) => EventModel.fromMap(e)).toList();
+    try {
+      final list = await _fetchList(
+        _client.from('events').select('*').order('event_date'),
+      );
+      final dbEvents = list.map((e) => EventModel.fromMap(e)).toList();
+      final mockEvents = _getMockEvents();
+      
+      // Veritabanındaki etkinliklerle çakışmayan mock etkinlikleri ekle
+      final mergedEvents = [...dbEvents];
+      for (var mock in mockEvents) {
+        if (!dbEvents.any((e) => e.title == mock.title || e.id == mock.id)) {
+          mergedEvents.add(mock);
+        }
+      }
+      
+      // Tarihe göre sırala
+      mergedEvents.sort((a, b) => a.eventDate.compareTo(b.eventDate));
+      return mergedEvents;
+    } catch (e) {
+      debugPrint("Supabase getEvents Hatası: ${e.toString()}");
+      return _getMockEvents();
+    }
   }
+
+  List<EventModel> _getMockEvents() {
+    return [
+      EventModel(
+        id: 'mock-1',
+        title: 'Engelsiz Sanat Atölyesi',
+        description: 'Engelsiz sanat atölyemizde hep birlikte eğlenerek resim yapıyoruz. Katılım ücretsizdir.',
+        location: 'Dernek Merkezi',
+        eventDate: DateTime(2026, 6, 25, 14, 0),
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGTs43uEzKfQgQaDQCaRtBQu_Oth0Aus6SBD3WB_IeRinE7kd5inHcu7C37POlGSXRA-wlxEqOdzzFcseR8IVUgkBv4ZKZPoh8V-cRqUVn4b712z65k7Jjps9foZlIzOJwddroLVQiFcaKfoszvnWn8cCFzDPDaot50L45ND8Yppji874rEXsIgCbh8FjQ07ho7D882dVMc8hh3WxOZxVl-Avi8b_1WlICdaRaU5necZ1fhIcKzHoFZZvFHmE1Zf19LO_8fM46yO9R',
+        createdAt: DateTime(2026, 6, 20),
+      ),
+      EventModel(
+        id: 'mock-2',
+        title: 'Gönüllü Oryantasyonu',
+        description: 'Yeni gönüllülerimiz için bilgilendirme ve oryantasyon toplantısı.',
+        location: 'Online (Zoom)',
+        eventDate: DateTime(2026, 6, 30, 10, 0),
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB0CQ0YKkBelvgVX2mWxOYdHfdv_fVcRylaC3xInAUfWY4AM6MCpHp5nMaKz8-KzctmM-Ei4Ptbtq2TvevAuzj9FZhsNgd99KJy0BJvj8G2-_Ym0SN0KS-y68o9hH6ZPGI1UxxkVY20QKD5hqHfhVg5jl9vsDJSWpi4qAbb1raNZC5RUJMmPw6kR9aHL7w26mP_Cfz8a5GImjEPuDSNXyoETC9-Bft8N4sn90hMeQ_FwKbolUFmGty8J8hEs5iHbCS61AKx6ixtS3D2',
+        createdAt: DateTime(2026, 6, 20),
+      ),
+      EventModel(
+        id: 'mock-3',
+        title: 'Erişilebilirlik Zirvesi 2023',
+        description: 'Engelsiz yaşam teknolojileri ve erişilebilirlik zirvesi.',
+        location: 'İstanbul Kültür Merkezi',
+        eventDate: DateTime(2023, 5, 15, 10, 0),
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBoCBOPjMbkzEing5qM6DKlzUxW-28zD8K53cSh8_pX3XOBqqSFuFqf91qPL8rJUBStOCgJOU-BJPCYIYowRyg15xL_9W29Fdvr8TPfMLOP9CDGpAl2mJBcejd9FR_SrycHf-R80U8QfB-A7YKyMhRXNA9A_pyHzBA7i7gcGaepCq3CXvZO_V4rd-wYluvWzB1rG1ATJ5jnda_TxHWY559eMQ-caafirhJlupoQ5j5H5oOk42ODKJ_GytC-QLkSMiOLMCJuMAWWdgc6',
+        createdAt: DateTime(2023, 5, 10),
+      ),
+      EventModel(
+        id: 'mock-4',
+        title: 'Engelsiz Basketbol Turnuvası',
+        description: 'Engelsiz basketbol turnuvamızda sporseverleri bir araya getiriyoruz.',
+        location: 'Atatürk Spor Kompleksi',
+        eventDate: DateTime(2026, 4, 2, 14, 30),
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC1jXOtHy9xj4KDHw0FCQUM2f-m0xEWqic8QsRrs0dY94HNlJSW1QqLW89y-0Z38FpTIAxpDOMGNQIi9D8rFsYwbmUbiiF3iH-zQwrjjZJ3vyjgzBbwmP9Q_rBeg0AyxrAn8f1G3IOPfEHwqBBJK0rDZBjy7Te5A3rMbb5zsKjrDrUMc9ACnFfRuTzQiE9lQm_0q6W4wlRNw6fGx_dTOxf1O6_DCNICJBEMGv_5lSgEx2Zgq9UBCZuwkHPA305NfJCzNWYSt_ST_Rks',
+        createdAt: DateTime(2026, 3, 28),
+      ),
+      EventModel(
+        id: 'mock-5',
+        title: 'Dijital Okuryazarlık Atölyesi',
+        description: 'Temel dijital becerilerin geliştirilmesi hedefleyen online atölye.',
+        location: 'Online (Zoom)',
+        eventDate: DateTime(2026, 3, 12, 19, 0),
+        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA5gjjK3hv68CWx42xKMB8Erx0P8soNOPcLd9jTXALxCo_lMMNfJJle967DPuz-3LZR5RGLQAJTwpfx2pVR83m3iSmrE2fxoq5HoI7NZkUV4Mbd1akLnOnQJsMO77jDaiIHTgR8DSQl126ma2D6OmVtoQHihGw4c1CfnXGR3KuMQU3M6J7jBQkr1EbNdGFncnWUGWkDAKlTw6T9A82ajahq98-Q4rQnKwbKFLa2fjffA_XFI9sCXt25wE0jk9Tio_bogTSuUGT6an7g',
+        createdAt: DateTime(2026, 3, 5),
+      ),
+    ];
+  }
+
 
   /// Tüm etkinlik günlerini getir
   Future<List<Map<String, dynamic>>> getEventDays() {
@@ -419,6 +489,39 @@ class SupabaseService {
 
     channel.subscribe();
     return channel;
+  }
+
+  // ==========================================
+  // INSTITUTIONS MAP (PLACE REVIEWS)
+  // ==========================================
+
+  /// Belirli bir alandaki veya tüm mekan oylarını (review) getirir
+  Future<List<Map<String, dynamic>>> getPlaceReviews({List<String>? osmIds}) async {
+    var query = _client.from('place_reviews').select();
+    if (osmIds != null && osmIds.isNotEmpty) {
+      query = query.inFilter('osm_id', osmIds);
+    }
+    return _fetchList(query);
+  }
+
+  /// Bir mekan için oy gönderir veya günceller
+  Future<void> submitPlaceReview({
+    required String osmId,
+    required double rating,
+    required bool isAutismFriendly,
+    required bool hasWheelchairAccess,
+    String? reviewText,
+  }) async {
+    final user = _requireCurrentUser();
+    await _client.from('place_reviews').upsert({
+      'osm_id': osmId,
+      'user_id': user.id,
+      'rating': rating,
+      'is_autism_friendly': isAutismFriendly,
+      'has_wheelchair_access': hasWheelchairAccess,
+      'review_text': reviewText,
+      'created_at': DateTime.now().toUtc().toIso8601String(),
+    }, onConflict: 'osm_id, user_id');
   }
 
   Future<List<Map<String, dynamic>>> _fetchList(Future<dynamic> query) async {

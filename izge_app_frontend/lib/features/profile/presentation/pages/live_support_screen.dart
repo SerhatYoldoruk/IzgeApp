@@ -20,9 +20,12 @@ import 'package:izge_app_frontend/features/profile/presentation/pages/dues_opera
 import 'package:izge_app_frontend/features/profile/presentation/pages/privacy_policy_screen.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:izge_app_frontend/core/models/request_model.dart';
 
 class LiveSupportScreen extends StatefulWidget {
-  const LiveSupportScreen({super.key});
+  final RequestModel? request;
+  final String? rightsContext;
+  const LiveSupportScreen({super.key, this.request, this.rightsContext});
 
   @override
   State<LiveSupportScreen> createState() => _LiveSupportScreenState();
@@ -45,26 +48,75 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
   ];
 
   // Supabase AI için messages formatı (role: user/model)
-  final List<Map<String, dynamic>> _messages = [
-    {
-      "role": "model",
-      "parts": [
-        {
-          "text":
-              "Merhaba! İzge Uygulaması Destek Hattına hoş geldiniz. Ben İzgeBot, size nasıl yardımcı olabilirim?",
-        },
-      ],
-    },
-  ];
+  final List<Map<String, dynamic>> _messages = [];
 
   @override
   void initState() {
     super.initState();
     _initSpeech();
+    
+    if (widget.request != null) {
+      final req = widget.request!;
+      final idStr = req.id;
+      final shortId = 'TLP-${idStr.substring(0, idStr.length < 8 ? idStr.length : 8).toUpperCase()}';
+      
+      _messages.add({
+        "role": "user",
+        "parts": [{
+          "text": "[Sistem Bağlamı: Kullanıcı şu anda '$shortId' kodlu talebi ('${req.title}') hakkında canlı desteğe bağlandı. "
+                  "Talep açıklaması: '${req.description}', mevcut durumu: '${_getTurkishStatus(req.status)}', kategorisi: '${req.requestType}'. "
+                  "Lütfen bu taleple ilgili konularda yardımcı ol.]"
+        }],
+        "isSystem": true
+      });
+      
+      _messages.add({
+        "role": "model",
+        "parts": [{"text": "Merhaba! Ben İzgeBot. $shortId nolu talebiniz ('${req.title}') hakkında size nasıl yardımcı olabilirim?"}]
+      });
+    } else if (widget.rightsContext != null) {
+      _messages.add({
+        "role": "user",
+        "parts": [{
+          "text": "[Sistem Bağlamı: Kullanıcı şu anda '${widget.rightsContext}' hakkındaki haklar rehberini inceliyor ve bu konuyla ilgili canlı desteğe bağlandı. "
+                  "Lütfen bu konu özelinde yardımcı ol ve sorularını cevapla.]"
+        }],
+        "isSystem": true
+      });
+      
+      _messages.add({
+        "role": "model",
+        "parts": [{"text": "Merhaba! Ben İzgeBot. ${widget.rightsContext} konusuyla ilgili size nasıl yardımcı olabilirim?"}]
+      });
+    } else {
+      _messages.add({
+        "role": "model",
+        "parts": [
+          {
+            "text": "Merhaba! İzge Uygulaması Destek Hattına hoş geldiniz. Ben İzgeBot, size nasıl yardımcı olabilirim?",
+          },
+        ],
+      });
+    }
   }
 
   void _initSpeech() async {
     await _speech.initialize();
+  }
+
+  String _getTurkishStatus(String status) {
+    switch (status) {
+      case 'pending':
+        return 'Beklemede (İnceleniyor)';
+      case 'approved':
+        return 'Onaylandı';
+      case 'rejected':
+        return 'Reddedildi';
+      case 'completed':
+        return 'Tamamlandı';
+      default:
+        return status;
+    }
   }
 
   Future<void> _sendMessage({String? customText}) async {
@@ -87,10 +139,17 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
     _scrollToBottom();
 
     try {
-      final messagesToSend = _messages
-          .skip(1)
-          .map((m) => {"role": m["role"], "parts": m["parts"]})
-          .toList();
+      final List<Map<String, dynamic>> messagesToSend;
+      if (_messages.isNotEmpty && _messages.first["role"] == "model") {
+        messagesToSend = _messages
+            .skip(1)
+            .map((m) => {"role": m["role"], "parts": m["parts"]})
+            .toList();
+      } else {
+        messagesToSend = _messages
+            .map((m) => {"role": m["role"], "parts": m["parts"]})
+            .toList();
+      }
 
       final response = await Supabase.instance.client.functions.invoke(
         'izgebot',
@@ -526,6 +585,9 @@ class _LiveSupportScreenState extends State<LiveSupportScreen> {
                 }
 
                 final message = _messages[index];
+                if (message["isSystem"] == true) {
+                  return const SizedBox.shrink();
+                }
                 final isMe = message['role'] == 'user';
 
                 return Padding(

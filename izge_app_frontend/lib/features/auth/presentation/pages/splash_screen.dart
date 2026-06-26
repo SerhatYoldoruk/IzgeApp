@@ -217,6 +217,7 @@ class _SplashScreenState extends State<SplashScreen>
                                 height: 130,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
+                                  color: Colors.white,
                                   border: Border.all(
                                     color: const Color(
                                       0xFF7ADC75,
@@ -239,9 +240,12 @@ class _SplashScreenState extends State<SplashScreen>
                                   ],
                                 ),
                                 child: ClipOval(
-                                  child: Image.asset(
-                                    'assets/images/images/logo.jpeg',
-                                    fit: BoxFit.cover,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Image.asset(
+                                      'assets/images/images/logo.jpeg',
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
                               ),

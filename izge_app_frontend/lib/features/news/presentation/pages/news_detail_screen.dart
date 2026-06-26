@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/state/activity_state.dart';
-import 'package:izge_app_frontend/features/support/presentation/pages/live_support_screen.dart';
+import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 import 'package:izge_app_frontend/core/models/announcement_model.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
@@ -241,7 +241,11 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                             icon: Icons.share, 
                             label: 'Paylaş',
                             onTap: () {
-                              Share.share('${widget.news.title}\n\n${widget.news.content}\n\nİzge App ile daha fazlasını keşfet!');
+                              final shareText = '${widget.news.title}\n\n'
+                                  '${widget.news.content.length > 150 ? "${widget.news.content.substring(0, 150)}..." : widget.news.content}\n\n'
+                                  'Detaylar için web sitemizi ziyaret edin:\n'
+                                  'https://www.izgedernegi.org.tr/?SyfNmb=2&pt=%C4%B0ZGEDER';
+                              Share.share(shareText);
                             },
                           ),
                         ],
@@ -271,12 +275,17 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       children: [
                         ElevatedButton.icon(
                           onPressed: () {
-                            Share.share('${widget.news.title}\n\n${widget.news.content}\n\nİzge App ile daha fazlasını keşfet!');
+                            final shareText = '${widget.news.title}\n\n'
+                                '${widget.news.content.length > 150 ? "${widget.news.content.substring(0, 150)}..." : widget.news.content}\n\n'
+                                'Detaylar için web sitemizi ziyaret edin:\n'
+                                'https://www.izgedernegi.org.tr/?SyfNmb=2&pt=%C4%B0ZGEDER';
+                            Share.share(shareText);
                           },
-                          icon: Icon(Icons.share, color: Colors.white),
-                          label: const Text('Haberi Paylaş', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                          icon: const Icon(Icons.share),
+                          label: const Text('Haberi Paylaş', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.surfaceElevated,
+                            foregroundColor: AppColors.textPrimary,
                             minimumSize: const Size(double.infinity, 52),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
