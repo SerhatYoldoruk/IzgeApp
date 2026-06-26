@@ -1,45 +1,61 @@
-# Izge App
+# İzge App 💙
 
-Izge App, tek bir Git deposu altında toplanmış bir backend + mobil uygulama projesidir. Bu repo, geliştirme ve yayınlama süreçlerini tek merkezden yönetmek için düzenlenmiştir.
+İzge App, otizmli ve özel gereksinimli çocukların aileleri için geliştirilmiş, hayatı kolaylaştıran kapsamlı bir mobil uygulamadır. Gelişim takibinden yasal haklara, kriz yönetimi asistanından topluluk yardımlaşma ağına kadar birçok aracı tek bir çatı altında sunar.
 
-## Proje Yapısı
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=green)
+![CI/CD](https://img.shields.io/github/actions/workflow/status/yourusername/izge_app_frontend/flutter_ci.yml?style=for-the-badge&label=CI/CD)
 
-- `izge_app_backend/`: Supabase migrasyonları, policy dosyaları ve backend ile ilgili ayarlar
-- `izge_app_frontend/`: Flutter / Dart tabanlı mobil uygulama
+## 🌟 Temel Özellikler
 
-## Teknik Özellikler
+* **Kriz (Meltdown) Yönetim Asistanı:** Çocuğun duyusal kriz anlarında ebeveynlerin doğru adımları atmasını sağlayan ipuçları, görsel nefes egzersizleri, zamanlayıcı sayaçlar ve rahatlatıcı ses altyapısı.
+* **Gelişim Takibi:** Çocuğunuzun günlük gelişimini, rutinlerini ve kilometre taşlarını not edip izleyebileceğiniz özel araç.
+* **Haklar Rehberi:** Özel gereksinimli bireylerin ve ailelerinin yasal haklarını, destekleri ve izlenmesi gereken resmi süreçleri sadeleştiren bilgilendirme merkezi.
+* **Eğitim Oyunları ve Etkinlikler:** Çocuğunuzun evde gelişimini destekleyecek uzman onaylı günlük aktivite önerileri.
+* **Topluluk & Yardım Ağı:** Diğer ailelerle iletişim kurabileceğiniz, deneyimlerinizi paylaşabileceğiniz kapalı ve güvenli forum platformu.
+* **Karanlık / Aydınlık Mod ve Çoklu Dil Desteği:** Kullanıcı dostu erişilebilir arayüz.
 
-- Frontend Flutter ile yazılmıştır.
-- Backend tarafında Supabase SQL migrasyonları ve güvenlik policy'leri yer alır.
-- Repo yapısı tek kök Git deposu olacak şekilde düzenlenmiştir.
+## 🛠️ Kullanılan Teknolojiler
 
-## Kurulum
+* **Frontend:** Flutter & Dart
+* **State Management:** BLoC (Business Logic Component) Pattern
+* **Backend:** Supabase (PostgreSQL, Auth, Storage)
+* **API İletişimi:** http & Supabase Client
+* **CI/CD:** GitHub Actions (Otomatik analiz ve testler)
 
-### 1. Depoyu klonla
+## 🚀 Kurulum ve Çalıştırma
 
-```bash
-git clone <repo-url>
-cd izge_app
-```
+Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyin:
 
-### 2. Frontend bağımlılıklarını yükle
+1. **Depoyu klonlayın:**
+   ```bash
+   git clone https://github.com/yourusername/izge_app_frontend.git
+   ```
 
-```bash
-cd izge_app_frontend
-flutter pub get
-```
+2. **Proje klasörüne gidin:**
+   ```bash
+   cd izge_app_frontend
+   ```
 
-### 3. Uygulamayı çalıştır
+3. **Gerekli paketleri indirin:**
+   ```bash
+   flutter pub get
+   ```
 
-İhtiyacın olan platforma göre Flutter komutlarını çalıştır:
+4. **Uygulamayı çalıştırın:**
+   ```bash
+   flutter run
+   ```
 
-```bash
-flutter run
-```
+*(Not: Çevresel değişkenler (.env) veya Supabase konfigürasyonları için proje yöneticisiyle iletişime geçin.)*
 
-Gerekirse belirli bir cihaz seçmek için Flutter'ın standart `-d` parametresini kullanabilirsin.
+## 🔄 CI/CD Süreci
 
-## Backend Notları
+Bu depo, her "push" veya "pull request" işleminde GitHub Actions tarafından denetlenmektedir.
+- Kod kalitesi (`flutter analyze`) kontrol edilir.
+- Mevcut birim testleri (`flutter test`) otomatik olarak çalıştırılır.
+Herhangi bir hata varsa GitHub üzerinde kırmızı işaret ile belirtilir ve kod kalitesi korunur.
 
-Backend klasörü, Supabase tarafında kullanılan SQL dosyalarını içerir. Yeni bir ortam kurarken bu migrasyonların ve policy dosyalarının Supabase projesine uygulanması gerekir.
-
+## 📄 Lisans
+Bu proje özel telif haklarına tabidir ve izinsiz kopyalanamaz veya çoğaltılamaz.
