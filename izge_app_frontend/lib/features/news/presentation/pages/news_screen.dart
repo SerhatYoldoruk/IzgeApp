@@ -224,7 +224,7 @@ class _NewsScreenState extends State<NewsScreen> {
               child: Row(
                 children: [
                   _FilterChip(
-                    label: 'Tümü'.tr(), 
+                    label: 'Tümü'.tr().tr(), 
                     isSelected: _selectedCategory == 'Tümü',
                     onTap: () => setState(() => _selectedCategory = 'Tümü'),
                   ),
@@ -286,7 +286,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 32),
+                          SizedBox(height: 32),
                           Container(
                             width: 96,
                             height: 96,

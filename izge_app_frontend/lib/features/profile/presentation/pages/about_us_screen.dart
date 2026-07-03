@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/widgets/social_links_row.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});
@@ -18,7 +19,7 @@ class AboutUsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'İzge App',
           style: TextStyle(
             fontSize: 24,
@@ -60,7 +61,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'İzge Derneği',
+                    'İzge Derneği'.tr(),
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w800,
@@ -69,7 +70,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Ancak Birlikte Başarabiliriz',
+                    'Ancak Birlikte Başarabiliriz'.tr(),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -117,7 +118,7 @@ class AboutUsScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 12),
                       Text(
-                        'Hikayemiz',
+                        'Hikayemiz'.tr(),
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -128,7 +129,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'İzge Derneği, toplumsal dayanışmayı güçlendirmek ve dezavantajlı gruplara sürdürülebilir destek sağlamak amacıyla kuruldu. Bir avuç gönüllünün çabasıyla başlayan bu yolculuk, bugün binlerce hayata dokunan büyük bir aileye dönüştü. Amacımız, yardımlaşmayı şeffaf ve ulaşılabilir kılarak daha adil bir yarın inşa etmektir.',
+                    'İzge Derneği, toplumsal dayanışmayı güçlendirmek ve dezavantajlı gruplara sürdürülebilir destek sağlamak amacıyla kuruldu. Bir avuç gönüllünün çabasıyla başlayan bu yolculuk, bugün binlerce hayata dokunan büyük bir aileye dönüştü. Amacımız, yardımlaşmayı şeffaf ve ulaşılabilir kılarak daha adil bir yarın inşa etmektir.'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -147,18 +148,18 @@ class AboutUsScreen extends StatelessWidget {
               children: [
                 _buildVisionMissionCard(
                   icon: Icons.visibility,
-                  title: 'Vizyonumuz',
+                  title: 'Vizyonumuz'.tr(),
                   content:
-                      'Dernek çalışma konuları ve biçimleri ile faaliyet alanları çerçevesinde üyelerine eğitim başta olmak üzere kültürel, sosyal ve sportif alanlarda destek vermek. Üyelerinin tümünü temsil edebilen, haklarını koruyabilen, gelişmeler karşısında öncü, kapsayıcı toplum uygulamalarında hak temelli çalışan, gündem belirleyici ve söz sahibi olabilen örnek bir sivil toplum kuruluşu olmak.',
+                      'Dernek çalışma konuları ve biçimleri ile faaliyet alanları çerçevesinde üyelerine eğitim başta olmak üzere kültürel, sosyal ve sportif alanlarda destek vermek. Üyelerinin tümünü temsil edebilen, haklarını koruyabilen, gelişmeler karşısında öncü, kapsayıcı toplum uygulamalarında hak temelli çalışan, gündem belirleyici ve söz sahibi olabilen örnek bir sivil toplum kuruluşu olmak.'.tr(),
                   borderColor: const Color(0xFF7ADC75), // primary
                   iconColor: const Color(0xFF7ADC75),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _buildVisionMissionCard(
                   icon: Icons.flag,
-                  title: 'Misyonumuz',
+                  title: 'Misyonumuz'.tr(),
                   content:
-                      'Nöroçeşitliliğe sahip bireylerin toplumla bütünleşmesi, hayata katılmaları, iş ve meslek sahibi olmalarına katkıda bulunmak. Derneğimizi kurumlaşmasını sağlamak. Çalışmalarında demokratik, şeffaf ve sürdürülebilir, toplum ile uyum içinde bütünleşik hizmeti sağlamaktır.',
+                      'Nöroçeşitliliğe sahip bireylerin toplumla bütünleşmesi, hayata katılmaları, iş ve meslek sahibi olmalarına katkıda bulunmak. Derneğimizi kurumlaşmasını sağlamak. Çalışmalarında demokratik, şeffaf ve sürdürülebilir, toplum ile uyum içinde bütünleşik hizmeti sağlamaktır.'.tr(),
                   borderColor: AppColors.textSecondary,
                   iconColor: AppColors.textSecondary,
                 ),
@@ -169,7 +170,7 @@ class AboutUsScreen extends StatelessWidget {
 
             // Our Values
             Text(
-              'Değerlerimiz',
+              'Değerlerimiz'.tr(),
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -179,26 +180,26 @@ class AboutUsScreen extends StatelessWidget {
             SizedBox(height: 16),
             Row(
               children: [
-                Expanded(child: _buildValueCard(Icons.diversity_1, 'Eşitlik')),
-                const SizedBox(width: 16),
+                Expanded(child: _buildValueCard(Icons.diversity_1, 'Eşitlik'.tr())),
+                SizedBox(width: 16),
                 Expanded(
                   child: _buildValueCard(
                     Icons.accessibility_new,
-                    'Erişilebilirlik',
+                    'Erişilebilirlik'.tr(),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Row(
               children: [
-                Expanded(child: _buildValueCard(Icons.handshake, 'Dayanışma')),
-                const SizedBox(width: 16),
-                Expanded(child: _buildValueCard(Icons.verified, 'Şeffaflık')),
+                Expanded(child: _buildValueCard(Icons.handshake, 'Dayanışma'.tr())),
+                SizedBox(width: 16),
+                Expanded(child: _buildValueCard(Icons.verified, 'Şeffaflık'.tr())),
               ],
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // Contact Info
             Container(
@@ -217,14 +218,14 @@ class AboutUsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Bizimle İletişime Geçin',
+                    'Bizimle İletişime Geçin'.tr(),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _buildContactRow(Icons.mail, 'izgedernegi@gmail.com'),
                   const SizedBox(height: 12),
                   _buildContactRow(
@@ -234,7 +235,7 @@ class AboutUsScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   _buildContactRow(
                     Icons.location_on,
-                    'Günaydın Mah. Terziler Cad. No:41/30 Bandırma',
+                    'Günaydın Mah. Terziler Cad. No:41/30 Bandırma'.tr(),
                   ),
                   const SizedBox(height: 24),
                   SizedBox(
@@ -251,7 +252,7 @@ class AboutUsScreen extends StatelessWidget {
                       },
                       icon: Icon(Icons.send, color: AppColors.background),
                       label: Text(
-                        'Bize Yazın',
+                        'Bize Yazın'.tr(),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -269,7 +270,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 32),
                   Text(
-                    'Bizi Takip Edin',
+                    'Bizi Takip Edin'.tr(),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

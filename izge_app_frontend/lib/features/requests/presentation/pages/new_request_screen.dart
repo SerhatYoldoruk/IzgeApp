@@ -73,7 +73,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Dosya seçilemedi: $e')));
+        ).showSnackBar(SnackBar(content: Text('Dosya seçilemedi: $e'.tr())));
       }
     }
   }
@@ -314,7 +314,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                 controller: _titleController,
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Örn: Tekerlekli Sandalye İhtiyacı'.tr(),
+                  hintText: 'Örn: Tekerlekli Sandalye İhtiyacı'.tr().tr(),
                   hintStyle: TextStyle(
                     color: AppColors.textSecondary.withOpacity(0.5),
                   ),
@@ -421,7 +421,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                         ),
                       ),
                       if (_selectedFile == null) ...[
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           'Öğrenci belgesi, doktor raporu vb. (Max 5MB)'.tr(),
                           style: TextStyle(
@@ -434,7 +434,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // Submit Button
               SizedBox(

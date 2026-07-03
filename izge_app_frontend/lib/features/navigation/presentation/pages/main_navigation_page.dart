@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:izge_app_frontend/features/home/presentation/pages/home_screen.dart';
 import 'package:izge_app_frontend/features/news/presentation/pages/news_screen.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/pages/tools_hub_screen.dart';
@@ -14,8 +15,8 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Etkinlikler', style: TextStyle(color: AppColors.accent))),
-      body: Center(child: Text('Etkinlikler Ekranı Yakında...', style: TextStyle(color: AppColors.textPrimary))),
+      appBar: AppBar(title: Text('Etkinlikler'.tr(), style: TextStyle(color: AppColors.accent))),
+      body: Center(child: Text('Etkinlikler Ekranı Yakında...'.tr(), style: TextStyle(color: AppColors.textPrimary))),
     );
   }
 }
@@ -30,9 +31,9 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   late int _selectedIndex;
-  late PageController _pageController;
+  late final PageController _pageController;
 
-  final List<Widget> _screens = const [
+  final List<Widget> _screens = [
     HomeScreen(),
     NewsScreen(),
     ToolsHubScreen(),
@@ -60,6 +61,9 @@ class _MainNavigationState extends State<MainNavigation> {
   }
 
   void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
     _pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
@@ -73,7 +77,7 @@ class _MainNavigationState extends State<MainNavigation> {
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,
-        physics: const BouncingScrollPhysics(), // Ekstra akıcı bir kaydırma efekti için
+        physics: const BouncingScrollPhysics(),
         children: _screens,
       ),
       bottomNavigationBar: Container(
@@ -91,31 +95,31 @@ class _MainNavigationState extends State<MainNavigation> {
           selectedLabelStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700),
           unselectedLabelStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500),
           type: BottomNavigationBarType.fixed,
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Anasayfa',
+              icon: const Icon(Icons.home_outlined),
+              activeIcon: const Icon(Icons.home),
+              label: 'Anasayfa'.tr(),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.newspaper_outlined),
-              activeIcon: Icon(Icons.newspaper),
-              label: 'Haberler',
+              icon: const Icon(Icons.newspaper_outlined),
+              activeIcon: const Icon(Icons.newspaper),
+              label: 'Haberler'.tr(),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.explore_outlined),
-              activeIcon: Icon(Icons.explore),
-              label: 'Keşfet',
+              icon: const Icon(Icons.explore_outlined),
+              activeIcon: const Icon(Icons.explore),
+              label: 'Keşfet'.tr().tr(),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.poll_outlined),
-              activeIcon: Icon(Icons.poll),
-              label: 'Anketler',
+              icon: const Icon(Icons.poll_outlined),
+              activeIcon: const Icon(Icons.poll),
+              label: 'Anketler'.tr(),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Profil',
+              icon: const Icon(Icons.person_outline),
+              activeIcon: const Icon(Icons.person),
+              label: 'Profil'.tr(),
             ),
           ],
         ),

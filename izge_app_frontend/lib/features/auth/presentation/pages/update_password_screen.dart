@@ -104,7 +104,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       Icon(
                         Icons.lock_reset,
                         size: 80,
@@ -131,14 +131,14 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                       ),
                       const SizedBox(height: 48),
                       CustomTextField(
-                        hintText: 'Yeni Şifre',
+                        hintText: 'Yeni Şifre'.tr(),
                         prefixIcon: Icons.lock_outline,
                         onChanged: (val) => _password = val,
                         obscureText: true,
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       CustomTextField(
-                        hintText: 'Yeni Şifre (Tekrar)',
+                        hintText: 'Yeni Şifre (Tekrar)'.tr(),
                         prefixIcon: Icons.lock_outline,
                         onChanged: (val) => _confirm = val,
                         obscureText: true,

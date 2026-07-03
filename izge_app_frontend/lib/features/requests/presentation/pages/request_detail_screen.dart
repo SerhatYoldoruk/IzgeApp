@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/models/request_model.dart';
@@ -246,7 +247,7 @@ class RequestDetailScreen extends StatelessWidget {
 
     // Adım 1 — Talep Alındı (her zaman tamamlanmış)
     steps.add(_TimelineStepData(
-      title: 'Talep Alındı',
+      title: 'Talep Alındı'.tr(),
       time: formattedDate,
       isCompleted: true,
     ));
@@ -254,14 +255,14 @@ class RequestDetailScreen extends StatelessWidget {
     // Adım 2 — İnceleniyor
     if (request.status == 'pending') {
       steps.add(_TimelineStepData(
-        title: 'İnceleniyor',
+        title: 'İnceleniyor'.tr(),
         time: 'Ekibimiz talebinizi inceliyor',
         isCompleted: false,
         isCurrent: true,
       ));
     } else {
       steps.add(_TimelineStepData(
-        title: 'İncelendi',
+        title: 'İncelendi'.tr(),
         time: 'Talep incelendi',
         isCompleted: true,
       ));
@@ -270,12 +271,12 @@ class RequestDetailScreen extends StatelessWidget {
     // Adım 3 — Durum
     if (request.status == 'approved') {
       steps.add(_TimelineStepData(
-        title: 'Onaylandı',
+        title: 'Onaylandı'.tr(),
         time: 'Talebiniz onaylandı',
         isCompleted: true,
       ));
       steps.add(_TimelineStepData(
-        title: 'Tamamlanıyor',
+        title: 'Tamamlanıyor'.tr(),
         time: 'İşlem sürecinde',
         isCompleted: false,
         isCurrent: true,
@@ -289,12 +290,12 @@ class RequestDetailScreen extends StatelessWidget {
       ));
     } else if (request.status == 'completed') {
       steps.add(_TimelineStepData(
-        title: 'Onaylandı',
+        title: 'Onaylandı'.tr(),
         time: 'Talep onaylandı',
         isCompleted: true,
       ));
       steps.add(_TimelineStepData(
-        title: 'Tamamlandı',
+        title: 'Tamamlandı'.tr(),
         time: 'Talebiniz başarıyla tamamlandı',
         isCompleted: true,
       ));

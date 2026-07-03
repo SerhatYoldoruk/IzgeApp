@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/forgot_password_support_screen.dart';
@@ -20,7 +21,7 @@ class LoginIssuesScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Giriş Problemleri',
           style: TextStyle(
             fontSize: 24,
@@ -49,7 +50,7 @@ class LoginIssuesScreen extends StatelessWidget {
               icon: Icons.password,
               iconColor: const Color(0xFFD3FFC8), // on-primary-container
               iconBgColor: const Color(0xFF1A8025), // primary-container
-              title: 'Şifremi Unuttum',
+              title: 'Şifremi Unuttum'.tr(),
               description: 'Mevcut şifrenizi hatırlamıyorsanız, sisteme kayıtlı e-posta adresinizi kullanarak yeni bir şifre oluşturabilirsiniz.',
               actionButton: ElevatedButton(
                 onPressed: () {
@@ -65,7 +66,7 @@ class LoginIssuesScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   elevation: 2,
                 ),
-                child: const Text('Şifre Sıfırlama Bağlantısı Gönder', style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('Şifre Sıfırlama Bağlantısı Gönder', style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ),
             
@@ -76,7 +77,7 @@ class LoginIssuesScreen extends StatelessWidget {
               icon: Icons.mail,
               iconColor: const Color(0xFF7ADC75), // primary
               iconBgColor: AppColors.surfaceElevated, // surface-container-high
-              title: 'E-posta Doğrulama Kodu Gelmiyor',
+              title: 'E-posta Doğrulama Kodu Gelmiyor'.tr(),
               description: 'Eğer doğrulama kodu gelen kutunuza düşmediyse, lütfen \'Gereksiz/Spam\' klasörünü kontrol edin. Kodun süresi dolmuş olabilir.',
               actionButton: ElevatedButton(
                 onPressed: () {
@@ -92,7 +93,7 @@ class LoginIssuesScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   elevation: 0,
                 ),
-                child: const Text('Kodu Tekrar Gönder', style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('Kodu Tekrar Gönder', style: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ),
             
@@ -103,7 +104,7 @@ class LoginIssuesScreen extends StatelessWidget {
               icon: Icons.lock,
               iconColor: const Color(0xFFFFDAD6), // on-error-container
               iconBgColor: const Color(0xFF93000A), // error-container
-              title: 'Hesabım Kilitlendi',
+              title: 'Hesabım Kilitlendi'.tr(),
               description: 'Çok sayıda hatalı giriş denemesi nedeniyle hesabınız güvenlik amacıyla geçici olarak kilitlenmiştir. Güvenlik doğrulamasını geçerek hesabınızı açabilirsiniz.',
               actionButton: OutlinedButton(
                 onPressed: () {

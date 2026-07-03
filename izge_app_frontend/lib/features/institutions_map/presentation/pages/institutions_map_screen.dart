@@ -158,7 +158,7 @@ class _InstitutionsMapScreenState extends State<InstitutionsMapScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mekanlar yüklenirken hata oluştu: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mekanlar yüklenirken hata oluştu: $e'.tr())));
       }
     } finally {
       if (mounted) {
@@ -201,7 +201,7 @@ class _InstitutionsMapScreenState extends State<InstitutionsMapScreen> {
         });
       }
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Konum alınamadı: $e')));
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Konum alınamadı: $e'.tr())));
     }
   }
 
@@ -479,7 +479,7 @@ class _InstitutionDetailsSheetState extends State<_InstitutionDetailsSheet> {
                         hasWheelchairAccess: hasWheelchairAccess,
                       );
                       if (mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Puanınız kaydedildi, teşekkürler!')));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Puanınız kaydedildi, teşekkürler!'.tr())));
                         Navigator.pop(context);
                         widget.onReviewAdded();
                       }
@@ -493,7 +493,7 @@ class _InstitutionDetailsSheetState extends State<_InstitutionDetailsSheet> {
                     backgroundColor: AppColors.accent,
                     foregroundColor: Colors.white,
                   ),
-                  child: const Text('Gönder'),
+                  child: Text('Gönder'.tr()),
                 ),
               ],
             );
@@ -552,7 +552,7 @@ class _InstitutionDetailsSheetState extends State<_InstitutionDetailsSheet> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -722,7 +722,7 @@ class _InstitutionDetailsSheetState extends State<_InstitutionDetailsSheet> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(

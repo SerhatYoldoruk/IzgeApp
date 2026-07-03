@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/support_success_screen.dart';
@@ -102,11 +103,11 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                       dropdownColor: AppColors.border,
                       icon: Icon(Icons.expand_more, color: AppColors.textSecondary),
                       style: TextStyle(color: AppColors.textPrimary, fontSize: 16),
-                      items: const [
+                      items: [
                         DropdownMenuItem(value: 'teknik', child: Text('Teknik Sorun')),
-                        DropdownMenuItem(value: 'bagis', child: Text('Bağış İşlemleri')),
-                        DropdownMenuItem(value: 'uyelik', child: Text('Üyelik')),
-                        DropdownMenuItem(value: 'diger', child: Text('Diğer')),
+                        DropdownMenuItem(value: 'bagis', child: Text('Bağış İşlemleri'.tr())),
+                        DropdownMenuItem(value: 'uyelik', child: Text('Üyelik'.tr())),
+                        DropdownMenuItem(value: 'diger', child: Text('Diğer'.tr())),
                       ],
                       onChanged: (value) {
                         setState(() {
@@ -134,7 +135,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                     maxLines: 6,
                     style: TextStyle(color: AppColors.textPrimary),
                     decoration: InputDecoration(
-                      hintText: 'Sorununuzu buraya detaylıca yazabilirsiniz...',
+                      hintText: 'Sorununuzu buraya detaylıca yazabilirsiniz...'.tr(),
                       hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.7)),
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.all(16),

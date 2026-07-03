@@ -3,6 +3,7 @@ import 'package:izge_app_frontend/core/services/supabase_service.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SupabaseService _authService;
@@ -30,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthUnauthenticated());
       }
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(AuthUnauthenticated());
     }
   }
 
@@ -104,6 +105,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthLogoutRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
+      try {
+        final token = await FirebaseMessaging.instance.getToken();
+        if (token != null) {
+          await _authService.removeDeviceToken(token);
+        }
+      } catch (e) {
+        // Suppress FCM errors during sign out
+      }
       await Supabase.instance.client.auth.signOut();
       emit(AuthUnauthenticated());
     } catch (e) {

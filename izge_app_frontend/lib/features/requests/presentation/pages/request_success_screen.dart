@@ -41,7 +41,7 @@ class RequestSuccessScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Center(
+                child: Center(
                   child: Icon(
                     Icons.check_circle,
                     size: 64,
@@ -94,7 +94,7 @@ class RequestSuccessScreen extends StatelessWidget {
                             onPressed: () {
                               Clipboard.setData(ClipboardData(text: shortCode));
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Talep numarası kopyalandı')),
+                                SnackBar(content: Text('Talep numarası kopyalandı'.tr())),
                               );
                             },
                           ),
@@ -104,7 +104,7 @@ class RequestSuccessScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Text(
                 'Talebiniz uzman ekiplerimize iletilmiştir. Bu numara ile talebinizin durumunu Taleplerim sayfasından takip edebilirsiniz.'.tr(),
                 textAlign: TextAlign.center,

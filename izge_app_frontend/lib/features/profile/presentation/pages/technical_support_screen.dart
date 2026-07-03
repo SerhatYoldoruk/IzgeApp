@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/connection_issues_screen.dart';
@@ -22,7 +23,7 @@ class TechnicalSupportScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Teknik Destek',
           style: TextStyle(
             fontSize: 24,
@@ -74,7 +75,7 @@ class TechnicalSupportScreen extends StatelessWidget {
               child: TextField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Sorununuzu arayın (örn. giriş hatası)',
+                  hintText: 'Sorununuzu arayın (örn. giriş hatası)'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   filled: true,
@@ -97,8 +98,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card1 = _buildTopicCard(
                   icon: Icons.login,
-                  title: 'Giriş Problemleri',
-                  subtitle: 'Şifremi unuttum, hesabıma erişemiyorum veya doğrulama kodu gelmiyor.',
+                  title: 'Giriş Problemleri'.tr(),
+                  subtitle: 'Şifremi unuttum, hesabıma erişemiyorum veya doğrulama kodu gelmiyor.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -110,7 +111,7 @@ class TechnicalSupportScreen extends StatelessWidget {
                 final card2 = _buildTopicCard(
                   icon: Icons.bug_report,
                   title: 'Hata Bildirimi',
-                  subtitle: 'Uygulama çöküyor, ekran donuyor veya beklenmedik bir hata mesajı alıyorum.',
+                  subtitle: 'Uygulama çöküyor, ekran donuyor veya beklenmedik bir hata mesajı alıyorum.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -121,8 +122,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card3 = _buildTopicCard(
                   icon: Icons.devices,
-                  title: 'Cihaz ve Sistem Uyumluluğu',
-                  subtitle: 'Uygulamanın sürümü, işletim sistemi gereksinimleri ve performans ayarları hakkında destek alın.',
+                  title: 'Cihaz ve Sistem Uyumluluğu'.tr(),
+                  subtitle: 'Uygulamanın sürümü, işletim sistemi gereksinimleri ve performans ayarları hakkında destek alın.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -134,8 +135,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card4 = _buildTopicCard(
                   icon: Icons.wifi_off,
-                  title: 'Bağlantı Sorunları',
-                  subtitle: 'İnternet bağlantısı hatası, veri senkronizasyonu veya yavaş yüklenme problemleri.',
+                  title: 'Bağlantı Sorunları'.tr(),
+                  subtitle: 'İnternet bağlantısı hatası, veri senkronizasyonu veya yavaş yüklenme problemleri.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -146,8 +147,8 @@ class TechnicalSupportScreen extends StatelessWidget {
                 
                 final card5 = _buildTopicCard(
                   icon: Icons.help,
-                  title: 'Diğer Sorunlar',
-                  subtitle: 'Yukarıdaki kategorilere uymayan diğer tüm teknik sorunlar için destek talebi oluşturun.',
+                  title: 'Diğer Sorunlar'.tr(),
+                  subtitle: 'Yukarıdaki kategorilere uymayan diğer tüm teknik sorunlar için destek talebi oluşturun.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,

@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
@@ -56,7 +57,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             // Section 1: Veri Sorumlusu
             _buildSection(
               icon: Icons.person_pin_circle_outlined,
-              title: '1. Veri Sorumlusunun Kimliği',
+              title: '1. Veri Sorumlusunun Kimliği'.tr(),
               content: [
                 Text(
                   'KVKK kapsamında Veri Sorumlusu, faaliyetlerini İzge Derneği tüzel kişiliği altında yürüten derneğimizdir. Kişisel verileriniz, veri sorumlusu sıfatıyla derneğimiz tarafından aşağıda açıklanan kapsamda işlenebilecektir.',
@@ -68,12 +69,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Section 2: İşlenen Veriler
             _buildSection(
               icon: Icons.data_usage,
-              title: '2. İşlenen Kişisel Verileriniz',
+              title: '2. İşlenen Kişisel Verileriniz'.tr(),
               content: [
                 Text(
                   'Uygulamayı kullanımınız kapsamında aşağıdaki verileriniz işlenebilmektedir:',
@@ -105,12 +106,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Section 3: Amaçlar
             _buildSection(
               icon: Icons.track_changes,
-              title: '3. İşlenme Amaçları',
+              title: '3. İşlenme Amaçları'.tr(),
               content: [
                 Text(
                   'Kişisel verileriniz aşağıdaki amaçlarla işlenmektedir:',
@@ -125,7 +126,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '',
                   'Dernek üyelik işlemlerinin, aidat takiplerinin ve bağış süreçlerinin yürütülmesi.',
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 _buildBulletPoint(
                   '',
                   'Kullanıcıların yardım, destek veya etkinlik taleplerinin (Tekerlekli sandalye, eğitim, vb.) kayıt altına alınması ve koordine edilmesi.',
@@ -147,7 +148,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             // Section 4: Veri Aktarımı ve Güvenlik
             _buildSection(
               icon: Icons.shield_outlined,
-              title: '4. Veri Aktarımı ve Bulut Güvenliği',
+              title: '4. Veri Aktarımı ve Bulut Güvenliği'.tr(),
               content: [
                 Text(
                   'Uygulama altyapımız, verilerinizin güvenliği için uluslararası güvenlik sertifikalarına (ISO 27001, SOC 2) sahip Supabase ve AWS bulut sistemlerinde barındırılmaktadır. Tüm veri tabanı işlemleri endüstri standardı olan güçlü şifreleme algoritmalarıyla (Encryption at Rest/in Transit) korunur.',
@@ -176,7 +177,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             // Section 5: Haklar
             _buildSection(
               icon: Icons.balance,
-              title: '5. İlgili Kişinin Hakları (KVKK Md. 11)',
+              title: '5. İlgili Kişinin Hakları (KVKK Md. 11)'.tr(),
               content: [
                 Text(
                   'KVKK\'nın 11. maddesi uyarınca derneğimize başvurarak;',
@@ -191,7 +192,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '',
                   'Kişisel verilerinizin işlenip işlenmediğini öğrenme,',
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 _buildBulletPoint(
                   '',
                   'Kişisel verileriniz işlenmişse buna ilişkin bilgi talep etme,',
@@ -213,7 +214,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             // Section 6: İletişim
             _buildSection(
               icon: Icons.mail_outline,
-              title: '6. İletişim',
+              title: '6. İletişim'.tr(),
               content: [
                 Text(
                   'Haklarınızı kullanmak ve kişisel verilerinizle ilgili her türlü talebinizi iletmek için bizimle iletişime geçebilirsiniz:',

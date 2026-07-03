@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -179,7 +180,7 @@ class SupabaseService {
     return [
       EventModel(
         id: 'mock-1',
-        title: 'Engelsiz Sanat Atölyesi',
+        title: 'Engelsiz Sanat Atölyesi'.tr(),
         description: 'Engelsiz sanat atölyemizde hep birlikte eğlenerek resim yapıyoruz. Katılım ücretsizdir.',
         location: 'Dernek Merkezi',
         eventDate: DateTime(2026, 6, 25, 14, 0),
@@ -188,7 +189,7 @@ class SupabaseService {
       ),
       EventModel(
         id: 'mock-2',
-        title: 'Gönüllü Oryantasyonu',
+        title: 'Gönüllü Oryantasyonu'.tr(),
         description: 'Yeni gönüllülerimiz için bilgilendirme ve oryantasyon toplantısı.',
         location: 'Online (Zoom)',
         eventDate: DateTime(2026, 6, 30, 10, 0),
@@ -197,7 +198,7 @@ class SupabaseService {
       ),
       EventModel(
         id: 'mock-3',
-        title: 'Erişilebilirlik Zirvesi 2023',
+        title: 'Erişilebilirlik Zirvesi 2023'.tr(),
         description: 'Engelsiz yaşam teknolojileri ve erişilebilirlik zirvesi.',
         location: 'İstanbul Kültür Merkezi',
         eventDate: DateTime(2023, 5, 15, 10, 0),
@@ -206,7 +207,7 @@ class SupabaseService {
       ),
       EventModel(
         id: 'mock-4',
-        title: 'Engelsiz Basketbol Turnuvası',
+        title: 'Engelsiz Basketbol Turnuvası'.tr(),
         description: 'Engelsiz basketbol turnuvamızda sporseverleri bir araya getiriyoruz.',
         location: 'Atatürk Spor Kompleksi',
         eventDate: DateTime(2026, 4, 2, 14, 30),
@@ -215,7 +216,7 @@ class SupabaseService {
       ),
       EventModel(
         id: 'mock-5',
-        title: 'Dijital Okuryazarlık Atölyesi',
+        title: 'Dijital Okuryazarlık Atölyesi'.tr(),
         description: 'Temel dijital becerilerin geliştirilmesi hedefleyen online atölye.',
         location: 'Online (Zoom)',
         eventDate: DateTime(2026, 3, 12, 19, 0),
@@ -338,6 +339,19 @@ class SupabaseService {
       return null;
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<Set<String>> getVotedPollIds() async {
+    final user = _requireCurrentUser();
+    try {
+      final data = await _client
+          .from('poll_votes')
+          .select('poll_id')
+          .eq('user_id', user.id);
+      return (data as List).map((v) => v['poll_id'].toString()).toSet();
+    } catch (e) {
+      return {};
     }
   }
 
@@ -522,6 +536,32 @@ class SupabaseService {
       'review_text': reviewText,
       'created_at': DateTime.now().toUtc().toIso8601String(),
     }, onConflict: 'osm_id, user_id');
+  }
+
+  /// FCM token'ını veritabanına kaydet/güncelle
+  Future<void> saveDeviceToken({required String fcmToken, required String deviceType}) async {
+    final user = currentUser;
+    if (user == null) return;
+
+    try {
+      await _client.from('user_devices').upsert({
+        'user_id': user.id,
+        'fcm_token': fcmToken,
+        'device_type': deviceType,
+        'updated_at': DateTime.now().toIso8601String(),
+      }, onConflict: 'fcm_token');
+    } catch (e) {
+      if (kDebugMode) print('Error saving device token: $e');
+    }
+  }
+
+  /// FCM token'ını veritabanından sil (Log out durumunda)
+  Future<void> removeDeviceToken(String fcmToken) async {
+    try {
+      await _client.from('user_devices').delete().eq('fcm_token', fcmToken);
+    } catch (e) {
+      if (kDebugMode) print('Error removing device token: $e');
+    }
   }
 
   Future<List<Map<String, dynamic>>> _fetchList(Future<dynamic> query) async {

@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
 
@@ -65,7 +66,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Sorun Giderme',
           style: TextStyle(
             fontSize: 24,
@@ -116,7 +117,7 @@ class _TroubleshootingScreenState extends State<TroubleshootingScreen> {
               child: TextField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Sorununuzu arayın...',
+                  hintText: 'Sorununuzu arayın...'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   filled: true,

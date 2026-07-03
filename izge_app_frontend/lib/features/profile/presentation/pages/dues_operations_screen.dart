@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/widgets/custom_text_field.dart';
@@ -24,8 +25,8 @@ class _DuesOperationsScreenState extends State<DuesOperationsScreen> {
         _isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Aidat ödemesi başarıyla tamamlandı!'),
+        SnackBar(
+          content: Text('Aidat ödemesi başarıyla tamamlandı!'.tr()),
           backgroundColor: Color(0xFF1A8025),
         ),
       );

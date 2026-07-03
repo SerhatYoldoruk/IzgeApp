@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class NotificationSettingsScreen extends StatefulWidget {
@@ -110,7 +111,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             
             // Sub Switches Container
             AnimatedOpacity(
@@ -122,31 +123,31 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                   children: [
                     _buildSubSwitch(
                       title: 'Haberler ve Duyurular',
-                      subtitle: 'Önemli güncellemeler ve haberler',
+                      subtitle: 'Önemli güncellemeler ve haberler'.tr(),
                       icon: Icons.newspaper,
                       value: _newsSwitch,
                       onChanged: (val) => setState(() => _newsSwitch = val),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _buildSubSwitch(
                       title: 'Yeni Etkinlikler',
-                      subtitle: 'Yaklaşan etkinlikler ve davetler',
+                      subtitle: 'Yaklaşan etkinlikler ve davetler'.tr(),
                       icon: Icons.event,
                       value: _eventsSwitch,
                       onChanged: (val) => setState(() => _eventsSwitch = val),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _buildSubSwitch(
-                      title: 'Talep Güncellemeleri',
-                      subtitle: 'Taleplerinizin durum değişiklikleri',
+                      title: 'Talep Güncellemeleri'.tr(),
+                      subtitle: 'Taleplerinizin durum değişiklikleri'.tr(),
                       icon: Icons.description,
                       value: _requestsSwitch,
                       onChanged: (val) => setState(() => _requestsSwitch = val),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _buildSubSwitch(
-                      title: 'Bağış Hatırlatıcıları',
-                      subtitle: 'Düzenli bağış bildirimleri',
+                      title: 'Bağış Hatırlatıcıları'.tr(),
+                      subtitle: 'Düzenli bağış bildirimleri'.tr(),
                       icon: Icons.volunteer_activism,
                       value: _donationsSwitch,
                       onChanged: (val) => setState(() => _donationsSwitch = val),

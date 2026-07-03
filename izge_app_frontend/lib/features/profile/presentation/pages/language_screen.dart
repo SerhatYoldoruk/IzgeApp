@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class LanguageScreen extends StatefulWidget {
@@ -87,12 +88,12 @@ class _LanguageScreenState extends State<LanguageScreen> {
                         height: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     
                     // Turkish Option
                     _buildLanguageOption(
                       code: 'tr',
-                      label: 'Türkçe',
+                      label: 'Türkçe'.tr(),
                     ),
                     const SizedBox(height: 12),
                     

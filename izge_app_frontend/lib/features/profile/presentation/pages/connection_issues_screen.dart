@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
 
@@ -56,12 +57,12 @@ class ConnectionIssuesScreen extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // Troubleshoot Grid
             _buildLargeCard(
               icon: Icons.wifi_off,
-              title: 'İnternet Bağlantısı Kontrolü',
+              title: 'İnternet Bağlantısı Kontrolü'.tr(),
               description: 'Cihazınızın aktif bir Wi-Fi veya hücresel veri ağına bağlı olduğundan emin olun. Tarayıcınız üzerinden bir web sitesi açarak bağlantınızı test edebilirsiniz.',
               bullets: [
                 'Modeminizi yeniden başlatın.',

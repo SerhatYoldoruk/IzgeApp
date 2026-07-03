@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/membership_help_screen.dart';
@@ -55,7 +56,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Yardım Merkezi',
           style: TextStyle(
             fontSize: 24,
@@ -100,7 +101,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               child: TextField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Sorunuzu arayın (örn: bağış yapmak)',
+                  hintText: 'Sorunuzu arayın (örn: bağış yapmak)'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   filled: true,

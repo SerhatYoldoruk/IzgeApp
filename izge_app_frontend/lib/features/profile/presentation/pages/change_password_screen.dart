@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/services/supabase_service.dart';
@@ -46,7 +47,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     if (!_hasMinLength || !_hasNumber || !_hasSpecialChar) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Lütfen şifre gereksinimlerini karşılayın!'),
+          content: Text('Lütfen şifre gereksinimlerini karşılayın!'.tr()),
           backgroundColor: const Color(0xFF93000A),
         ),
       );
@@ -82,7 +83,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Hata oluştu: ${e.toString()}'),
+          content: Text('Hata oluştu: ${e.toString()}'.tr()),
           backgroundColor: const Color(0xFF93000A),
         ),
       );

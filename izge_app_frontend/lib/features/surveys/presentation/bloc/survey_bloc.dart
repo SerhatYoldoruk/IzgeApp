@@ -18,7 +18,8 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyState> {
     emit(SurveyLoading());
     try {
       final surveys = await _supabaseService.getPolls();
-      emit(SurveyLoaded(surveys));
+      final votedIds = await _supabaseService.getVotedPollIds();
+      emit(SurveyLoaded(surveys, votedPollIds: votedIds));
     } catch (e) {
       emit(SurveyError(e.toString()));
     }

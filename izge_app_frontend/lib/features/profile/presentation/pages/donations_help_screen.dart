@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/tax_receipts_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/monthly_donations_screen.dart';
@@ -47,14 +48,14 @@ class DonationsHelpScreen extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             
             // Help Topic Cards
             _buildTopicCard(
               context: context,
               icon: Icons.receipt_long,
-              title: 'Vergi Makbuzları',
-              subtitle: 'Makbuz talepleri ve vergi indirim süreçleri',
+              title: 'Vergi Makbuzları'.tr(),
+              subtitle: 'Makbuz talepleri ve vergi indirim süreçleri'.tr(),
               onTap: () {
                 Navigator.push(
                   context,
@@ -62,12 +63,12 @@ class DonationsHelpScreen extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             _buildTopicCard(
               context: context,
               icon: Icons.autorenew,
-              title: 'Aylık Bağışlar',
-              subtitle: 'Düzenli bağış başlatma, düzenleme ve iptali',
+              title: 'Aylık Bağışlar'.tr(),
+              subtitle: 'Düzenli bağış başlatma, düzenleme ve iptali'.tr(),
               onTap: () {
                 Navigator.push(
                   context,
@@ -75,12 +76,12 @@ class DonationsHelpScreen extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             _buildTopicCard(
               context: context,
               icon: Icons.explore,
-              title: 'Bağışlar Nereye Gidiyor?',
-              subtitle: 'Şeffaflık raporları ve güncel projelerimiz',
+              title: 'Bağışlar Nereye Gidiyor?'.tr(),
+              subtitle: 'Şeffaflık raporları ve güncel projelerimiz'.tr(),
               onTap: () {
                 Navigator.push(
                   context,

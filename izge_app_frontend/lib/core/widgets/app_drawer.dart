@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/app_settings_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
@@ -66,7 +67,7 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             
             // Menu Items
             Expanded(
@@ -90,14 +91,14 @@ class AppDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     context,
                     icon: Icons.volunteer_activism_rounded,
-                    title: 'Bağış ve Destek',
+                    title: 'Bağış ve Destek'.tr(),
                     onTap: () => Navigator.pop(context),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   _buildDrawerItem(
                     context,
                     icon: Icons.help_outline_rounded,
-                    title: 'Yardım Merkezi',
+                    title: 'Yardım Merkezi'.tr(),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -113,7 +114,7 @@ class AppDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     context,
                     icon: Icons.settings_rounded,
-                    title: 'Uygulama Ayarları',
+                    title: 'Uygulama Ayarları'.tr(),
                     onTap: () {
                       Navigator.pop(context); // Close drawer first
                       Navigator.push(

@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:izge_app_frontend/core/services/tts_service.dart';
 
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
+
 class NewsDetailScreen extends StatefulWidget {
   final AnnouncementModel news;
   const NewsDetailScreen({super.key, required this.news});
@@ -14,6 +16,7 @@ class NewsDetailScreen extends StatefulWidget {
   @override
   State<NewsDetailScreen> createState() => _NewsDetailScreenState();
 }
+
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
   bool isLiked = false;
@@ -179,7 +182,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           color: AppColors.accentDark,
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Text(
+                        child: Text(
                           'DUYURU',
                           style: TextStyle(
                             color: Colors.white,
@@ -239,7 +242,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           ),
                           _ActionButton(
                             icon: Icons.share, 
-                            label: 'Paylaş',
+                            label: 'Paylaş'.tr(),
                             onTap: () {
                               final shareText = '${widget.news.title}\n\n'
                                   '${widget.news.content.length > 150 ? "${widget.news.content.substring(0, 150)}..." : widget.news.content}\n\n'
@@ -263,7 +266,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // Bottom Buttons
                   Container(
@@ -275,14 +278,14 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       children: [
                         ElevatedButton.icon(
                           onPressed: () {
-                            final shareText = '${widget.news.title}\n\n'
-                                '${widget.news.content.length > 150 ? "${widget.news.content.substring(0, 150)}..." : widget.news.content}\n\n'
-                                'Detaylar için web sitemizi ziyaret edin:\n'
+                            final shareText = '${widget.news.title.tr()}\n\n'
+                                '${widget.news.content.tr().length > 150 ? "${widget.news.content.tr().substring(0, 150)}..." : widget.news.content.tr()}\n\n'
+                                '${'Detaylar için web sitemizi ziyaret edin:\n'.tr()}'
                                 'https://www.izgedernegi.org.tr/?SyfNmb=2&pt=%C4%B0ZGEDER';
                             Share.share(shareText);
                           },
                           icon: const Icon(Icons.share),
-                          label: const Text('Haberi Paylaş', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          label: Text('Haberi Paylaş'.tr(), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.surfaceElevated,
                             foregroundColor: AppColors.textPrimary,
@@ -299,7 +302,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                             );
                           },
                           icon: Icon(Icons.support_agent, color: AppColors.background),
-                          label: Text('Canlı Desteğe Bağlan', style: TextStyle(color: AppColors.background, fontSize: 16, fontWeight: FontWeight.bold)),
+                          label: Text('Canlı Desteğe Bağlan'.tr(), style: TextStyle(color: AppColors.background, fontSize: 16, fontWeight: FontWeight.bold)),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.textPrimary,
                             minimumSize: const Size(double.infinity, 52),

@@ -81,32 +81,32 @@ class _MeltdownAssistantScreenState extends State<MeltdownAssistantScreen> with 
             color: AppColors.textPrimary,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         _buildGuideItem(
           icon: Icons.volume_off,
-          title: 'Sessizleşin',
+          title: 'Sessizleşin'.tr(),
           description: 'Çocuğunuz zaten duyusal bir aşırı yüklenme yaşıyor. Konuşmayı minimuma indirin veya tamamen durdurun.',
           color: Colors.blueGrey,
         ),
         _buildGuideItem(
           icon: Icons.lightbulb_outline,
-          title: 'Uyaranları Azaltın',
+          title: 'Uyaranları Azaltın'.tr(),
           description: 'Mümkünse ışıkları kapatın veya loşlaştırın. Çevredeki dikkat dağıtıcı ve gürültülü eşyaları uzaklaştırın.',
           color: Colors.orange,
         ),
         _buildGuideItem(
           icon: Icons.back_hand,
-          title: 'Fiziksel Temastan Kaçının',
+          title: 'Fiziksel Temastan Kaçının'.tr(),
           description: 'Çocuğunuz güvende olduğu sürece ona dokunmayın. Kriz anında dokunulmak durumu daha da kötüleştirebilir.',
           color: Colors.redAccent,
         ),
         _buildGuideItem(
           icon: Icons.security,
-          title: 'Güvende Tutun',
+          title: 'Güvende Tutun'.tr(),
           description: 'Sadece kendisine veya çevresine zarar verme riski varsa müdahale edin. Onun yanında olduğunuzu hissettirin ama alan tanıyın.',
           color: Colors.green,
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         const Divider(),
         const SizedBox(height: 16),
         Text(
@@ -143,7 +143,7 @@ class _MeltdownAssistantScreenState extends State<MeltdownAssistantScreen> with 
             ),
             child: Icon(icon, color: color, size: 24),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +156,7 @@ class _MeltdownAssistantScreenState extends State<MeltdownAssistantScreen> with 
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
                   description.tr(),
                   style: TextStyle(

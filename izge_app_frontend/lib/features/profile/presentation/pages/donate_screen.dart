@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
@@ -258,7 +259,7 @@ class _DonateScreenState extends State<DonateScreen> {
                   }
                 },
                 decoration: InputDecoration(
-                  hintText: 'Diğer Miktar',
+                  hintText: 'Diğer Miktar'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.5)),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -405,7 +406,7 @@ class _DonateScreenState extends State<DonateScreen> {
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Lütfen geçerli ödeme bilgileri girin')),
+                      SnackBar(content: Text('Lütfen geçerli ödeme bilgileri girin'.tr())),
                     );
                   }
                 },

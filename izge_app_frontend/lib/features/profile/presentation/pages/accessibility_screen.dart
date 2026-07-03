@@ -61,7 +61,7 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
                 Row(
                   children: [
                     Icon(Icons.text_fields, color: AppColors.accent),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Text(
                       'Metin Boyutu'.tr(),
                       style: TextStyle(
@@ -98,12 +98,12 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
                     Text('A', style: TextStyle(fontSize: 24, color: AppColors.textPrimary)),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     icon: const Icon(Icons.zoom_in),
-                    label: const Text('Maksimum Büyüklük'),
+                    label: Text('Maksimum Büyüklük'.tr()),
                     onPressed: () {
                       controller.setMaxTextScale();
                     },
@@ -112,7 +112,7 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -146,7 +146,7 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                   'Görme güçlüğü olan bireyler için renkleri siyah, sarı ve beyaz ağırlıklı, çok belirgin bir şemaya geçirir.',
                   style: TextStyle(color: AppColors.textSecondary),
@@ -177,7 +177,7 @@ class _AccessibilityScreenState extends State<AccessibilityScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                   'Okumayı kolaylaştırmak için harf boşlukları artırılmış ve harf şekilleri belirginleştirilmiş (Lexend) font kullanır.',
                   style: TextStyle(color: AppColors.textSecondary),

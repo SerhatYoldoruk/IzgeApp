@@ -53,10 +53,14 @@ dependencies:
   path_provider: ^2.1.6
   http: ^1.6.0
   audioplayers: ^6.8.0
+  firebase_core: ^3.1.1
+  firebase_messaging: ^15.1.1
+  flutter_local_notifications: ^18.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -87,6 +91,16 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   image_path: "assets/images/images/app_logo.png"
   adaptive_icon_background: "#1A8025"
+
+flutter_native_splash:
+  color: "#0A1F0C"
+  image: assets/images/images/logo.jpeg
+  android: true
+  ios: true
+  android_12:
+    image: assets/images/images/logo.jpeg
+    icon_background_color: "#0A1F0C"
+    color: "#0A1F0C"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

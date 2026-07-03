@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -152,7 +153,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _showPremiumDialog(
               title: 'Harika!', 
-              message: 'Google hesabınız başarıyla bağlandı.', 
+              message: 'Google hesabınız başarıyla bağlandı.'.tr(), 
               icon: Icons.check_circle_outline, 
               color: const Color(0xFF7ADC75)
             );
@@ -216,7 +217,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
         setState(() {
            _isGoogleLinked = false;
         });
-        if (mounted) _showPremiumDialog(title: 'Bağlantı Kesildi', message: 'Google hesabınızın bağlantısı başarıyla kaldırıldı.', icon: Icons.link_off, color: Colors.orangeAccent);
+        if (mounted) _showPremiumDialog(title: 'Bağlantı Kesildi'.tr(), message: 'Google hesabınızın bağlantısı başarıyla kaldırıldı.'.tr(), icon: Icons.link_off, color: Colors.orangeAccent);
       } else {
         await Supabase.instance.client.auth.linkIdentity(
           OAuthProvider.google,
@@ -224,9 +225,9 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
         );
       }
     } on AuthException catch (e) {
-      if (mounted) _showPremiumDialog(title: 'Bağlantı Hatası', message: e.message, icon: Icons.error_outline, color: Colors.redAccent);
+      if (mounted) _showPremiumDialog(title: 'Bağlantı Hatası'.tr(), message: e.message, icon: Icons.error_outline, color: Colors.redAccent);
     } catch (e) {
-      if (mounted) _showPremiumDialog(title: 'Beklenmeyen Hata', message: 'İşlem sırasında bir hata oluştu.', icon: Icons.warning_amber_rounded, color: Colors.redAccent);
+      if (mounted) _showPremiumDialog(title: 'Beklenmeyen Hata', message: 'İşlem sırasında bir hata oluştu.'.tr(), icon: Icons.warning_amber_rounded, color: Colors.redAccent);
     }
   }
 
@@ -257,7 +258,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
                     setState(() {
                       _pinLockEnabled = false;
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('PIN kilidi başarıyla kaldırıldı.')));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('PIN kilidi başarıyla kaldırıldı.'.tr())));
                   }
                 },
                 child: const Text('Kaldır', style: TextStyle(color: Color(0xFFE57373), fontWeight: FontWeight.bold)),
@@ -348,7 +349,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
                     icon: Icons.lock_outline,
                     iconColor: const Color(0xFF1A8025),
                     iconBgColor: const Color(0xFF1A8025).withOpacity(0.2),
-                    title: 'Şifre Değiştir',
+                    title: 'Şifre Değiştir'.tr(),
                     subtitle: _passwordUpdateDate,
                     onTap: () {
                       Navigator.push(
@@ -361,7 +362,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             
             // Section 2: BAĞLI HESAPLAR
             _buildSectionHeader('BAĞLI HESAPLAR'),
@@ -386,17 +387,17 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
                       icon: Icons.apple,
                       iconColor: AppColors.textPrimary,
                       iconBgColor: AppColors.surfaceElevated,
-                      title: 'Apple ile Bağlan',
-                      subtitle: 'Bağlı değil',
+                      title: 'Apple ile Bağlan'.tr(),
+                      subtitle: 'Bağlı değil'.tr(),
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Apple hesabınız başarıyla bağlandı.')));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Apple hesabınız başarıyla bağlandı.'.tr())));
                       },
                     ),
                 ],
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             
             // Section 3: UYGULAMA İÇİ GÜVENLİK
             _buildSectionHeader('UYGULAMA İÇİ GÜVENLİK'),
@@ -406,13 +407,13 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
               child: _buildToggleItem(
                 icon: Icons.dialpad,
                 title: 'Uygulama PIN Kilidi',
-                subtitle: 'Açılışta 4 haneli PIN sorulur',
+                subtitle: 'Açılışta 4 haneli PIN sorulur'.tr(),
                 value: _pinLockEnabled,
                 onChanged: _togglePinLock,
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             
             // Section 4: OTURUM YÖNETİMİ & GEÇMİŞ
             _buildSectionHeader('OTURUM YÖNETİMİ & GEÇMİŞ'),
@@ -425,7 +426,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
                     icon: Icons.history,
                     iconColor: AppColors.textPrimary,
                     iconBgColor: AppColors.border,
-                    title: 'Son Giriş',
+                    title: 'Son Giriş'.tr(),
                     subtitle: _lastSignIn,
                     subtitleColor: const Color(0xFF7ADC75),
                     onTap: () {
@@ -450,7 +451,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             
             // Section 5: HESAP İŞLEMLERİ
             _buildSectionHeader('HESAP İŞLEMLERİ'),
@@ -461,8 +462,8 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
                 icon: Icons.delete_forever,
                 iconColor: const Color(0xFFE57373),
                 iconBgColor: const Color(0xFFE57373).withOpacity(0.2),
-                title: 'Hesabımı Sil',
-                subtitle: 'Bu işlem kalıcıdır',
+                title: 'Hesabımı Sil'.tr(),
+                subtitle: 'Bu işlem kalıcıdır'.tr(),
                 subtitleColor: const Color(0xFFE57373),
                 titleColor: const Color(0xFFE57373),
                 onTap: () {
@@ -682,7 +683,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
                 await prefs.setBool('app_pin_enabled', true);
                 if (mounted) {
                   setState(() { _pinLockEnabled = true; });
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('PIN kilidi aktifleştirildi.')));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('PIN kilidi aktifleştirildi.'.tr())));
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -742,7 +743,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(ctx);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Doğrulama maili gönderildi.')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Doğrulama maili gönderildi.'.tr())));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1A8025),
@@ -832,7 +833,7 @@ class _AccountSecurityScreenState extends State<AccountSecurityScreen> with Widg
               onPressed: () {
                 Navigator.pop(dialogContext);
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Hesap silme talebiniz alınmıştır.'), duration: Duration(seconds: 3)));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Hesap silme talebiniz alınmıştır.'.tr()), duration: Duration(seconds: 3)));
                   Navigator.pop(context);
                 }
               },

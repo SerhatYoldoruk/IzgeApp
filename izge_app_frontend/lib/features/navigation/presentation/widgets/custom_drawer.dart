@@ -449,7 +449,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.volunteer_activism,
-                                title: 'Bağış Yap'.tr(),
+                                title: 'Bağış Yap'.tr().tr(),
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -462,7 +462,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.history,
-                                title: 'Bağış Geçmişi'.tr(),
+                                title: 'Bağış Geçmişi'.tr().tr(),
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -488,7 +488,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.info,
-                                title: 'Dernek Hakkında'.tr(),
+                                title: 'Dernek Hakkında'.tr().tr(),
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -501,7 +501,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.help_center,
-                                title: 'Yardım Merkezi'.tr(),
+                                title: 'Yardım Merkezi'.tr().tr(),
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -528,7 +528,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ),
                               _DrawerItem(
                                 icon: Icons.forum,
-                                title: 'Topluluk & Yardım Ağı'.tr(),
+                                title: 'Topluluk & Yardım Ağı'.tr().tr(),
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -572,7 +572,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   letterSpacing: 1,
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              SizedBox(height: 12),
                               Row(
                                 children: [
                                   Expanded(
@@ -583,7 +583,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         return _StatCard(
                                           icon: Icons.favorite,
                                           count: ids.length.toString(),
-                                          label: 'Beğenilenler'.tr(),
+                                          label: 'Beğenilenler'.tr().tr(),
                                           onTap: () {
                                             Navigator.push(
                                               context,
@@ -597,7 +597,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       },
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: 8),
                                   Expanded(
                                     child: ValueListenableBuilder<List<String>>(
                                       valueListenable:
@@ -620,7 +620,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       },
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: 8),
                                   Expanded(
                                     child: ValueListenableBuilder<int>(
                                       valueListenable:
@@ -664,7 +664,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   letterSpacing: 1,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: 8),
                               _MiniListItem(
                                 icon: Icons.bookmark,
                                 title: 'Kaydedilen Haberler'.tr(),
@@ -710,10 +710,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   letterSpacing: 1,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: 8),
                               _MiniListItem(
                                 icon: Icons.volunteer_activism,
-                                title: 'Bağış Geçmişim'.tr(),
+                                title: 'Bağış Geçmişim'.tr().tr(),
                               ),
                             ],
                           ),
@@ -756,7 +756,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 color: AppColors.accent,
                                 size: 20,
                               ),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                               Text(
                                 'Çıkış Yap'.tr(),
                                 style: TextStyle(
@@ -769,7 +769,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Text(
                         'v1.0.0 - İzge App'.tr(),
                         style: TextStyle(

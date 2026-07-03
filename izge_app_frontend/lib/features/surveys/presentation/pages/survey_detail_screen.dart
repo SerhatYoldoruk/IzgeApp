@@ -170,7 +170,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.accent.withValues(alpha: 0.08),
+                    AppColors.accent.withOpacity(0.08),
                     Colors.transparent,
                   ],
                   stops: const [0.0, 0.7],
@@ -192,10 +192,10 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                     decoration: BoxDecoration(
                       color: AppColors.surfaceElevated, // surface-container-high
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
+                      border: Border.all(color: AppColors.border.withOpacity(0.2)),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
+                          color: Colors.black.withOpacity(0.2),
                           blurRadius: 16,
                           offset: const Offset(0, 8),
                         ),
@@ -210,7 +210,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                               width: 40,
                               height: 40,
                               decoration: BoxDecoration(
-                                color: AppColors.accent.withValues(alpha: 0.2),
+                                color: AppColors.accent.withOpacity(0.2),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(Icons.poll, color: AppColors.accent, size: 20),
@@ -307,7 +307,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                   end: Alignment.topCenter,
                   colors: [
                     AppColors.background,
-                    AppColors.background.withValues(alpha: 0.95),
+                    AppColors.background.withOpacity(0.95),
                     Colors.transparent,
                   ],
                 ),
@@ -318,7 +318,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                   backgroundColor: _isSuccess 
                       ? AppColors.surfaceElevated // surface-bright
                       : const Color(0xFF1A8025), // primary-container
-                  disabledBackgroundColor: const Color(0xFF1A8025).withValues(alpha: 0.5),
+                  disabledBackgroundColor: const Color(0xFF1A8025).withOpacity(0.5),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   elevation: _selectedOption == null ? 0 : 8,
@@ -335,7 +335,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                           color: Color(0xFFD3FFC8),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Text(
                         'Kaydediliyor...'.tr(),
                         style: TextStyle(
@@ -362,7 +362,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: _selectedOption == null 
-                              ? const Color(0xFFD3FFC8).withValues(alpha: 0.5) 
+                              ? const Color(0xFFD3FFC8).withOpacity(0.5) 
                               : const Color(0xFFD3FFC8),
                         ),
                       ),
@@ -370,7 +370,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                       Icon(
                         Icons.send,
                         color: _selectedOption == null 
-                              ? const Color(0xFFD3FFC8).withValues(alpha: 0.5) 
+                              ? const Color(0xFFD3FFC8).withOpacity(0.5) 
                               : const Color(0xFFD3FFC8),
                         size: 20,
                       ),
@@ -405,16 +405,16 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF1A8025).withValues(alpha: 0.1) : AppColors.surfaceElevated,
+          color: isSelected ? const Color(0xFF1A8025).withOpacity(0.1) : AppColors.surfaceElevated,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? AppColors.accent : AppColors.border.withValues(alpha: 0.3),
+            color: isSelected ? AppColors.accent : AppColors.border.withOpacity(0.3),
             width: 2,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.accent.withValues(alpha: 0.15),
+                    color: AppColors.accent.withOpacity(0.15),
                     blurRadius: 20,
                     offset: const Offset(0, 4),
                   )
@@ -476,7 +476,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
             Icon(
               icon,
               size: 32,
-              color: isSelected ? AppColors.accent : Color(0xFF899484).withValues(alpha: 0.5),
+              color: isSelected ? AppColors.accent : const Color(0xFF899484).withOpacity(0.5),
             ),
           ],
         ),

@@ -65,7 +65,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             controller: reasonController,
             style: TextStyle(color: AppColors.textPrimary),
             decoration: InputDecoration(
-              hintText: 'Şikayet sebebinizi yazın...'.tr(),
+              hintText: 'Şikayet sebebinizi yazın...'.tr().tr(),
               hintStyle: TextStyle(color: AppColors.textSecondary),
             ),
           ),
@@ -170,7 +170,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                       ? Icon(Icons.person, color: AppColors.textSecondary)
                                       : null,
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +192,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: AppColors.accent.withValues(alpha: 0.1),
+                                    color: AppColors.accent.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
@@ -264,7 +264,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
                       Text(
                         '${replies.length} ${'Yanıt'.tr()}',
                         style: TextStyle(
@@ -295,17 +295,17 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     ? Icon(Icons.person, color: AppColors.textSecondary, size: 16)
                                     : null,
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12),
                               Expanded(
                                 child: Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color: reply.isAccepted
-                                        ? Colors.green.withValues(alpha: 0.06)
+                                        ? Colors.green.withOpacity(0.06)
                                         : AppColors.surface,
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
-                                      color: reply.isAccepted ? Colors.green.withValues(alpha: 0.4) : AppColors.border,
+                                      color: reply.isAccepted ? Colors.green.withOpacity(0.4) : AppColors.border,
                                     ),
                                   ),
                                   child: Column(
@@ -338,14 +338,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                                         margin: const EdgeInsets.only(left: 6),
                                                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                                         decoration: BoxDecoration(
-                                                          color: Colors.green.withValues(alpha: 0.2),
+                                                          color: Colors.green.withOpacity(0.2),
                                                           borderRadius: BorderRadius.circular(4),
                                                         ),
                                                         child: Row(
                                                           mainAxisSize: MainAxisSize.min,
                                                           children: [
                                                             const Icon(Icons.check_circle, color: Colors.green, size: 12),
-                                                            const SizedBox(width: 4),
+                                                            SizedBox(width: 4),
                                                             Text(
                                                               'Çözüm'.tr(),
                                                               style: const TextStyle(
@@ -382,7 +382,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(height: 8),
+                                      SizedBox(height: 8),
                                       // Yanıt içeriği
                                       Text(
                                         reply.content,

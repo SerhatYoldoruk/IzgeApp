@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
@@ -67,7 +68,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> with SingleTicker
               children: [
                 _buildToggleItem(
                   icon: Icons.notifications_active_outlined,
-                  title: 'Anlık Bildirimler',
+                  title: 'Anlık Bildirimler'.tr(),
                   subtitle: 'Yeni etkinlikler ve duyurular',
                   value: _pushNotificationsEnabled,
                   onChanged: (val) => setState(() => _pushNotificationsEnabled = val),
@@ -76,15 +77,15 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> with SingleTicker
                 _buildToggleItem(
                   icon: Icons.email_outlined,
                   title: 'E-posta Bildirimleri',
-                  subtitle: 'Aylık bülten ve özetler',
+                  subtitle: 'Aylık bülten ve özetler'.tr(),
                   value: _emailNotificationsEnabled,
                   onChanged: (val) => setState(() => _emailNotificationsEnabled = val),
                 ),
                 _buildDivider(),
                 _buildToggleItem(
                   icon: Icons.dark_mode_outlined,
-                  title: 'Karanlık Tema',
-                  subtitle: 'Sistem temasına uyumlu',
+                  title: 'Karanlık Tema'.tr(),
+                  subtitle: 'Sistem temasına uyumlu'.tr(),
                   value: _darkModeEnabled,
                   onChanged: (val) => setState(() => _darkModeEnabled = val),
                 ),
@@ -92,7 +93,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> with SingleTicker
             ),
           ),
           
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           _buildSectionHeader('Güvenlik', 2),
           _buildAnimatedCard(
             index: 3,
@@ -100,7 +101,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> with SingleTicker
               children: [
                 _buildNavigationItem(
                   icon: Icons.lock_outline,
-                  title: 'Şifre ve Güvenlik',
+                  title: 'Şifre ve Güvenlik'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -131,7 +132,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen> with SingleTicker
                 _buildDivider(),
                 _buildNavigationItem(
                   icon: Icons.info_outline,
-                  title: 'Uygulama Hakkında',
+                  title: 'Uygulama Hakkında'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,

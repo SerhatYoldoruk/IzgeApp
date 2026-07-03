@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
@@ -16,7 +17,7 @@ class HowToBecomeMemberScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary), // on-surface-variant equivalent
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'İzge App',
           style: TextStyle(
             fontSize: 24,
@@ -63,7 +64,7 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                 // Timeline Steps
                 _buildTimelineStep(
                   stepNumber: '1',
-                  title: 'Başvuru Formu',
+                  title: 'Başvuru Formu'.tr(),
                   description: 'Sistem üzerinden dijital üyelik başvuru formunu eksiksiz ve doğru bilgilerle doldurun.',
                   icon: Icons.edit_document,
                   isLast: false,
@@ -71,7 +72,7 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                 ),
                 _buildTimelineStep(
                   stepNumber: '2',
-                  title: 'Belge Yükleme',
+                  title: 'Belge Yükleme'.tr(),
                   description: 'Kimlik fotokopisi ve dernek tüzüğünce talep edilen ek belgelerinizi sisteme güvenle yükleyin.',
                   icon: Icons.upload_file,
                   isLast: false,
@@ -79,7 +80,7 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                 ),
                 _buildTimelineStep(
                   stepNumber: '3',
-                  title: 'Değerlendirme Süreci',
+                  title: 'Değerlendirme Süreci'.tr(),
                   description: 'Yönetim kurulumuz başvurunuzu ve belgelerinizi inceler. Bu süreç uygulama üzerinden takip edilebilir.',
                   icon: Icons.rule,
                   isLast: false,
@@ -87,7 +88,7 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                 ),
                 _buildTimelineStep(
                   stepNumber: '4',
-                  title: 'Üyelik Aktifleşmesi',
+                  title: 'Üyelik Aktifleşmesi'.tr(),
                   description: 'Onay sonrası 100 TL giriş aidatınızı ve aylık 50 TL üyelik aidatınızı uygulama içinden ödeyerek İzge App\'in tüm özelliklerini kullanmaya başlayın.',
                   icon: Icons.check_circle,
                   isLast: true,
@@ -123,8 +124,8 @@ class HowToBecomeMemberScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Başvuru formuna yönlendiriliyorsunuz...'),
+                    SnackBar(
+                      content: Text('Başvuru formuna yönlendiriliyorsunuz...'.tr()),
                       backgroundColor: Color(0xFF1A8025),
                     ),
                   );

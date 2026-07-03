@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: unused_import
@@ -195,7 +196,7 @@ class _SignPageState extends State<SignPage> {
                     ),
                   ),
                   
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
                   
                   // Başlıklar
                   Text(
@@ -239,13 +240,13 @@ class _SignPageState extends State<SignPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomTextField(
-                            hintText: 'İsminizi giriniz',
+                            hintText: 'İsminizi giriniz'.tr(),
                             prefixIcon: Icons.person_outline,
                             onChanged: (value) => setState(() => name = value),
                             autofillHints: const [AutofillHints.name],
                             keyboardType: TextInputType.name,
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           CustomTextField(
                             hintText: 'E-posta adresinizi giriniz',
                             prefixIcon: Icons.email_outlined,
@@ -263,13 +264,13 @@ class _SignPageState extends State<SignPage> {
                           ),
                           const SizedBox(height: 16),
                           CustomTextField(
-                            hintText: 'Şifrenizi giriniz',
+                            hintText: 'Şifrenizi giriniz'.tr(),
                             prefixIcon: Icons.lock_outline,
                             onChanged: (value) => setState(() => password = value),
                             obscureText: true,
                             autofillHints: const [AutofillHints.newPassword],
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(top: 6, left: 4, bottom: 16),
                             child: Text(
                               '* Şifreniz en az 6 karakter uzunluğunda olmalıdır.',
@@ -277,14 +278,14 @@ class _SignPageState extends State<SignPage> {
                             ),
                           ),
                           CustomTextField(
-                            hintText: 'Şifrenizi tekrar giriniz',
+                            hintText: 'Şifrenizi tekrar giriniz'.tr(),
                             prefixIcon: Icons.lock_outline,
                             onChanged: (value) => setState(() => confirmPassword = value),
                             obscureText: true,
                             autofillHints: const [AutofillHints.newPassword],
                           ),
                         
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24),
 
                         // Veli misiniz? Checkbox
                         Row(
@@ -306,40 +307,40 @@ class _SignPageState extends State<SignPage> {
                         if (isParent) ...[
                           const SizedBox(height: 16),
                           CustomTextField(
-                            hintText: 'Çocuğunuzun Adı',
+                            hintText: 'Çocuğunuzun Adı'.tr(),
                             prefixIcon: Icons.child_care,
                             onChanged: (value) => setState(() => childName = value),
                             keyboardType: TextInputType.name,
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           CustomTextField(
-                            hintText: 'Doğum Tarihi (GG.AA.YYYY)',
+                            hintText: 'Doğum Tarihi (GG.AA.YYYY)'.tr(),
                             prefixIcon: Icons.calendar_today,
                             onChanged: (value) => setState(() => childBirthDate = value),
                             keyboardType: TextInputType.datetime,
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           CustomTextField(
-                            hintText: 'Engel/Tanı Durumu (örn: Otizm, Disleksi)',
+                            hintText: 'Engel/Tanı Durumu (örn: Otizm, Disleksi)'.tr(),
                             prefixIcon: Icons.medical_information,
                             onChanged: (value) => setState(() => childDiagnosis = value),
                             keyboardType: TextInputType.text,
                           ),
                         ],
                         
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24),
                         
                         _ConsentRow(
                           value: kvkkKabul,
-                          title: 'KVKK Aydınlatma Metni\'ni okudum ve kabul ediyorum',
+                          title: 'KVKK Aydınlatma Metni\'.tr()ni okudum ve kabul ediyorum',
                           dialogTitle: 'KVKK Aydınlatma Metni',
                           dialogBody: '6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, İzge Derneği olarak veri sorumlusu sıfatıyla kişisel verilerinizi güvenle işliyor ve koruyoruz.\n\n1. Verilerin İşlenme Amacı\nAdınız, iletişim bilgileriniz ve sağladığınız diğer veriler, yardım faaliyetlerinin yürütülmesi, dernek etkinlikleri hakkında bilgilendirme yapılması ve yasal yükümlülüklerimizin yerine getirilmesi amacıyla işlenmektedir.\n\n2. Verilerin Aktarımı\nKişisel verileriniz, yasal zorunluluklar haricinde hiçbir üçüncü taraf veya kurumla ticari amaçla paylaşılmamaktadır.\n\n3. Haklarınız\nKVKK\'nın 11. maddesi uyarınca; verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini veya silinmesini talep etme hakkına sahipsiniz.',
                           onChanged: (value) => setState(() => kvkkKabul = value),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         _ConsentRow(
                           value: sartlarKabul,
-                          title: 'Kullanım Şartları\'nı okudum ve kabul ediyorum',
+                          title: 'Kullanım Şartları\'.tr()nı okudum ve kabul ediyorum',
                           dialogTitle: 'Kullanım Şartları',
                           dialogBody: 'İzge Uygulaması\'na hoş geldiniz. Uygulamamızı kullanarak aşağıdaki şartları kabul etmiş sayılırsınız:\n\n1. Hizmet Kullanımı\nKullanıcılar, uygulamayı yasalara ve dernek amaçlarına uygun olarak kullanmayı taahhüt eder. Gerçeğe aykırı yardım talepleri oluşturmak yasaktır.\n\n2. Hesap Güvenliği\nHesap bilgilerinizin ve şifrenizin güvenliğinden tamamen siz sorumlusunuz.\n\n3. Sorumluluk Reddi\nDerneğimiz, uygulama üzerinden yapılan gönüllü yardımlaşmaların koordinasyonunu sağlar. İki taraf arasındaki uyuşmazlıklarda yasal sorumluluk taraflara aittir.\n\n4. Fesih\nKurallara uymayan kullanıcıların hesapları önceden haber verilmeksizin askıya alınabilir veya silinebilir.',
                           onChanged: (value) => setState(() => sartlarKabul = value),

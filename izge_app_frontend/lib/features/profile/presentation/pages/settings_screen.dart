@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/theme/theme_controller.dart';
@@ -265,7 +266,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // Settings Groups
             _buildSettingsGroup(
@@ -273,7 +274,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               items: [
                 _buildSettingsItem(
                   icon: Icons.notifications,
-                  title: 'Bildirim Ayarları',
+                  title: 'Bildirim Ayarları'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -302,7 +303,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   builder: (context, child) {
                     return _buildSettingsItem(
                       icon: Icons.dark_mode,
-                      title: 'Karanlık Mod',
+                      title: 'Karanlık Mod'.tr(),
                       trailingWidget: Switch(
                         value: ThemeController.instance.isDarkMode,
                         onChanged: (value) {
@@ -319,14 +320,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             _buildSettingsGroup(
-              title: 'Güvenlik',
+              title: 'Güvenlik'.tr(),
               items: [
                 _buildSettingsItem(
                   icon: Icons.lock,
-                  title: 'Hesap Güvenliği',
+                  title: 'Hesap Güvenliği'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -338,7 +339,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 _buildSettingsItem(
                   icon: Icons.policy,
-                  title: 'Gizlilik Politikası',
+                  title: 'Gizlilik Politikası'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -351,14 +352,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             _buildSettingsGroup(
-              title: 'Diğer',
+              title: 'Diğer'.tr(),
               items: [
                 _buildSettingsItem(
                   icon: Icons.info,
-                  title: 'Hakkımızda',
+                  title: 'Hakkımızda'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -370,7 +371,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 _buildSettingsItem(
                   icon: Icons.help_outline,
-                  title: 'Yardım Merkezi',
+                  title: 'Yardım Merkezi'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,

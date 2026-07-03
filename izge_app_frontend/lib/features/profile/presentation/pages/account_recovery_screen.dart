@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/contact_support_screen.dart';
 
@@ -66,15 +67,15 @@ class _AccountRecoveryScreenState extends State<AccountRecoveryScreen> {
                 // Verification Options
                 _buildRadioOption(
                   value: 'email',
-                  title: 'E-posta ile Doğrulama',
-                  subtitle: 'Sistemde kayıtlı e-posta adresinizle',
+                  title: 'E-posta ile Doğrulama'.tr(),
+                  subtitle: 'Sistemde kayıtlı e-posta adresinizle'.tr(),
                   icon: Icons.mail,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 _buildRadioOption(
                   value: 'sms',
-                  title: 'Kayıtlı Telefon Numarası ile SMS',
-                  subtitle: 'Kayıtlı numaranıza kod gönderilir',
+                  title: 'Kayıtlı Telefon Numarası ile SMS'.tr(),
+                  subtitle: 'Kayıtlı numaranıza kod gönderilir'.tr(),
                   icon: Icons.sms,
                 ),
                 const SizedBox(height: 32),

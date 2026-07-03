@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/services/supabase_service.dart';
@@ -26,7 +27,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Talep Durumu Sorgulama',
           style: TextStyle(
             fontSize: 20,
@@ -59,7 +60,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                 filled: true,
                 fillColor: AppColors.surfaceElevated, // surface-container-high
                 prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
-                hintText: 'Talep Numarası (Örn: TLP-12345)',
+                hintText: 'Talep Numarası (Örn: TLP-12345)'.tr(),
                 hintStyle: TextStyle(color: AppColors.textSecondary),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
@@ -100,7 +101,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen> {
                   } else {
                     messenger.showSnackBar(
                       SnackBar(
-                        content: Text('Talep bulunamadı. Lütfen numaranızı kontrol edin.'),
+                        content: Text('Talep bulunamadı. Lütfen numaranızı kontrol edin.'.tr()),
                         backgroundColor: AppColors.error,
                       ),
                     );

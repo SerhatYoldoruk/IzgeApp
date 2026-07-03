@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -186,7 +187,7 @@ class _ChangePhotoScreenState extends State<ChangePhotoScreen> {
               Center(
                 child: Column(
                   children: [
-                    const SizedBox(height: 32),
+                    SizedBox(height: 32),
                     Container(
                       width: 160,
                       height: 160,
@@ -242,25 +243,25 @@ class _ChangePhotoScreenState extends State<ChangePhotoScreen> {
                   children: [
                     _buildOptionCard(
                       icon: Icons.photo_camera,
-                      title: 'Fotoğraf Çek',
-                      subtitle: 'Kameranızı kullanarak yeni bir fotoğraf çekin',
+                      title: 'Fotoğraf Çek'.tr(),
+                      subtitle: 'Kameranızı kullanarak yeni bir fotoğraf çekin'.tr(),
                       iconBgColor: const Color(0xFF1A8025),
                       iconColor: const Color(0xFFD3FFC8),
                       onTap: () => _pickImage(ImageSource.camera),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     _buildOptionCard(
                       icon: Icons.image,
-                      title: 'Galeriden Seç',
-                      subtitle: 'Cihazınızdaki fotoğraflar arasından seçim yapın',
+                      title: 'Galeriden Seç'.tr(),
+                      subtitle: 'Cihazınızdaki fotoğraflar arasından seçim yapın'.tr(),
                       iconBgColor: AppColors.border,
                       iconColor: AppColors.textPrimary,
                       onTap: () => _pickImage(ImageSource.gallery),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                     _buildOptionCard(
                       icon: Icons.delete,
-                      title: 'Mevcut Fotoğrafı Kaldır',
+                      title: 'Mevcut Fotoğrafı Kaldır'.tr(),
                       subtitle: null,
                       iconBgColor: const Color(0xFF93000A).withOpacity(0.3),
                       iconColor: const Color(0xFFFFB4AB),

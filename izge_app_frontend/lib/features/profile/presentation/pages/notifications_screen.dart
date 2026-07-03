@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/services/supabase_service.dart';
@@ -32,7 +33,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Bildirimler işaretlenirken hata oluştu: $e')),
+          SnackBar(content: Text('Bildirimler işaretlenirken hata oluştu: $e'.tr())),
         );
       }
     }

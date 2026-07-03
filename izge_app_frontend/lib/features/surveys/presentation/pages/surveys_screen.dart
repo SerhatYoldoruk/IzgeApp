@@ -35,7 +35,7 @@ class SurveysScreen extends StatelessWidget {
               height: 44,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
+                shape: BoxShape.circle,
                 border: Border.all(color: AppColors.border),
                 boxShadow: [
                   BoxShadow(
@@ -45,9 +45,8 @@ class SurveysScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(4),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4),
+              padding: const EdgeInsets.all(8),
+              child: ClipOval(
                 child: Image.asset(
                   'assets/images/images/logo.jpeg',
                   fit: BoxFit.contain,
@@ -146,14 +145,16 @@ class SurveysScreen extends StatelessWidget {
                           ),
                         ),
                       ...activeSurveys.map((survey) {
+                        final hasVoted = state.votedPollIds.contains(survey.id);
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
                           child: _ActiveSurveyCard(
                             title: survey.title.tr(),
                             timeRemaining: survey.endDate != null 
-                              ? '${survey.endDate!.difference(DateTime.now()).inDays} ${'Gün Kaldı'.tr()}' 
+                              ? '${survey.endDate!.difference(DateTime.now()).inDays} ${"Gün Kaldı".tr()}' 
                               : 'Devam Ediyor'.tr(),
                             description: (survey.description ?? '').tr(),
+                            hasVoted: hasVoted,
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -173,7 +174,7 @@ class SurveysScreen extends StatelessWidget {
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       if (pastSurveys.isEmpty)
                         Text(
                           'Geçmiş anket bulunmuyor.'.tr(),
@@ -205,17 +206,21 @@ class _ActiveSurveyCard extends StatelessWidget {
   final String timeRemaining;
   final String description;
   final VoidCallback onTap;
+  final bool hasVoted;
 
   const _ActiveSurveyCard({
     required this.title,
     required this.timeRemaining,
     required this.description,
     required this.onTap,
+    this.hasVoted = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -272,29 +277,73 @@ class _ActiveSurveyCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            height: 52,
-            child: ElevatedButton(
-              onPressed: onTap,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accentDark,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+          if (hasVoted)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: AppColors.accent.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.accent.withOpacity(0.4)),
               ),
-              child: Text(
-                'Ankete Katıl'.tr(),
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.check_circle, color: AppColors.accent, size: 18),
+                  SizedBox(width: 8),
+                  Text(
+                    'Katıldın'.tr(),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.accent,
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Container(
+                    width: 1,
+                    height: 14,
+                    color: AppColors.accent.withOpacity(0.4),
+                  ),
+                  const SizedBox(width: 12),
+                  Icon(Icons.visibility_outlined, color: AppColors.accent, size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Cevabımı Gör'.tr(),
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.accent,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                onPressed: onTap,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accentDark,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  'Ankete Katıl'.tr(),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
+    ),
     );
   }
 }

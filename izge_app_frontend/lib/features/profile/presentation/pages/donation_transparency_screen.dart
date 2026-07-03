@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class DonationTransparencyScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class DonationTransparencyScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'İzge App',
           style: TextStyle(
             fontSize: 24,
@@ -56,11 +57,11 @@ class DonationTransparencyScreen extends StatelessWidget {
             // Bento Grid Infographic
             _buildLargeCard(
               icon: Icons.medical_services,
-              title: 'Tıbbi Cihazlar',
-              subtitle: 'Hayati ekipman alımları',
+              title: 'Tıbbi Cihazlar'.tr(),
+              subtitle: 'Hayati ekipman alımları'.tr(),
               percentage: 40,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             
             LayoutBuilder(
               builder: (context, constraints) {
@@ -69,16 +70,16 @@ class DonationTransparencyScreen extends StatelessWidget {
                     Expanded(
                       child: _buildSmallCard(
                         icon: Icons.school,
-                        title: 'Eğitim',
-                        subtitle: 'Burslar ve eğitim materyalleri',
+                        title: 'Eğitim'.tr(),
+                        subtitle: 'Burslar ve eğitim materyalleri'.tr(),
                         percentage: 30,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16),
                     Expanded(
                       child: _buildSmallCard(
                         icon: Icons.psychology,
-                        title: 'Danışmanlık',
+                        title: 'Danışmanlık'.tr(),
                         subtitle: 'Psikolojik ve hukuki destek',
                         percentage: 20,
                       ),

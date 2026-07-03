@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class LinkedAccountsScreen extends StatelessWidget {
@@ -52,29 +53,29 @@ class LinkedAccountsScreen extends StatelessWidget {
               isLinked: true,
               subtitleColor: AppColors.accent,
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Bağlantı kesildi')));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Bağlantı kesildi'.tr())));
               },
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             
             _buildLinkedAccount(
               icon: Icons.facebook,
               title: 'Facebook',
-              subtitle: 'Bağlı değil',
+              subtitle: 'Bağlı değil'.tr(),
               isLinked: false,
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Hesap bağlandı')));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Hesap bağlandı'.tr())));
               },
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             
             _buildLinkedAccount(
               icon: Icons.camera_alt,
               title: 'Instagram',
-              subtitle: 'Bağlı değil',
+              subtitle: 'Bağlı değil'.tr(),
               isLinked: false,
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Hesap bağlandı')));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Hesap bağlandı'.tr())));
               },
             ),
             

@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/support_success_screen.dart';
 
@@ -24,7 +25,7 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
           icon: Icon(Icons.arrow_back, color: AppColors.textSecondary),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Teknik Destek',
           style: TextStyle(
             fontSize: 24,
@@ -90,12 +91,12 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
                   dropdownColor: AppColors.border,
                   icon: Icon(Icons.keyboard_arrow_down, color: AppColors.textSecondary),
                   style: TextStyle(color: AppColors.textPrimary, fontSize: 16),
-                  items: const [
-                    DropdownMenuItem(value: 'hesap', child: Text('Hesap İşlemleri ve Profil')),
-                    DropdownMenuItem(value: 'etkinlik', child: Text('Etkinlik Katılımı / İptali')),
-                    DropdownMenuItem(value: 'bagis', child: Text('Bağış ve Ödeme Sorunları')),
-                    DropdownMenuItem(value: 'uygulama', child: Text('Uygulama İçi Hata (Bug)')),
-                    DropdownMenuItem(value: 'diger', child: Text('Farklı Bir Konu')),
+                  items: [
+                    DropdownMenuItem(value: 'hesap', child: Text('Hesap İşlemleri ve Profil'.tr())),
+                    DropdownMenuItem(value: 'etkinlik', child: Text('Etkinlik Katılımı / İptali'.tr())),
+                    DropdownMenuItem(value: 'bagis', child: Text('Bağış ve Ödeme Sorunları'.tr())),
+                    DropdownMenuItem(value: 'uygulama', child: Text('Uygulama İçi Hata (Bug)'.tr())),
+                    DropdownMenuItem(value: 'diger', child: Text('Farklı Bir Konu'.tr())),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -129,7 +130,7 @@ class _OtherIssuesScreenState extends State<OtherIssuesScreen> {
                 maxLines: 6,
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Yaşadığınız sorunu, ne yaparken karşılaştığınızı ve ek detayları buraya yazabilirsiniz...',
+                  hintText: 'Yaşadığınız sorunu, ne yaparken karşılaştığınızı ve ek detayları buraya yazabilirsiniz...'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary.withOpacity(0.7)),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.all(20),

@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/support_success_screen.dart';
 
@@ -17,7 +18,7 @@ class BugReportSupportScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Destek Merkezi',
           style: TextStyle(
             fontSize: 20,
@@ -71,11 +72,11 @@ class BugReportSupportScreen extends StatelessWidget {
                         dropdownColor: AppColors.surfaceElevated,
                         style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w500),
                         icon: Icon(Icons.expand_more, color: AppColors.textSecondary),
-                        items: const [
-                          DropdownMenuItem(value: 'crash', child: Text('Uygulama Çökmesi')),
-                          DropdownMenuItem(value: 'freeze', child: Text('Donma / Takılma')),
-                          DropdownMenuItem(value: 'data', child: Text('Yanlış Veri Gösterimi')),
-                          DropdownMenuItem(value: 'other', child: Text('Diğer')),
+                        items: [
+                          DropdownMenuItem(value: 'crash', child: Text('Uygulama Çökmesi'.tr())),
+                          DropdownMenuItem(value: 'freeze', child: Text('Donma / Takılma'.tr())),
+                          DropdownMenuItem(value: 'data', child: Text('Yanlış Veri Gösterimi'.tr())),
+                          DropdownMenuItem(value: 'other', child: Text('Diğer'.tr())),
                         ],
                         onChanged: (value) {},
                       ),
@@ -95,7 +96,7 @@ class BugReportSupportScreen extends StatelessWidget {
                       maxLines: 5,
                       style: TextStyle(color: AppColors.textPrimary),
                       decoration: InputDecoration(
-                        hintText: 'Hatayı nasıl ve nerede aldığınızı detaylıca açıklayın...',
+                        hintText: 'Hatayı nasıl ve nerede aldığınızı detaylıca açıklayın...'.tr(),
                         hintStyle: TextStyle(color: AppColors.textSecondary),
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.all(16),

@@ -12,6 +12,7 @@ import 'core/localization/language_controller.dart';
 import 'core/state/activity_state.dart';
 import 'package:izge_app_frontend/core/accessibility/accessibility_controller.dart';
 import 'package:izge_app_frontend/core/services/tts_service.dart';
+import 'package:izge_app_frontend/core/services/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +34,8 @@ Future<void> main() async {
     if (kDebugMode) {
       _runSupabaseTest();
     }
+    // Initialize Notification Service
+    NotificationService.instance.initialize();
   });
 
   runApp(IzgeApp(initialization: initFuture));

@@ -94,106 +94,113 @@ class LoadingOverlay extends StatelessWidget {
                           ),
                           child: Material(
                             color: Colors.transparent,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Animasyonlu logo ve yükleme göstergesi
-                              Stack(
-                                alignment: Alignment.center,
+                            child: DefaultTextStyle.merge(
+                              style: const TextStyle(
+                                decoration: TextDecoration.none,
+                                decorationColor: Colors.transparent,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  // Yeşil glow efekti
-                                  Container(
-                                    width: 92,
-                                    height: 92,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color(0xFF7ADC75).withOpacity(0.15),
-                                          blurRadius: 30,
-                                          spreadRadius: 5,
+                                  // Animasyonlu logo ve yükleme göstergesi
+                                  Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      // Yeşil glow efekti
+                                      Container(
+                                        width: 92,
+                                        height: 92,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color(0xFF7ADC75).withOpacity(0.15),
+                                              blurRadius: 30,
+                                              spreadRadius: 5,
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  // Dönen yükleme göstergesi
-                                  const SizedBox(
-                                    height: 84,
-                                    width: 84,
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xFF7ADC75), // Yeşil renk — sarı değil!
-                                      strokeWidth: 2.5,
-                                      strokeCap: StrokeCap.round,
-                                    ),
-                                  ),
-                                  // Logo
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.3),
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 3),
+                                      ),
+                                      // Dönen yükleme göstergesi
+                                      const SizedBox(
+                                        height: 84,
+                                        width: 84,
+                                        child: CircularProgressIndicator(
+                                          color: Color(0xFF7ADC75),
+                                          strokeWidth: 2.5,
+                                          strokeCap: StrokeCap.round,
                                         ),
-                                      ],
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(14),
-                                      child: Image.asset(
-                                        'assets/images/images/logo.jpeg',
-                                        width: 56,
-                                        height: 56,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (context, error, stackTrace) {
-                                          return Container(
+                                      ),
+                                      // Logo
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(0.3),
+                                              blurRadius: 10,
+                                              offset: const Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: ClipOval(
+                                          child: Image.asset(
+                                            'assets/images/images/logo.jpeg',
                                             width: 56,
                                             height: 56,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF1A3A1D),
-                                              borderRadius: BorderRadius.circular(14),
-                                            ),
-                                            child: const Icon(
-                                              Icons.eco,
-                                              color: Color(0xFF7ADC75),
-                                              size: 28,
-                                            ),
-                                          );
-                                        },
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return Container(
+                                                width: 56,
+                                                height: 56,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFF1A3A1D),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.eco,
+                                                  color: Color(0xFF7ADC75),
+                                                  size: 28,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
+
+                                  // Mesaj metni
+                                  if (message != null) ...[
+                                    const SizedBox(height: 28),
+                                    Text(
+                                      message!,
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        letterSpacing: 0.3,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      'Lütfen bekleyin...',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xFF8CC98A),
+                                        letterSpacing: 0.2,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ],
                               ),
-
-                              // Mesaj metni
-                              if (message != null) ...[
-                                const SizedBox(height: 28),
-                                Text(
-                                  message!,
-                                  style: const TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                    letterSpacing: 0.3,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 8),
-                                const Text(
-                                  'Lütfen bekleyin...',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF8CC98A), // Açık yeşilimsi — okunabilir
-                                    letterSpacing: 0.2,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ],
+                            ),
                           ),
-                        ),
                         ),
                       ),
                     ),

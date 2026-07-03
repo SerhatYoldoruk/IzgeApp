@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class EditMonthlyDonationScreen extends StatefulWidget {
@@ -157,7 +158,7 @@ class _EditMonthlyDonationScreenState extends State<EditMonthlyDonationScreen> {
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: const Text(
+                    child: Text(
                       'Değiştir',
                       style: TextStyle(
                         fontSize: 14,
@@ -179,8 +180,8 @@ class _EditMonthlyDonationScreenState extends State<EditMonthlyDonationScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Bağış tutarı başarıyla güncellendi.'),
+                    SnackBar(
+                      content: Text('Bağış tutarı başarıyla güncellendi.'.tr()),
                       backgroundColor: Color(0xFF1A8025), // primary-container
                     ),
                   );

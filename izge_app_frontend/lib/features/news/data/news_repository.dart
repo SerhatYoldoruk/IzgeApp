@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import '../domain/models/news_article.dart';
 
 class NewsRepository {
@@ -10,23 +11,23 @@ class NewsRepository {
         'Projeler',
       ];
 
-  List<NewsArticle> get articles => const [
+  List<NewsArticle> get articles => [
         NewsArticle(
-          title: 'Yıllık Genel Kurul Toplantısı',
+          title: 'Yıllık Genel Kurul Toplantısı'.tr(),
           date: '12 Ekim 2023',
           summary: 'Derneğimizin yeni dönem hedefleri belirlendi...',
           imageAsset: 'assets/images/images/news_main.png',
           tag: 'Duyuru',
         ),
         NewsArticle(
-          title: 'Gelecek İçin Fidan Dikim Etkinliğimiz',
+          title: 'Gelecek İçin Fidan Dikim Etkinliğimiz'.tr(),
           date: '5 Ekim 2023',
           summary: 'Topluma açık gönüllü etkinliğimiz başarıyla tamamlandı.',
           imageAsset: 'assets/images/images/news_thumb.png',
           tag: 'Etkinlik',
         ),
         NewsArticle(
-          title: 'Yeni Toplum Merkezi İnşaatı',
+          title: 'Yeni Toplum Merkezi İnşaatı'.tr(),
           date: '5 Ekim 2023',
           summary: 'Bölge sakinleri için yeni merkez projesi başlatıldı.',
           imageAsset: 'assets/images/images/news_thumb.png',

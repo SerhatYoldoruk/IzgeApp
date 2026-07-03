@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
 class CancelMonthlyDonationScreen extends StatelessWidget {
@@ -43,7 +44,7 @@ class CancelMonthlyDonationScreen extends StatelessWidget {
                             color: const Color(0xFF93000A).withOpacity(0.1), // error-container with opacity
                             shape: BoxShape.circle,
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Icon(
                               Icons.cancel_schedule_send,
                               color: Color(0xFFFFB4AB), // error
@@ -109,8 +110,8 @@ class CancelMonthlyDonationScreen extends StatelessWidget {
                               child: OutlinedButton(
                                 onPressed: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Aylık bağışınız iptal edilmiştir.'),
+                                    SnackBar(
+                                      content: Text('Aylık bağışınız iptal edilmiştir.'.tr()),
                                       backgroundColor: Color(0xFF93000A), // error-container
                                     ),
                                   );

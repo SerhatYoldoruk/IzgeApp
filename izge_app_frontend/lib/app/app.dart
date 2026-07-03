@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/login_screen.dart';
@@ -89,7 +90,7 @@ class _IzgeAppState extends State<IzgeApp> {
           ],
           child: MaterialApp(
             navigatorKey: navigatorKey,
-            title: 'İzge App',
+            title: 'İzge App'.tr(),
             debugShowCheckedModeBanner: false,
             theme: AppTheme.light(),
             darkTheme: AppTheme.dark(),

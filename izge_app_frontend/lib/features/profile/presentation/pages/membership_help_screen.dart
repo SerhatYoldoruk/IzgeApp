@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/membership_cancellation_screen.dart';
@@ -21,7 +22,7 @@ class MembershipHelpScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF7ADC75)), // primary
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Üyelik İşlemleri',
           style: TextStyle(
             fontSize: 24,
@@ -52,7 +53,7 @@ class MembershipHelpScreen extends StatelessWidget {
               child: TextField(
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Nasıl yardımcı olabiliriz?',
+                  hintText: 'Nasıl yardımcı olabiliriz?'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
                   filled: true,

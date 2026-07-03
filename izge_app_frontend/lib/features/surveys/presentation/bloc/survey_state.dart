@@ -14,11 +14,12 @@ class SurveyLoading extends SurveyState {}
 
 class SurveyLoaded extends SurveyState {
   final List<PollModel> surveys;
+  final Set<String> votedPollIds;
 
-  const SurveyLoaded(this.surveys);
+  const SurveyLoaded(this.surveys, {this.votedPollIds = const <String>{}});
 
   @override
-  List<Object?> get props => [surveys];
+  List<Object?> get props => [surveys, votedPollIds];
 }
 
 class SurveyError extends SurveyState {

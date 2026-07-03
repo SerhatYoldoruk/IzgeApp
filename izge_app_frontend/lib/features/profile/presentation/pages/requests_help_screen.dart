@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/request_status_screen.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/new_request_types_screen.dart';
@@ -63,7 +64,7 @@ class RequestsHelpScreen extends StatelessWidget {
                   context: context,
                   icon: Icons.sync,
                   title: 'Talep Durumu Sorgulama',
-                  subtitle: 'Mevcut taleplerinizin hangi aşamada olduğunu nasıl öğrenebilirsiniz?',
+                  subtitle: 'Mevcut taleplerinizin hangi aşamada olduğunu nasıl öğrenebilirsiniz?'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -75,8 +76,8 @@ class RequestsHelpScreen extends StatelessWidget {
                 final card2 = _buildTopicCard(
                   context: context,
                   icon: Icons.add_circle,
-                  title: 'Yeni Talep Türleri',
-                  subtitle: 'Sisteme yeni eklenen hizmet talebi kategorileri ve başvuru süreçleri.',
+                  title: 'Yeni Talep Türleri'.tr(),
+                  subtitle: 'Sisteme yeni eklenen hizmet talebi kategorileri ve başvuru süreçleri.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -89,7 +90,7 @@ class RequestsHelpScreen extends StatelessWidget {
                   context: context,
                   icon: Icons.build,
                   title: 'Sorun Giderme',
-                  subtitle: 'Talep oluştururken hata alıyorsanız, belgeleriniz yüklenmiyorsa veya uygulamanın çökmesi durumunda izlenecek adımlar.',
+                  subtitle: 'Talep oluştururken hata alıyorsanız, belgeleriniz yüklenmiyorsa veya uygulamanın çökmesi durumunda izlenecek adımlar.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -102,8 +103,8 @@ class RequestsHelpScreen extends StatelessWidget {
                 final card4 = _buildTopicCard(
                   context: context,
                   icon: Icons.history,
-                  title: 'Geçmiş Talepler',
-                  subtitle: 'Tamamlanmış veya iptal edilmiş taleplerinizin arşivine erişim.',
+                  title: 'Geçmiş Talepler'.tr(),
+                  subtitle: 'Tamamlanmış veya iptal edilmiş taleplerinizin arşivine erişim.'.tr(),
                   onTap: () {
                     Navigator.push(
                       context,

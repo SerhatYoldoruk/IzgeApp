@@ -197,7 +197,7 @@ class _DevelopmentAssessmentScreenState extends State<DevelopmentAssessmentScree
                     );
                   }),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   
                   // Notes (Only on last step)
                   if (isLastStep) ...[
@@ -209,12 +209,12 @@ class _DevelopmentAssessmentScreenState extends State<DevelopmentAssessmentScree
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     TextField(
                       controller: _notesController,
                       maxLines: 4,
                       decoration: InputDecoration(
-                        hintText: 'Bu ayki gözlemlerinizi yazabilirsiniz...'.tr(),
+                        hintText: 'Bu ayki gözlemlerinizi yazabilirsiniz...'.tr().tr(),
                         filled: true,
                         fillColor: AppColors.surfaceElevated,
                         border: OutlineInputBorder(

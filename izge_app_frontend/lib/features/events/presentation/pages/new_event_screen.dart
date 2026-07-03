@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/events/presentation/pages/event_success_screen.dart';
 
@@ -64,7 +65,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
             ),
             SizedBox(height: 8),
             _buildTextField('Örn: Yıllık Geleneksel Orman Kampı'),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Etkinlik Türü
             Text(
@@ -86,12 +87,12 @@ class _NewEventScreenState extends State<NewEventScreen> {
                   dropdownColor: AppColors.surface,
                   style: TextStyle(color: AppColors.textPrimary, fontSize: 16),
                   icon: Icon(Icons.keyboard_arrow_down, color: AppColors.textSecondary),
-                  items: const [
+                  items: [
                     DropdownMenuItem(value: 'seminar', child: Text('Seminer')),
-                    DropdownMenuItem(value: 'workshop', child: Text('Atölye')),
+                    DropdownMenuItem(value: 'workshop', child: Text('Atölye'.tr())),
                     DropdownMenuItem(value: 'planting', child: Text('Fidan Dikimi')),
                     DropdownMenuItem(value: 'festival', child: Text('Festival')),
-                    DropdownMenuItem(value: 'other', child: Text('Diğer')),
+                    DropdownMenuItem(value: 'other', child: Text('Diğer'.tr())),
                   ],
                   onChanged: (value) {},
                 ),
@@ -167,7 +168,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
             _buildTextField(
               _isOnline ? 'Online toplantı linkini giriniz (Zoom, Meet vb.)' : 'Açık adres veya link giriniz',
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Açıklama
             Text(
@@ -185,7 +186,7 @@ class _NewEventScreenState extends State<NewEventScreen> {
                 maxLines: 4,
                 style: TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  hintText: 'Etkinliğin amacı, hedef kitlesi ve beklentilerinizi detaylandırın...',
+                  hintText: 'Etkinliğin amacı, hedef kitlesi ve beklentilerinizi detaylandırın...'.tr(),
                   hintStyle: TextStyle(color: AppColors.textSecondary),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(16),

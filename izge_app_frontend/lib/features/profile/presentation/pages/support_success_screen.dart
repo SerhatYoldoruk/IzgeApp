@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'package:izge_app_frontend/core/localization/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/help_center_screen.dart';
 
@@ -159,21 +160,21 @@ class _SupportSuccessScreenState extends State<SupportSuccessScreen> with Single
                                           _buildStep(
                                             active: true,
                                             completed: true,
-                                            label: 'Alındı',
+                                            label: 'Alındı'.tr(),
                                             labelColor: const Color(0xFF7ADC75), // primary
                                           ),
                                           // Step 2
                                           _buildStep(
                                             active: true,
                                             completed: false,
-                                            label: 'İşleniyor',
+                                            label: 'İşleniyor'.tr(),
                                             labelColor: AppColors.textPrimary,
                                           ),
                                           // Step 3
                                           _buildStep(
                                             active: false,
                                             completed: false,
-                                            label: 'Tamamlandı',
+                                            label: 'Tamamlandı'.tr(),
                                             labelColor: AppColors.textSecondary,
                                           ),
                                         ],

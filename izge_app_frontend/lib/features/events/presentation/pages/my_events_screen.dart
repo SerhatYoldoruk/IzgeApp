@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
@@ -42,7 +43,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
               decoration: BoxDecoration(
                 color: AppColors.surfaceElevated, // surface-container-low
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.border.withValues(alpha: 0.3)),
+                border: Border.all(color: AppColors.border.withOpacity(0.3)),
               ),
               child: Row(
                 children: [
@@ -93,12 +94,12 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
 
             // Event List
             if (_isUpcoming) ...[
               _buildEventCard(
-                title: 'Gönüllü Oryantasyonu',
+                title: 'Gönüllü Oryantasyonu'.tr(),
                 date: '30 Haziran, 10:00',
                 location: 'Online (Zoom)',
                 locationIcon: Icons.videocam,
@@ -107,32 +108,32 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
               ),
             ] else ...[
               _buildPastEventCard(
-                title: 'Engelsiz Sanat Atölyesi',
+                title: 'Engelsiz Sanat Atölyesi'.tr(),
                 date: '25 Haziran, 14:00',
                 location: 'Dernek Merkezi',
                 imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGTs43uEzKfQgQaDQCaRtBQu_Oth0Aus6SBD3WB_IeRinE7kd5inHcu7C37POlGSXRA-wlxEqOdzzFcseR8IVUgkBv4ZKZPoh8V-cRqUVn4b712z65k7Jjps9foZlIzOJwddroLVQiFcaKfoszvnWn8cCFzDPDaot50L45ND8Yppji874rEXsIgCbh8FjQ07ho7D882dVMc8hh3WxOZxVl-Avi8b_1WlICdaRaU5necZ1fhIcKzHoFZZvFHmE1Zf19LO_8fM46yO9R',
                 status: 'Katıldı',
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildPastEventCard(
-                title: 'Erişilebilirlik Zirvesi 2023',
+                title: 'Erişilebilirlik Zirvesi 2023'.tr(),
                 date: '15 Mayıs, 10:00',
                 location: 'İstanbul Kültür Merkezi',
                 imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBoCBOPjMbkzEing5qM6DKlzUxW-28zD8K53cSh8_pX3XOBqqSFuFqf91qPL8rJUBStOCgJOU-BJPCYIYowRyg15xL_9W29Fdvr8TPfMLOP9CDGpAl2mJBcejd9FR_SrycHf-R80U8QfB-A7YKyMhRXNA9A_pyHzBA7i7gcGaepCq3CXvZO_V4rd-wYluvWzB1rG1ATJ5jnda_TxHWY559eMQ-caafirhJlupoQ5j5H5oOk42ODKJ_GytC-QLkSMiOLMCJuMAWWdgc6',
                 status: 'Katıldı',
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildPastEventCard(
-                title: 'Engelsiz Basketbol Turnuvası',
+                title: 'Engelsiz Basketbol Turnuvası'.tr(),
                 date: '2 Nisan, 14:30',
                 location: 'Atatürk Spor Kompleksi',
                 locationIcon: Icons.sports_score,
                 imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC1jXOtHy9xj4KDHw0FCQUM2f-m0xEWqic8QsRrs0dY94HNlJSW1QqLW89y-0Z38FpTIAxpDOMGNQIi9D8rFsYwbmUbiiF3iH-zQwrjjZJ3vyjgzBbwmP9Q_rBeg0AyxrAn8f1G3IOPfEHwqBBJK0rDZBjy7Te5A3rMbb5zsKjrDrUMc9ACnFfRuTzQiE9lQm_0q6W4wlRNw6fGx_dTOxf1O6_DCNICJBEMGv_5lSgEx2Zgq9UBCZuwkHPA305NfJCzNWYSt_ST_Rks',
                 status: 'Tamamlandı',
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _buildPastEventCard(
-                title: 'Dijital Okuryazarlık Atölyesi',
+                title: 'Dijital Okuryazarlık Atölyesi'.tr(),
                 date: '12 Mart, 19:00',
                 location: 'Online (Zoom)',
                 locationIcon: Icons.laptop_mac,
@@ -158,10 +159,10 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
       decoration: BoxDecoration(
         color: AppColors.surface, // surface-container
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border.withValues(alpha: 0.2)),
+        border: Border.all(color: AppColors.border.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -196,7 +197,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: [
-                        Colors.black.withValues(alpha: 0.8),
+                        Colors.black.withOpacity(0.8),
                         Colors.transparent,
                       ],
                     ),
@@ -313,7 +314,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
+            color: Colors.black.withOpacity(0.15),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -362,7 +363,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.accent.withValues(alpha: 0.2), // primary-fixed-dim/20
+                        color: AppColors.accent.withOpacity(0.2), // primary-fixed-dim/20
                         borderRadius: BorderRadius.circular(999),
                       ),
                       child: Row(

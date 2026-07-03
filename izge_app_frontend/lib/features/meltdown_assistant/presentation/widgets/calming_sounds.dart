@@ -69,7 +69,7 @@ class _CalmingSoundsState extends State<CalmingSounds> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Ses dosyası henüz yüklenmemiş: $path'),
+              content: Text('Ses dosyası henüz yüklenmemiş: $path'.tr()),
               backgroundColor: Colors.orange,
             )
           );
@@ -101,7 +101,7 @@ class _CalmingSoundsState extends State<CalmingSounds> {
             color: AppColors.textPrimary,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
           'Duyusal aşırı yüklenmeyi azaltmak için arka planda sürekli çalan sakinleştirici sesler.'.tr(),
           style: TextStyle(

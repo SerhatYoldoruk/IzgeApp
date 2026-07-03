@@ -138,7 +138,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   }).toList(),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               TextField(
                 controller: _titleController,
                 style: TextStyle(
@@ -147,9 +147,9 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   fontWeight: FontWeight.bold,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Sorunuzun başlığı nedir?'.tr(),
+                  hintText: 'Sorunuzun başlığı nedir?'.tr().tr(),
                   hintStyle: TextStyle(
-                    color: AppColors.textSecondary.withValues(alpha: 0.5),
+                    color: AppColors.textSecondary.withOpacity(0.5),
                   ),
                   border: InputBorder.none,
                 ),
@@ -165,9 +165,9 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     fontSize: 16,
                   ),
                   decoration: InputDecoration(
-                    hintText: 'Sorunuzun detaylarını veya paylaşmak istediğiniz konuyu buraya yazabilirsiniz...'.tr(),
+                    hintText: 'Sorunuzun detaylarını veya paylaşmak istediğiniz konuyu buraya yazabilirsiniz...'.tr().tr(),
                     hintStyle: TextStyle(
-                      color: AppColors.textSecondary.withValues(alpha: 0.5),
+                      color: AppColors.textSecondary.withOpacity(0.5),
                     ),
                     border: InputBorder.none,
                   ),
@@ -194,14 +194,14 @@ class _NewPostScreenState extends State<NewPostScreen> {
                       child: GestureDetector(
                         onTap: () => setState(() => _selectedImage = null),
                         child: CircleAvatar(
-                          backgroundColor: Colors.black.withValues(alpha: 0.5),
+                          backgroundColor: Colors.black.withOpacity(0.5),
                           child: const Icon(Icons.close, color: Colors.white),
                         ),
                       ),
                     ),
                   ],
                 ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Row(
                 children: [
                   IconButton(

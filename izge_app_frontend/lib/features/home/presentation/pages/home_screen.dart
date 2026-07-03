@@ -264,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // Hızlı İşlemler
                   Row(
@@ -272,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       _QuickActionBtn(
                         icon: Icons.volunteer_activism,
-                        label: 'Bağış Yap'.tr(),
+                        label: 'Bağış Yap'.tr().tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -296,7 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       _QuickActionBtn(
                         icon: Icons.lightbulb_outline,
-                        label: 'Bilgiler',
+                        label: 'Bilgiler'.tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -320,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // Günlük Bilgi Kartı Banneri
                   _DailyInfoCardBanner(),
@@ -328,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   // Öne Çıkanlar Section
                   _SectionHeader(
-                    title: 'Öne Çıkanlar'.tr(),
+                    title: 'Öne Çıkanlar'.tr().tr(),
                     actionLabel: 'Hepsini Gör'.tr(),
                     onActionTap: () {
                       Navigator.push(
@@ -393,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // Talepler Section
                   _SectionHeader(
@@ -476,7 +476,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       child: Icon(reqIcon, color: AppColors.accent, size: 20),
                                     ),
-                                    const SizedBox(width: 16),
+                                    SizedBox(width: 16),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -517,11 +517,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // Yaklaşan Etkinlikler Section
                   _SectionHeader(
-                    title: 'Yaklaşan Etkinlikler'.tr(),
+                    title: 'Yaklaşan Etkinlikler'.tr().tr(),
                     actionLabel: 'Tümünü Gör'.tr(),
                     onActionTap: () {
                       Navigator.push(
@@ -603,7 +603,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const SizedBox();
                     },
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // Anketler Section
                   Text(
@@ -684,7 +684,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const SizedBox();
                     },
                   ),
-                  const SizedBox(height: 48),
+                  SizedBox(height: 48),
 
                   // Social Links Section
                   Center(
@@ -909,7 +909,7 @@ class _LiveSupportCard extends StatelessWidget {
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Text(
                       'Size yardımcı olmak için buradayız. Hemen sohbete başlayın.'
                           .tr(),
@@ -918,7 +918,7 @@ class _LiveSupportCard extends StatelessWidget {
                         color: AppColors.textSecondary,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     ElevatedButton.icon(
                       onPressed: onActionTap,
                       style: ElevatedButton.styleFrom(

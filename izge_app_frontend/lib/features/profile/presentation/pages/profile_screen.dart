@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Text(
                               name,
                               style: TextStyle(
@@ -294,7 +294,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.surface,
@@ -311,7 +311,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       _buildListTile(
                         icon: Icons.person,
-                        title: 'Kişisel Bilgiler'.tr(),
+                        title: 'Kişisel Bilgiler'.tr().tr(),
                         onTap: () async {
                           // DÜZELTİLDİ: Burası zaten await'liydi, tetikleme mekanizması tıkır tıkır çalışacak
                           await Navigator.push(
@@ -326,7 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildDivider(),
                       _buildListTile(
                         icon: Icons.volunteer_activism,
-                        title: 'Bağış Geçmişim'.tr(),
+                        title: 'Bağış Geçmişim'.tr().tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -340,7 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _buildDivider(),
                       _buildListTile(
                         icon: Icons.event_available,
-                        title: 'Etkinlik Katılımlarım'.tr(),
+                        title: 'Etkinlik Katılımlarım'.tr().tr(),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -366,7 +366,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.surface,
@@ -383,7 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       _buildListTile(
                         icon: Icons.accessibility_new,
-                        title: 'Erişilebilirlik'.tr(),
+                        title: 'Erişilebilirlik'.tr().tr(),
                         onTap: () async {
                           await Navigator.push(
                             context,

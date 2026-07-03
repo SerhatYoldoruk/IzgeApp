@@ -209,7 +209,7 @@ class _SplashScreenState extends State<SplashScreen>
                               builder: (context, val, child) {
                                 return Transform.scale(
                                   scale: 0.6 + (val * 0.4),
-                                  child: Opacity(opacity: val, child: child),
+                                  child: Opacity(opacity: val.clamp(0.0, 1.0), child: child),
                                 );
                               },
                               child: Container(
@@ -240,12 +240,11 @@ class _SplashScreenState extends State<SplashScreen>
                                   ],
                                 ),
                                 child: ClipOval(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Image.asset(
-                                      'assets/images/images/logo.jpeg',
-                                      fit: BoxFit.contain,
-                                    ),
+                                  child: Image.asset(
+                                    'assets/images/images/logo.jpeg',
+                                    fit: BoxFit.cover,
+                                    width: 130,
+                                    height: 130,
                                   ),
                                 ),
                               ),

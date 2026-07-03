@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 
@@ -16,7 +17,7 @@ class RightsObligationsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Color(0xFF96F98E)), // primary-fixed
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           'Haklar ve Yükümlülükler',
           style: TextStyle(
             fontSize: 20,
@@ -61,13 +62,13 @@ class RightsObligationsScreen extends StatelessWidget {
             _buildSectionHeader(Icons.gavel, 'Temel Haklar', const Color(0xFF7ADC75)),
             const SizedBox(height: 16),
             _buildInfoCard(
-              title: 'Genel Kurul ve Oy Hakkı',
+              title: 'Genel Kurul ve Oy Hakkı'.tr(),
               description: 'Tüm asil üyeler genel kurula katılma, söz alma ve dernek organları için oy kullanma hakkına sahiptir.',
               icon: Icons.how_to_vote,
               colorScheme: const Color(0xFF1A8025), // primary-container
               iconColor: const Color(0xFF96F98E), // primary-fixed
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             _buildInfoCard(
               title: 'Bilgi Edinme',
               description: 'Üyeler, derneğin faaliyetleri, mali durumu ve alınan kararlar hakkında düzenli olarak bilgilendirilme hakkına sahiptir.',
@@ -82,7 +83,7 @@ class RightsObligationsScreen extends StatelessWidget {
             _buildSectionHeader(Icons.assignment_ind, 'Yükümlülükler', AppColors.textSecondary),
             SizedBox(height: 16),
             _buildInfoCard(
-              title: 'Tüzüğe Uygunluk',
+              title: 'Tüzüğe Uygunluk'.tr(),
               description: 'Her üye dernek tüzüğüne, genel kurul ve yönetim kurulu kararlarına uymakla yükümlüdür.',
               icon: Icons.menu_book,
               colorScheme: AppColors.surfaceElevated, // secondary-container
@@ -90,7 +91,7 @@ class RightsObligationsScreen extends StatelessWidget {
             ),
             SizedBox(height: 12),
             _buildInfoCard(
-              title: 'Aidat Sorumluluğu',
+              title: 'Aidat Sorumluluğu'.tr(),
               description: 'Üyeler, genel kurul tarafından belirlenen üyelik aidatlarını zamanında ödemekle yükümlüdür. Aksi halde üyelik askıya alınabilir.',
               icon: Icons.payments,
               colorScheme: AppColors.surfaceElevated, // secondary-container
@@ -98,7 +99,7 @@ class RightsObligationsScreen extends StatelessWidget {
             ),
             SizedBox(height: 12),
             _buildInfoCard(
-              title: 'Dernek İtibarını Koruma',
+              title: 'Dernek İtibarını Koruma'.tr(),
               description: 'Üyeler, derneğin vizyon ve misyonuna aykırı davranışlardan kaçınmalı ve derneğin itibarını zedeleyici faaliyetlerde bulunmamalıdır.',
               icon: Icons.verified_user,
               colorScheme: AppColors.surfaceElevated, // secondary-container

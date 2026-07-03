@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/features/profile/presentation/pages/live_support_screen.dart';
@@ -92,8 +93,8 @@ class MembershipCancellationScreen extends StatelessWidget {
                 final isWide = constraints.maxWidth > 600;
                 void freezeOnTap() {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Üyeliğiniz donduruldu. İstediğiniz zaman tekrar aktif edebilirsiniz.'),
+                    SnackBar(
+                      content: Text('Üyeliğiniz donduruldu. İstediğiniz zaman tekrar aktif edebilirsiniz.'.tr()),
                       backgroundColor: Color(0xFF1A8025),
                     ),
                   );
@@ -242,7 +243,7 @@ class MembershipCancellationScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pop(dialogContext);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('İptal talebiniz alınmıştır. 3 iş günü içerisinde işleme alınacaktır.'), backgroundColor: Color(0xFF93000A)),
+                SnackBar(content: Text('İptal talebiniz alınmıştır. 3 iş günü içerisinde işleme alınacaktır.'.tr()), backgroundColor: Color(0xFF93000A)),
               );
               Navigator.pop(context);
             },

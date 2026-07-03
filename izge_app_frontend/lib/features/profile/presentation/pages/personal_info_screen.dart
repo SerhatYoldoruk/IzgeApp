@@ -140,7 +140,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           content: Row(
             children: [
               const Icon(Icons.check_circle, color: Colors.white),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Text('Bilgileriniz başarıyla kaydedildi!'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
@@ -408,7 +408,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text(
                             'Fotoğrafı Değiştir'.tr(),
                             style: TextStyle(
@@ -421,14 +421,14 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
                   _buildInputField(
                     label: 'Ad Soyad'.tr(),
                     icon: Icons.person,
                     controller: _nameController,
-                    hintText: 'Adınız Soyadınız'.tr(),
+                    hintText: 'Adınız Soyadınız'.tr().tr(),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _buildInputField(
                     label: 'E-posta'.tr(),
                     icon: Icons.mail,
@@ -437,7 +437,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     keyboardType: TextInputType.emailAddress,
                     readOnly: true,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _buildInputField(
                     label: 'Telefon'.tr(),
                     icon: Icons.call,
@@ -448,15 +448,15 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9+\s-]')),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _buildInputField(
                     label: 'Adres'.tr(),
                     icon: Icons.home,
                     controller: _addressController,
-                    hintText: 'Açık adresiniz...'.tr(),
+                    hintText: 'Açık adresiniz...'.tr().tr(),
                     maxLines: 3,
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
                   SizedBox(
                     width: double.infinity,
                     height: 52,

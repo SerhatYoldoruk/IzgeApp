@@ -1,3 +1,4 @@
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -108,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         return LoadingOverlay(
           isLoading: isLoading,
-          message: 'Giriş yapılıyor...',
+          message: 'Giriş yapılıyor...'.tr(),
           child: Scaffold(
             backgroundColor: AppColors.background,
             body: SafeArea(
@@ -120,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
 
                     // Glowing Logo
                     Center(
@@ -224,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(height: 16),
                             CustomTextField(
-                              hintText: 'Şifrenizi giriniz',
+                              hintText: 'Şifrenizi giriniz'.tr(),
                               prefixIcon: Icons.lock_outline,
                               onChanged: (value) =>
                                   setState(() => password = value),

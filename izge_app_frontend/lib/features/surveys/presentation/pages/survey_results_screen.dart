@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:izge_app_frontend/core/constants/app_colors.dart';
 import 'package:izge_app_frontend/core/models/poll_model.dart';
 import 'package:izge_app_frontend/core/services/supabase_service.dart';
+import 'package:izge_app_frontend/core/localization/language_controller.dart';
 
 class SurveyResultsScreen extends StatefulWidget {
   final PollModel survey;
@@ -67,7 +68,7 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Anket Sonuçları',
+          'Anket Sonuçları'.tr(),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -79,7 +80,7 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
         elevation: 0,
       ),
       body: _isLoading 
-        ? const Center(child: CircularProgressIndicator()) 
+        ? Center(child: CircularProgressIndicator()) 
         : SingleChildScrollView(
         padding: const EdgeInsets.only(left: 24, right: 24, top: 32, bottom: 40),
         child: Column(
@@ -87,7 +88,7 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
           children: [
             // Title & Summary
             Text(
-              widget.survey.title,
+              widget.survey.title.tr(),
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
@@ -122,7 +123,7 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Katılım',
+                              'Katılım'.tr(),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -130,7 +131,7 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
                               ),
                             ),
                             Text(
-                              '$_totalVotes Kişi',
+                              '$_totalVotes ${'Kişi'.tr()}',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -155,7 +156,7 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              'Durum',
+                              'Durum'.tr(),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -163,7 +164,7 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
                               ),
                             ),
                             Text(
-                              widget.survey.status == 'active' ? 'Devam Ediyor' : 'Tamamlandı',
+                              widget.survey.status == 'active' ? 'Devam Ediyor'.tr() : 'Tamamlandı'.tr(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -189,16 +190,16 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
             
             // Result Card
             _buildResultCard(
-              question: widget.survey.description ?? 'Sonuçlar',
+              question: (widget.survey.description ?? 'Sonuçlar').tr(),
               options: List.generate(widget.survey.options.length, (index) {
                 int count = _voteCounts.isEmpty ? 0 : _voteCounts[index];
                 int percentage = _totalVotes > 0 ? ((count / _totalVotes) * 100).round() : 0;
                 return _ResultOption(
-                  label: widget.survey.options[index],
+                  label: widget.survey.options[index].tr(),
                   percentage: percentage,
                   color: const Color(0xFF1A8025),
                 );
@@ -225,9 +226,9 @@ class _SurveyResultsScreenState extends State<SurveyResultsScreen> {
                   elevation: 0,
                 ),
                 icon: const Icon(Icons.manage_search),
-                label: const Text(
-                  'Diğer Anketlere Göz At',
-                  style: TextStyle(
+                label: Text(
+                  'Diğer Anketlere Göz At'.tr(),
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
