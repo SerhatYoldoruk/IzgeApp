@@ -1,10 +1,8 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
 const ILETIMERKEZI_KEY = Deno.env.get("ILETIMERKEZI_KEY") || "";
 const ILETIMERKEZI_HASH = Deno.env.get("ILETIMERKEZI_HASH") || "";
 const ILETIMERKEZI_SENDER = Deno.env.get("ILETIMERKEZI_SENDER") || "";
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   try {
     // 1. Get SMS payload from Supabase Auth hook
     const { sms } = await req.json();
