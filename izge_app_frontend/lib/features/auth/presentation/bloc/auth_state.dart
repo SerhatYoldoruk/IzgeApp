@@ -38,3 +38,13 @@ class AuthError extends AuthState {
   @override
   List<Object?> get props => [message];
 }
+
+class AuthOtpSent extends AuthState {
+  final String phone;
+  final String message;
+  const AuthOtpSent({required this.phone, required this.message});
+  @override
+  List<Object?> get props => [phone, message];
+}
+
+class AuthOtpVerified extends AuthState {}

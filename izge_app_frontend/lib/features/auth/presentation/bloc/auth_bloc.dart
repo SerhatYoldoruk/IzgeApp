@@ -17,6 +17,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignUpRequested>(_onAuthSignUpRequested);
     on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
+    on<AuthSendOtpRequested>(_onSendOtpRequested);
+    on<AuthVerifyOtpRequested>(_onVerifyOtpRequested);
   }
 
   Future<void> _onAuthCheckRequested(
@@ -63,6 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
         data: {
           'full_name': event.fullName,
+          'phone': event.phone,
           'is_parent': event.isParent,
           if (event.childName != null && event.childName!.isNotEmpty) 'child_name': event.childName,
           if (event.childBirthDate != null && event.childBirthDate!.isNotEmpty) 'child_birth_date': event.childBirthDate,
@@ -115,6 +118,54 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       await Supabase.instance.client.auth.signOut();
       emit(AuthUnauthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> _onSendOtpRequested(
+      AuthSendOtpRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      // Format phone: ensure it starts with +90 for Turkey
+      String formattedPhone = event.phone.trim();
+      if (formattedPhone.startsWith('0')) {
+        formattedPhone = '+9$formattedPhone';
+      } else if (!formattedPhone.startsWith('+')) {
+        formattedPhone = '+90$formattedPhone';
+      }
+      
+      await Supabase.instance.client.auth.signInWithOtp(
+        phone: formattedPhone,
+      );
+      emit(AuthOtpSent(
+        phone: formattedPhone,
+        message: 'Doğrulama kodu gönderildi.',
+      ));
+    } on AuthException catch (e) {
+      emit(AuthError(e.message));
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> _onVerifyOtpRequested(
+      AuthVerifyOtpRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      final response = await Supabase.instance.client.auth.verifyOTP(
+        phone: event.phone,
+        token: event.otp,
+        type: OtpType.sms,
+      );
+      if (response.session != null) {
+        final profile = await _authService.getProfile();
+        emit(AuthAuthenticated(profile));
+      } else {
+        emit(const AuthError('Doğrulama başarısız. Lütfen kodu kontrol edin.'));
+      }
+    } on AuthException catch (e) {
+      emit(AuthError(e.message));
     } catch (e) {
       emit(AuthError(e.toString()));
     }

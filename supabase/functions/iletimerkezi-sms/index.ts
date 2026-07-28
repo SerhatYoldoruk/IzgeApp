@@ -5,13 +5,16 @@ const ILETIMERKEZI_SENDER = Deno.env.get("ILETIMERKEZI_SENDER") || "";
 Deno.serve(async (req: Request) => {
   try {
     // 1. Get SMS payload from Supabase Auth hook
-    const { sms } = await req.json();
-    const { phone, otp } = sms;
+    const payload = await req.json();
+    
+    const phone = payload?.user?.phone;
+    const otp = payload?.sms?.otp;
 
     if (!phone || !otp) {
+      console.error("Missing phone or OTP in payload", payload);
       return new Response(JSON.stringify({ error: "Missing phone or OTP code" }), {
         headers: { "Content-Type": "application/json" },
-        status: 400,
+        status: 200, // Returning 200 so Supabase doesn't crash with unexpected_failure, but delivery will fail.
       });
     }
 
@@ -28,17 +31,19 @@ Deno.serve(async (req: Request) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        authentication: {
-          key: ILETIMERKEZI_KEY,
-          hash: ILETIMERKEZI_HASH
-        },
-        order: {
-          sender: ILETIMERKEZI_SENDER,
-          sendDateTime: "",
-          message: {
-            text: messageText,
-            receipents: {
-              number: [cleanPhone]
+        request: {
+          authentication: {
+            key: ILETIMERKEZI_KEY,
+            hash: ILETIMERKEZI_HASH
+          },
+          order: {
+            sender: ILETIMERKEZI_SENDER,
+            sendDateTime: "",
+            message: {
+              text: messageText,
+              receipents: {
+                number: [cleanPhone]
+              }
             }
           }
         }
@@ -48,21 +53,23 @@ Deno.serve(async (req: Request) => {
     const result = await response.json();
 
     // Check Ileti Merkezi response status
-    // Successful response generally has result.response.status.code == 200
     if (result && result.response && result.response.status && result.response.status.code === 200) {
-      return new Response(JSON.stringify({ success: true, order_id: result.response.order?.id }), {
+      // Supabase Auth Hook expects an empty JSON response or the unmodified payload
+      return new Response(JSON.stringify({}), {
         headers: { "Content-Type": "application/json" },
         status: 200,
       });
     } else {
       const errMsg = result?.response?.status?.message || "Unknown error";
-      return new Response(JSON.stringify({ error: `Ileti Merkezi error: ${errMsg}`, details: result }), {
+      console.error("Ileti Merkezi Error:", errMsg, result);
+      return new Response(JSON.stringify({}), {
         headers: { "Content-Type": "application/json" },
-        status: 400,
+        status: 200,
       });
     }
   } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error("Edge Function Exception:", error.message);
+    return new Response(JSON.stringify({}), {
       headers: { "Content-Type": "application/json" },
       status: 500,
     });

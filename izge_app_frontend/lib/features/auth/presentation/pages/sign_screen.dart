@@ -51,8 +51,8 @@ class _SignPageState extends State<SignPage> {
 
   /// Kayıt işlemini gerçekleştir
   void _handleSignUp() {
-    if (name.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      _showMessage('Lütfen temel bilgileri doldurunuz.');
+    if (name.isEmpty || email.isEmpty || phone.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      _showMessage('Lütfen temel bilgileri ve telefon numaranızı eksiksiz doldurunuz.');
       return;
     }
     if (isParent && (childName.isEmpty || childBirthDate.isEmpty || childDiagnosis.isEmpty)) {
@@ -72,8 +72,8 @@ class _SignPageState extends State<SignPage> {
 
     context.read<AuthBloc>().add(AuthSignUpRequested(
       fullName: name.trim(),
-      email: email.trim().contains('@') ? email.trim() : null,
-      phone: !email.trim().contains('@') ? email.trim() : null, // If user typed phone in email field
+      email: email.trim(),
+      phone: phone.trim(),
       password: password,
       isParent: isParent,
       childName: childName.trim(),

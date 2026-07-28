@@ -61,3 +61,18 @@ class AuthSignUpRequested extends AuthEvent {
 class AuthGoogleSignInRequested extends AuthEvent {}
 
 class AuthLogoutRequested extends AuthEvent {}
+
+class AuthSendOtpRequested extends AuthEvent {
+  final String phone;
+  const AuthSendOtpRequested({required this.phone});
+  @override
+  List<Object?> get props => [phone];
+}
+
+class AuthVerifyOtpRequested extends AuthEvent {
+  final String phone;
+  final String otp;
+  const AuthVerifyOtpRequested({required this.phone, required this.otp});
+  @override
+  List<Object?> get props => [phone, otp];
+}

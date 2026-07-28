@@ -10,6 +10,7 @@ import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_event.dar
 import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_state.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/forgot_password_screen.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/sign_screen.dart';
+import 'package:izge_app_frontend/features/auth/presentation/pages/otp_verification_screen.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/pages/main_navigation_page.dart';
 
 /// Giriş ekranı - kullanıcıların e-posta/telefon ve şifre ile oturum açması için
@@ -44,21 +45,42 @@ class _LoginScreenState extends State<LoginScreen> {
   /// Kullanıcı tarafından girilen şifre
   String password = '';
 
+  /// Girilen değerin telefon numarası olup olmadığını kontrol et
+  bool get _isPhoneInput {
+    final trimmed = emailOrPhone.trim();
+    if (trimmed.isEmpty) return false;
+    // +90, 05, 5 ile başlayan veya sadece rakamlardan oluşan girişler telefon olarak algılanır
+    if (trimmed.startsWith('+')) return true;
+    if (trimmed.startsWith('0') && trimmed.length > 1 && RegExp(r'^[0-9]+$').hasMatch(trimmed.substring(1))) return true;
+    if (RegExp(r'^[0-9]{10,}$').hasMatch(trimmed)) return true;
+    return false;
+  }
+
   /// E-posta veya telefon numarası ile giriş işlemini başlat
   void _handleLogin() {
+    if (_isPhoneInput) {
+      // Telefon numarası ile OTP giriş akışı
+      if (emailOrPhone.trim().isEmpty) {
+        _showMessage('Lütfen telefon numaranızı girin.');
+        return;
+      }
+      context.read<AuthBloc>().add(
+        AuthSendOtpRequested(phone: emailOrPhone.trim()),
+      );
+      return;
+    }
+
+    // E-posta ile şifre giriş akışı
     if (emailOrPhone.isEmpty || password.isEmpty) {
-      _showMessage('Lütfen e-posta/telefon ve şifrenizi girin.');
+      _showMessage('Lütfen e-posta ve şifrenizi girin.');
       return;
     }
 
     TextInput.finishAutofillContext();
 
-    final isEmail = emailOrPhone.contains('@');
-
     context.read<AuthBloc>().add(
       AuthLoginRequested(
-        email: isEmail ? emailOrPhone : null,
-        phone: !isEmail ? emailOrPhone : null,
+        email: emailOrPhone.trim(),
         password: password,
       ),
     );
@@ -98,6 +120,13 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state) {
         if (state is AuthError) {
           _showMessage(_translateAuthError(state.message));
+        } else if (state is AuthOtpSent) {
+          // OTP gönderildi, doğrulama ekranına yönlendir
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => OtpVerificationScreen(phone: state.phone),
+            ),
+          );
         } else if (state is AuthAuthenticated) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const MainNavigation()),
@@ -213,49 +242,74 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             CustomTextField(
-                              hintText: 'Mail adresinizi giriniz',
-                              prefixIcon: Icons.person_outline,
+                              hintText: _isPhoneInput ? 'Telefon numaranız'.tr() : 'E-posta veya telefon numarası'.tr(),
+                              prefixIcon: _isPhoneInput ? Icons.phone_outlined : Icons.person_outline,
                               onChanged: (value) =>
                                   setState(() => emailOrPhone = value),
                               autofillHints: const [
                                 AutofillHints.username,
                                 AutofillHints.email,
+                                AutofillHints.telephoneNumber,
                               ],
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                            const SizedBox(height: 16),
-                            CustomTextField(
-                              hintText: 'Şifrenizi giriniz'.tr(),
-                              prefixIcon: Icons.lock_outline,
-                              onChanged: (value) =>
-                                  setState(() => password = value),
-                              obscureText: true,
-                              autofillHints: const [AutofillHints.password],
+                              keyboardType: _isPhoneInput ? TextInputType.phone : TextInputType.emailAddress,
                             ),
 
-                            const SizedBox(height: 12),
+                            // Telefon girişinde şifre alanını gizle, SMS OTP akışına yönlendir
+                            if (!_isPhoneInput) ...[
+                              const SizedBox(height: 16),
+                              CustomTextField(
+                                hintText: 'Şifrenizi giriniz'.tr(),
+                                prefixIcon: Icons.lock_outline,
+                                onChanged: (value) =>
+                                    setState(() => password = value),
+                                obscureText: true,
+                                autofillHints: const [AutofillHints.password],
+                              ),
 
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ForgotPasswordScreen(),
+                              const SizedBox(height: 12),
+
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgotPasswordScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    'Şifremi unuttum',
+                                    style: TextStyle(
+                                      color: AppColors.textSecondary,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  'Şifremi unuttum',
-                                  style: TextStyle(
-                                    color: AppColors.textSecondary,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
+
+                            // Telefon girişinde bilgi mesajı göster
+                            if (_isPhoneInput) ...[
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  Icon(Icons.info_outline, size: 16, color: AppColors.primary),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'Telefonunuza SMS ile doğrulama kodu gönderilecek.'.tr(),
+                                      style: TextStyle(
+                                        color: AppColors.textSecondary,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
 
                             const SizedBox(height: 24),
 
@@ -279,14 +333,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                           color: AppColors.accentOnPrimary,
                                         ),
                                       )
-                                    : Text(
-                                        'GİRİŞ YAP',
-                                        style: TextStyle(
-                                          color: AppColors.accentOnPrimary,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 1.2,
-                                        ),
+                                    : Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          if (_isPhoneInput) ...[
+                                            const Icon(Icons.sms_outlined, size: 20),
+                                            const SizedBox(width: 8),
+                                          ],
+                                          Flexible(
+                                            child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                _isPhoneInput ? 'DOĞRULAMA KODU GÖNDER' : 'GİRİŞ YAP',
+                                                style: TextStyle(
+                                                  color: AppColors.accentOnPrimary,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1.2,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                               ),
                             ),

@@ -478,13 +478,13 @@ class _InstitutionDetailsSheetState extends State<_InstitutionDetailsSheet> {
                         isAutismFriendly: isAutismFriendly,
                         hasWheelchairAccess: hasWheelchairAccess,
                       );
-                      if (mounted) {
+                      if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Puanınız kaydedildi, teşekkürler!'.tr())));
                         Navigator.pop(context);
                         widget.onReviewAdded();
                       }
                     } catch (e) {
-                      if (mounted) {
+                      if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Hata: $e')));
                       }
                     }

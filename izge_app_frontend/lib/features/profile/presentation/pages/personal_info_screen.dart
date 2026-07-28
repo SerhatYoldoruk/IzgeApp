@@ -21,6 +21,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   bool _isLoading = false;
   bool _isFetching = true;
   String _avatarUrl = '';
+  bool _isPhoneVerified = false;
+  bool _isVerifyingPhone = false;
 
   String _originalName = '';
   String _originalPhone = '';
@@ -66,6 +68,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       _avatarUrl = user.userMetadata?['avatar_url'] ?? '';
     } finally {
       _emailController.text = user.email ?? '';
+      _isPhoneVerified = user.phone != null && user.phone!.isNotEmpty;
       setState(() => _isFetching = false);
     }
   }
@@ -190,6 +193,119 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         ),
       );
     }
+  }
+
+  void _handleVerifyPhone() async {
+    final phone = _phoneController.text.trim();
+    if (phone.isEmpty || phone.length < 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lütfen önce geçerli bir telefon numarası girin.'.tr())),
+      );
+      return;
+    }
+
+    setState(() => _isVerifyingPhone = true);
+    try {
+      String formattedPhone = phone;
+      final digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
+      if (digits.length == 10 && digits.startsWith('5')) {
+        formattedPhone = '+90$digits';
+      } else if (digits.length == 11 && digits.startsWith('05')) {
+        formattedPhone = '+9$digits';
+      } else if (digits.length == 12 && digits.startsWith('905')) {
+        formattedPhone = '+$digits';
+      }
+
+      await Supabase.instance.client.auth.updateUser(
+        UserAttributes(phone: formattedPhone),
+      );
+
+      if (!mounted) return;
+      _showOtpDialog(formattedPhone);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Hata oluştu: ${e.toString()}'.tr())),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isVerifyingPhone = false);
+      }
+    }
+  }
+
+  void _showOtpDialog(String formattedPhone) {
+    final TextEditingController otpController = TextEditingController();
+    bool isVerifyingOtp = false;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              title: Text('Kodu Giriniz'.tr()),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('${formattedPhone} numarasına gönderilen 6 haneli kodu giriniz.'.tr()),
+                  SizedBox(height: 16),
+                  TextField(
+                    controller: otpController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 6,
+                    decoration: InputDecoration(
+                      hintText: '000000',
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: isVerifyingOtp ? null : () => Navigator.pop(context),
+                  child: Text('İptal'.tr()),
+                ),
+                ElevatedButton(
+                  onPressed: isVerifyingOtp ? null : () async {
+                    if (otpController.text.length != 6) return;
+                    setStateDialog(() => isVerifyingOtp = true);
+                    
+                    try {
+                      await Supabase.instance.client.auth.verifyOTP(
+                        type: OtpType.phoneChange,
+                        token: otpController.text,
+                        phone: formattedPhone,
+                      );
+                      
+                      if (!mounted) return;
+                      Navigator.pop(context);
+                      
+                      setState(() {
+                        _isPhoneVerified = true;
+                      });
+                      
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Telefon numaranız başarıyla doğrulandı!'.tr()), backgroundColor: Colors.green),
+                      );
+                    } catch (e) {
+                      setStateDialog(() => isVerifyingOtp = false);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Hatalı kod. Lütfen tekrar deneyin.'.tr()), backgroundColor: Colors.red),
+                      );
+                    }
+                  },
+                  child: isVerifyingOtp 
+                      ? SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                      : Text('Doğrula'.tr()),
+                ),
+              ],
+            );
+          }
+        );
+      },
+    );
   }
 
   OverlayEntry? _overlayEntry;
@@ -447,6 +563,17 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[0-9+\s-]')),
                     ],
+                    suffixIcon: _isPhoneVerified
+                        ? Icon(Icons.verified, color: Colors.green)
+                        : _isVerifyingPhone
+                            ? Padding(
+                                padding: EdgeInsets.all(12),
+                                child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+                              )
+                            : TextButton(
+                                onPressed: _handleVerifyPhone,
+                                child: Text('Doğrula'.tr(), style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                              ),
                   ),
                   SizedBox(height: 16),
                   _buildInputField(
@@ -506,6 +633,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     int maxLines = 1,
     bool readOnly = false,
     List<TextInputFormatter>? inputFormatters,
+    Widget? suffixIcon,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -542,6 +670,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               icon,
               color: AppColors.textSecondary,
             ),
+            suffixIcon: suffixIcon,
             filled: true,
             fillColor: AppColors.surface,
             border: OutlineInputBorder(
