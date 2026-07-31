@@ -222,9 +222,26 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
       if (!mounted) return;
       _showOtpDialog(formattedPhone);
+    } on AuthException catch (e) {
+      String message = e.message;
+      if (e.code == 'phone_exists' || message.contains('already been registered')) {
+        message = 'Bu telefon numarası başka bir hesaba kayıtlı.\nDetay: ${e.code} - ${e.message}';
+      } else {
+        message = 'Doğrulama hatası:\nKod: ${e.code}\nMesaj: ${e.message}';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 5),
+        ),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Hata oluştu: ${e.toString()}'.tr())),
+        SnackBar(
+          content: Text('Hata oluştu: ${e.toString()}'.tr()),
+          backgroundColor: Colors.red,
+        ),
       );
     } finally {
       if (mounted) {
@@ -249,7 +266,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('${formattedPhone} numarasına gönderilen 6 haneli kodu giriniz.'.tr()),
+                  Text('$formattedPhone numarasına gönderilen 6 haneli kodu giriniz.'.tr()),
                   SizedBox(height: 16),
                   TextField(
                     controller: otpController,
@@ -279,18 +296,20 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                         phone: formattedPhone,
                       );
                       
-                      if (!mounted) return;
+                      if (!context.mounted) return;
                       Navigator.pop(context);
                       
                       setState(() {
                         _isPhoneVerified = true;
                       });
                       
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Telefon numaranız başarıyla doğrulandı!'.tr()), backgroundColor: Colors.green),
                       );
                     } catch (e) {
                       setStateDialog(() => isVerifyingOtp = false);
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Hatalı kod. Lütfen tekrar deneyin.'.tr()), backgroundColor: Colors.red),
                       );

@@ -135,12 +135,14 @@ class _NewsScreenState extends State<NewsScreen> {
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(4),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
-                child: Image.asset(
-                  'assets/images/images/logo.jpeg',
-                  fit: BoxFit.contain,
+                child: Transform.scale(
+                  scale: 1.8,
+                  child: Image.asset(
+                    'assets/images/images/logo.jpeg',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),

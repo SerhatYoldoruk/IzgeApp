@@ -7,7 +7,8 @@ Deno.serve(async (req: Request) => {
     // 1. Get SMS payload from Supabase Auth hook
     const payload = await req.json();
     
-    const phone = payload?.user?.phone;
+    // Supabase often puts the number being verified in payload.sms.phone or payload.user.new_phone
+    const phone = payload?.sms?.phone || payload?.user?.phone || payload?.user?.new_phone;
     const otp = payload?.sms?.otp;
 
     if (!phone || !otp) {

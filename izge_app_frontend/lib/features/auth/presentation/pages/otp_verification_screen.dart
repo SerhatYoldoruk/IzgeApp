@@ -96,11 +96,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     
     // Mask phone number for display: +90 505 *** ** 67
     String maskedPhone = widget.phone;
-    if (maskedPhone.length >= 10) {
-      final visible = maskedPhone.substring(0, 7);
-      final lastTwo = maskedPhone.substring(maskedPhone.length - 2);
-      maskedPhone = '$visible *** ** $lastTwo';
-    }
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {

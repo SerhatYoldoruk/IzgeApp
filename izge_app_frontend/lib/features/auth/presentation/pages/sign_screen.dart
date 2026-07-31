@@ -22,8 +22,11 @@ class SignPage extends StatefulWidget {
 }
 
 class _SignPageState extends State<SignPage> {
-  /// Kullanıcı adı / soyadı
+  /// Kullanıcı adı
   String name = '';
+  
+  /// Kullanıcı soyadı
+  String surname = '';
   
   /// Kayıt olacak e-posta adresi
   String email = '';
@@ -51,7 +54,7 @@ class _SignPageState extends State<SignPage> {
 
   /// Kayıt işlemini gerçekleştir
   void _handleSignUp() {
-    if (name.isEmpty || email.isEmpty || phone.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    if (name.isEmpty || surname.isEmpty || email.isEmpty || phone.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       _showMessage('Lütfen temel bilgileri ve telefon numaranızı eksiksiz doldurunuz.');
       return;
     }
@@ -71,7 +74,7 @@ class _SignPageState extends State<SignPage> {
     TextInput.finishAutofillContext();
 
     context.read<AuthBloc>().add(AuthSignUpRequested(
-      fullName: name.trim(),
+      fullName: '${name.trim()} ${surname.trim()}',
       email: email.trim(),
       phone: phone.trim(),
       password: password,
@@ -239,12 +242,28 @@ class _SignPageState extends State<SignPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomTextField(
-                            hintText: 'İsminizi giriniz'.tr(),
-                            prefixIcon: Icons.person_outline,
-                            onChanged: (value) => setState(() => name = value),
-                            autofillHints: const [AutofillHints.name],
-                            keyboardType: TextInputType.name,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  hintText: 'Adınız'.tr(),
+                                  prefixIcon: Icons.person_outline,
+                                  onChanged: (value) => setState(() => name = value),
+                                  autofillHints: const [AutofillHints.givenName],
+                                  keyboardType: TextInputType.name,
+                                ),
+                              ),
+                              SizedBox(width: 16),
+                              Expanded(
+                                child: CustomTextField(
+                                  hintText: 'Soyadınız'.tr(),
+                                  prefixIcon: Icons.person_outline,
+                                  onChanged: (value) => setState(() => surname = value),
+                                  autofillHints: const [AutofillHints.familyName],
+                                  keyboardType: TextInputType.name,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: 16),
                           CustomTextField(

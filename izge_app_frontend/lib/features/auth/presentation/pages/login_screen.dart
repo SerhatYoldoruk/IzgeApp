@@ -11,6 +11,7 @@ import 'package:izge_app_frontend/features/auth/presentation/bloc/auth_state.dar
 import 'package:izge_app_frontend/features/auth/presentation/pages/forgot_password_screen.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/sign_screen.dart';
 import 'package:izge_app_frontend/features/auth/presentation/pages/otp_verification_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:izge_app_frontend/features/navigation/presentation/pages/main_navigation_page.dart';
 
 /// Giriş ekranı - kullanıcıların e-posta/telefon ve şifre ile oturum açması için
@@ -22,9 +23,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late TextEditingController _emailOrPhoneController;
+
   @override
   void initState() {
     super.initState();
+    _emailOrPhoneController = TextEditingController();
+    _loadSavedData();
     // Sık kullanılan resimleri (logo, google) önceden yükle
     // Böylece ilk açılışta görsel gecikmeleri azaltırız
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -39,11 +44,33 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  Future<void> _loadSavedData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedRememberMe = prefs.getBool('rememberMe') ?? false;
+    if (savedRememberMe) {
+      final savedEmailOrPhone = prefs.getString('emailOrPhone') ?? '';
+      setState(() {
+        rememberMe = savedRememberMe;
+        emailOrPhone = savedEmailOrPhone;
+        _emailOrPhoneController.text = savedEmailOrPhone;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailOrPhoneController.dispose();
+    super.dispose();
+  }
+
   /// Kullanıcı tarafından girilen e-posta veya telefon numarası
   String emailOrPhone = '';
 
   /// Kullanıcı tarafından girilen şifre
   String password = '';
+
+  /// Beni Hatırla durumu
+  bool rememberMe = false;
 
   /// Girilen değerin telefon numarası olup olmadığını kontrol et
   bool get _isPhoneInput {
@@ -56,8 +83,20 @@ class _LoginScreenState extends State<LoginScreen> {
     return false;
   }
 
+  Future<void> _saveRememberMe() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('rememberMe', rememberMe);
+    if (rememberMe) {
+      await prefs.setString('emailOrPhone', emailOrPhone.trim());
+    } else {
+      await prefs.remove('emailOrPhone');
+    }
+  }
+
   /// E-posta veya telefon numarası ile giriş işlemini başlat
   void _handleLogin() {
+    _saveRememberMe(); // Arka planda kaydet
+    
     if (_isPhoneInput) {
       // Telefon numarası ile OTP giriş akışı
       if (emailOrPhone.trim().isEmpty) {
@@ -242,6 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             CustomTextField(
+                              controller: _emailOrPhoneController,
                               hintText: _isPhoneInput ? 'Telefon numaranız'.tr() : 'E-posta veya telefon numarası'.tr(),
                               prefixIcon: _isPhoneInput ? Icons.phone_outlined : Icons.person_outline,
                               onChanged: (value) =>
@@ -268,26 +308,52 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               const SizedBox(height: 12),
 
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ForgotPasswordScreen(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 24,
+                                        width: 24,
+                                        child: Checkbox(
+                                          value: rememberMe,
+                                          onChanged: (value) => setState(() => rememberMe = value ?? false),
+                                          activeColor: AppColors.primary,
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                          side: BorderSide(color: AppColors.border, width: 2),
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  child: Text(
-                                    'Şifremi unuttum',
-                                    style: TextStyle(
-                                      color: AppColors.textSecondary,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'Beni Hatırla'.tr(),
+                                        style: TextStyle(
+                                          color: AppColors.textSecondary,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ForgotPasswordScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'Şifremi unuttum',
+                                      style: TextStyle(
+                                        color: AppColors.textSecondary,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
                             ],
 

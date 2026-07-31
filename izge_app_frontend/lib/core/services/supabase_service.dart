@@ -14,13 +14,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// Supabase Kimlik Doğrulama ve Veritabanı Servis Sınıfı
 /// Tüm Supabase işlemleri bu servis üzerinden yapılır
 class SupabaseService {
-  const SupabaseService();
+  final SupabaseClient? _injectedClient;
+
+  const SupabaseService({SupabaseClient? client}) : _injectedClient = client;
 
   /// Singleton instance - uygulamada kullanılacak tek örnek
   static const SupabaseService instance = SupabaseService();
 
   /// Supabase istemcisine erişim
-  SupabaseClient get _client => Supabase.instance.client;
+  SupabaseClient get _client => _injectedClient ?? Supabase.instance.client;
 
   /// Şu anda oturum açan kullanıcıyı getir (null olabilir)
   User? get currentUser => _client.auth.currentUser;
@@ -113,6 +115,24 @@ class SupabaseService {
   Future<void> resetPassword({required String email}) async {
     // Supabase Flutter v2 API: resetPasswordForEmail göndererek e-posta ile sıfırlama bağlantısı yollar
     await _client.auth.resetPasswordForEmail(email);
+  }
+
+  /// OTP ile giriş yap (Telefon numarasına SMS gönder)
+  Future<void> signInWithOtp({required String phone}) async {
+    await _client.auth.signInWithOtp(phone: phone);
+  }
+
+  /// OTP Doğrula
+  Future<AuthResponse> verifyOTP({
+    required String phone,
+    required String token,
+    required OtpType type,
+  }) async {
+    return await _client.auth.verifyOTP(
+      phone: phone,
+      token: token,
+      type: type,
+    );
   }
 
   /// Kullanıcının şifresini güncelle

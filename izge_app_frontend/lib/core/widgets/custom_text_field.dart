@@ -9,6 +9,7 @@ class CustomTextField extends StatefulWidget {
   final String? errorText;
   final Iterable<String>? autofillHints;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
 
   const CustomTextField({
     super.key,
@@ -19,6 +20,7 @@ class CustomTextField extends StatefulWidget {
     this.errorText,
     this.autofillHints,
     this.keyboardType,
+    this.controller,
   });
 
   @override
@@ -41,6 +43,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
         _isFocused = _focusNode.hasFocus;
       });
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.obscureText != oldWidget.obscureText) {
+      _obscureText = widget.obscureText;
+    }
   }
 
   @override
@@ -72,6 +82,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           ),
           width: double.infinity,
           child: TextField(
+            controller: widget.controller,
             focusNode: _focusNode,
             obscureText: _obscureText,
             autofillHints: widget.autofillHints,

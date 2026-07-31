@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 44,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.border),
                 boxShadow: [
                   BoxShadow(
@@ -136,12 +136,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(4),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: Image.asset(
-                  'assets/images/images/logo.jpeg',
-                  fit: BoxFit.contain,
+                borderRadius: BorderRadius.circular(12),
+                child: Transform.scale(
+                  scale: 1.8,
+                  child: Image.asset(
+                    'assets/images/images/logo.jpeg',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),

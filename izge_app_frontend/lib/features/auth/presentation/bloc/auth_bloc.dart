@@ -77,6 +77,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         // Otomatik giriş yapılmadı, muhtemelen e-posta onayı gerekiyor
         emit(const AuthSignUpSuccess('Kayıt başarılı! Lütfen e-posta adresinize gönderilen onay bağlantısına tıklayın.'));
       } else {
+        // Supabase trigger'ı phone'u almamış olabilir, manuel olarak profiles tablosunu güncelleyelim
+        if (event.phone != null && event.phone!.isNotEmpty && response.user != null) {
+          try {
+            await Supabase.instance.client
+                .from('profiles')
+                .update({'phone': event.phone})
+                .eq('id', response.user!.id);
+          } catch (e) {
+            // Hata olursa sessizce yut, kayıt aslında başarılı oldu
+          }
+        }
+        
         final profile = await _authService.getProfile();
         emit(AuthAuthenticated(profile));
       }
@@ -135,7 +147,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         formattedPhone = '+90$formattedPhone';
       }
       
-      await Supabase.instance.client.auth.signInWithOtp(
+      await _authService.signInWithOtp(
         phone: formattedPhone,
       );
       emit(AuthOtpSent(
@@ -153,7 +165,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthVerifyOtpRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      final response = await Supabase.instance.client.auth.verifyOTP(
+      final response = await _authService.verifyOTP(
         phone: event.phone,
         token: event.otp,
         type: OtpType.sms,

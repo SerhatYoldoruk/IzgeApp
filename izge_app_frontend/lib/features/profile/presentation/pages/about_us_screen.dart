@@ -53,9 +53,12 @@ class AboutUsScreen extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/images/images/logo.jpeg',
-                        fit: BoxFit.cover,
+                      child: Transform.scale(
+                        scale: 1.8,
+                        child: Image.asset(
+                          'assets/images/images/logo.jpeg',
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),

@@ -45,11 +45,14 @@ class SurveysScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(8),
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/images/logo.jpeg',
-                  fit: BoxFit.contain,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Transform.scale(
+                  scale: 1.8,
+                  child: Image.asset(
+                    'assets/images/images/logo.jpeg',
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
